@@ -1,0 +1,305 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	OSG Roll for Server Install 
+	OSG Central configuration (includes condor shipped with osg)
+	</description>
+
+	<copyright>
+	Copyright (c) goes here
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	</copyright>
+
+<changelog>
+    $Log: osg-server.xml,v $
+    Revision 0.0  2012/10/05 05:48:53  eduardo
+    initial creation
+
+</changelog>
+
+	<package>rocks-osg-command</package>
+	<package>rocks-secattr-plugins-osg</package>
+	<package>roll-osg-usersguide</package>
+<post>
+
+###  Put the OSG Servers into the database
+###  Set Default Public Names
+OSGgums="rocks-gums.&Kickstart_PublicDNSDomain;"
+OSGCE="rocks-ce.&Kickstart_PublicDNSDomain;"
+OSGSE="rocks-se.&Kickstart_PublicDNSDomain;"
+OSGGFTP="rocks-ce.&Kickstart_PublicDNSDomain;"
+### Set Default Private names
+OSGCEPrivate="login-0-0"
+#if roll was installed at kickstart OSGCEPrivate should exist need for auto.osg
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGCEPrivate`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSGCEPrivate value=$OSGCEPrivate
+fi
+OSGSEPrivate="login-0-1"
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGSEPrivate`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSGSEPrivate value=$OSGSEPrivate
+fi
+OSGGUMSPrivate="login-0-2"
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGGUMSPrivate`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSGGUMSPrivate value=$OSGGUMSPrivate
+fi
+OSGGridftpPrivate="login-0-0"
+OSGGridftpHdfsPrivate="login-0-1"
+###  Set Default Hadoop Configuration
+OSGhadoopNN="compute-0-0"
+OSGhadoopSN="compute-0-1"
+OSGhadoopDataDir="/hadoop"
+OSGhadoopData="/hadoop/data"
+OSGhadoopChkDirs="/home/hadoop,/scratch/hadoop"
+OSGhdfsChkPeriod="600"
+OSGhdfsUpdatetFstab="1"
+###  Set Default Bestman Configuration
+#rocks firewall requires "20000:25000" instead of "20000,25000"
+OSGglobusPortRange="20000:25000"
+OSGglobusTcpPortRange="20000,25000"
+OSGglobusTcpSourceRange="20000,25000"
+OSGSRMlocalPathListAllowed="/mnt/hadoop;/data/se"
+OSGSRMsupportedProtocolList="gsiftp://$OSGGFTP:2811"
+###  Set Default Storage Dir for Grid Certs
+OSGStoredCertsDir="/root/certs"
+###  Set Default GUMS Backup Dir and DNADMIN
+OSGGUMSBackupDir="/path/to/gums/backup"
+OSGGUMSDNADMIN="/DC=org/DC=doegrids/OU=People/CN=Name M LastName 123456"
+
+###Servers
+#if roll was installed at kickstart OSG_GumsServer should exist 
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_GumsServer`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSG_GumsServer value=$OSGgums
+fi
+#if roll was installed at kickstart OSG_CEServer should exist 
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_CEServer`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSG_CEServer value=$OSGCE
+else
+OSGCE="&OSG_CEServer;"
+fi
+#if roll was installed at kickstart OSG_SEServer should exist 
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_SEServer`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSG_SEServer value=$OSGSE
+fi
+/opt/rocks/bin/rocks add attr OSG_GFTPServer value=$OSGGFTP
+
+#if roll was installed at kickstart OSG_HadoopNameNode should exist 
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_HadoopNameNode`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSG_HadoopNameNode value=$OSGhadoopNN
+fi
+#if roll was installed at kickstart OSG_HadoopSecondaryNode should exist
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_HadoopSecondaryNode`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSG_HadoopSecondaryNode value=$OSGhadoopSN
+fi
+/opt/rocks/bin/rocks add attr OSG_HadoopDataDir value=$OSGhadoopDataDir
+/opt/rocks/bin/rocks add attr OSG_HadoopData value=$OSGhadoopData
+/opt/rocks/bin/rocks add attr OSG_HadoopCheckPointDirs value=$OSGhadoopChkDirs
+/opt/rocks/bin/rocks add attr OSG_HadoopCheckPointPeriod value=$OSGhdfsChkPeriod
+/opt/rocks/bin/rocks add attr OSG_HadoopUpdateFstab value=$OSGhdfsUpdatetFstab
+/opt/rocks/bin/rocks add attr OSG_GlobusPortRange value=$OSGglobusPortRange
+/opt/rocks/bin/rocks add attr OSG_GlobusTcpPortRange value=$OSGglobusTcpPortRange
+/opt/rocks/bin/rocks add attr OSG_GlobusTcpSourceRange value=$OSGglobusTcpSourceRange
+/opt/rocks/bin/rocks add attr OSG_SRMlocalPathListAllowed value=$OSGSRMlocalPathListAllowed
+/opt/rocks/bin/rocks add attr OSG_SRMsupportedProtocolList value=$OSGSRMsupportedProtocolList
+/opt/rocks/bin/rocks add attr OSG_StoredCertsDir value=$OSGStoredCertsDir
+/opt/rocks/bin/rocks add attr OSG_GUMSBackupDir value=$OSGGUMSBackupDir
+/opt/rocks/bin/rocks add attr OSG_GUMSDNADMIN value=$OSGGUMSDNADMIN
+
+
+# turn on OSG Client for compute nodes
+/opt/rocks/bin/rocks add appliance attr compute OSG_Client value=true
+# turn on OSG Condor Client for compute nodes
+/opt/rocks/bin/rocks add appliance attr compute OSG_Condor_Client value=true
+# set OSG CE server
+/opt/rocks/bin/rocks add host attr &OSGCEPrivate; OSG_CE value="condor"
+# set OSG bestman server
+/opt/rocks/bin/rocks add host attr &OSGSEPrivate; OSG_SE value=true
+# set OSG gridftp hadoop server
+/opt/rocks/bin/rocks add host attr $OSGGridftpHdfsPrivate OSG_GFTP_HDFS value=true
+# set OSG gridftp server
+/opt/rocks/bin/rocks add host attr $OSGGridftpPrivate OSG_GRIDFTP value=true
+
+###  Put the OSG_CondorMaster into the database
+CMaster=&Kickstart_PublicHostname;
+/opt/rocks/bin/rocks add attr OSG_Condor_Master value=$CMaster
+/opt/rocks/bin/rocks add attr OSG_Condor_Network value=private
+/opt/rocks/bin/rocks add attr OSG_Condor_Daemons value="MASTER"
+/opt/rocks/bin/rocks add attr OSG_Condor_PortLow value="40000"
+/opt/rocks/bin/rocks add attr OSG_Condor_PortHigh value="50000"
+/opt/rocks/bin/rocks add attr OSG_Condor_HostAllow value="+ $OSGCE"
+/opt/rocks/bin/rocks add attr OSG_Condor_PasswordAuth value="no"
+/opt/rocks/bin/rocks add attr OSG_Condor_EnableMPI value="no"
+/opt/rocks/bin/rocks add attr OSG_Condor_EnableAMAZON_EC2 value="no"
+/opt/rocks/bin/rocks add attr OSG_Condor_EnableT3GRID_SUBMIT value="no"
+/opt/rocks/bin/rocks add attr OSG_Condor_EnableT3GRID_CMSSW value="yes"
+
+
+# modify set of daemons running on master, login and compute nodes 
+/opt/rocks/bin/rocks add appliance attr frontend OSG_Condor_Daemons value="MASTER, SCHEDD, COLLECTOR, NEGOTIATOR"
+/opt/rocks/bin/rocks add appliance attr login OSG_Condor_Daemons value="MASTER, SCHEDD"
+/opt/rocks/bin/rocks add appliance attr compute OSG_Condor_Daemons value="MASTER, STARTD"
+
+# bind the network to the public interface on frontends.` 
+/opt/rocks/bin/rocks add appliance attr frontend OSG_Condor_Network value=public
+
+# parameters related with condor install
+/opt/rocks/bin/rocks add attr OSG_condoruid value=407
+/opt/rocks/bin/rocks add attr OSG_condorgid value=407
+# parameters related with squid-frontier install
+/opt/rocks/bin/rocks add attr OSG_squiduid value=450
+/opt/rocks/bin/rocks add attr OSG_squidgid value=450
+# parameters related with cvmfs install
+/opt/rocks/bin/rocks add attr OSG_cvmfsuid value=470
+/opt/rocks/bin/rocks add attr OSG_cvmfsgid value=470
+/opt/rocks/bin/rocks add attr OSG_fusegid value=408
+/opt/rocks/bin/rocks add attr OSG_CVMFS_REPOSITORIES value="cms.cern.ch"
+/opt/rocks/bin/rocks add attr OSG_CVMFS_CACHE_BASE value="/var/cache/cvmfs"
+/opt/rocks/bin/rocks add attr OSG_CVMFS_QUOTA_LIMIT value=10000
+/opt/rocks/bin/rocks add attr OSG_CVMFS_HTTP_PROXY value="http://login-0-2:3128"
+/opt/rocks/bin/rocks add attr OSG_CMS_LOCAL_SITE value=T3_US_PuertoRico
+</post>
+
+
+<post>
+### Create the squid user
+#squid:x:450:450:squid management user:/home/squid:/sbin/nologin
+createsquiduser=0
+### Create the cvmfs user
+#cvmfs:x:470:470:CernVM-FS service account:/var/cache/cvmfs2:/sbin/nologin
+createcvmfsuser=0
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" == "5.5" ]||[ "&rocks_version;" == "5.6" ]||[ &rocks_version_major; -ge 6 ]; then
+[ &OSG_squiduid; -gt 500 ]&amp;&amp;createsquiduser=1
+[ &OSG_cvmfsuid; -gt 500 ]&amp;&amp;createcvmfsuser=1
+else
+createsquiduser=1
+createcvmfsuser=1
+fi
+
+#groups are completely exported! even in 5.5 (not filtered)
+/usr/sbin/groupadd -g &OSG_squidgid; squid
+if [ $createsquiduser -eq 1 ] then
+/usr/sbin/useradd -u &OSG_squiduid; -g &OSG_squidgid; -c "squid management user" -s /sbin/nologin -d /export/home/squid squid
+else
+touch /root/not_squid_user.log
+fi
+#groups are completely exported! even in 5.5 (not filtered)
+/usr/sbin/groupadd -g &OSG_fusegid; fuse
+/usr/sbin/groupadd -g &OSG_cvmfsgid; cvmfs
+if [ $createcvmfsuser -eq 1 ] then
+/usr/sbin/useradd -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs
+usermod -G fuse cvmfs
+else
+touch /root/not_cvmfs_user.log
+fi
+</post>
+
+<post>
+#for i in {0..49}; do if [ $i -lt 10 ]; then /usr/sbin/groupadd -g 6500$i glexec0$i; else /usr/sbin/groupadd -g 650$i glexec$i; fi; done
+<file name="/tmp/CreateGlexecGroups" perms="0755">
+#!/usr/bin/perl
+
+use strict;
+
+#
+# Definitions. Change for your site
+#
+my $start      = 0;
+my $end        = 49;
+my $startGID   = 65000;
+
+#
+# Generate the new group entries
+#
+my $gid = $startGID;
+for my $index ($start...$end) {
+  my $newAccount = sprintf("glexec%2.2d", $index);
+  system("/usr/sbin/groupadd -g ${gid} ${newAccount}");
+  $gid++;
+}
+exit;
+</file>
+
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server" perms="0755">
+#!/bin/sh
+
+LOCAL_DIR=/var/lib/condor
+mkdir -p $LOCAL_DIR/cred_dir
+
+chown -R condor.condor $LOCAL_DIR
+chmod a+rx  $LOCAL_DIR
+
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
+### Create the Hadoop, mapred User
+#hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
+#mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
+### Create the glexec User
+#glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
+### Create the Bestman User
+#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
+### Create the gratia User
+#gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
+### Create the tomcat User
+#tomcat:x:91:91:Tomcat:/usr/share/tomcat5:/bin/sh
+### Create the rsv,cndrcron Users
+#cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
+
+/usr/sbin/groupadd -g 409 hadoop
+/usr/sbin/groupadd -g 461 mapred
+/usr/sbin/useradd -u 458 -g 409 -c "Hadoop HDFS" -s /bin/bash -d /export/home/hadoop hdfs
+/usr/sbin/useradd -u 461 -g 461 -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
+/usr/sbin/groupadd -g 463 glexec
+/usr/sbin/useradd -u 463 -g 463 -c "gLExec user account" -s /sbin/nologin glexec
+/usr/sbin/groupadd -g 464 gratia
+/usr/sbin/useradd -u 464 -g 464 -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+/usr/sbin/groupadd -g 410 bestman
+/usr/sbin/useradd -u 459 -g 410 -c "Bestman SRM user" -s /sbin/nologin -d /etc/bestman2 bestman
+/usr/sbin/groupadd -g 91 tomcat
+/usr/sbin/useradd -u 91 -g 91 -c "Tomcat" -s /bin/sh -d /usr/share/tomcat5 tomcat
+/usr/sbin/groupadd -g 467 cndrcron
+/usr/sbin/useradd -u 452 -c "RSV monitoring user" -s /bin/bash -d /export/home/rsvuser rsv
+/usr/sbin/useradd -u 466 -g 467 -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+
+#end backward compatibility ( &lt;rocks 5.5)
+fi
+
+/tmp/CreateGlexecGroups
+rm -f /tmp/CreateGlexecGroups
+
+
+
+/opt/rocks/bin/rocks sync users &gt; /dev/null 2&gt;&amp;1
+/usr/sbin/usermod -d /home/hadoop hdfs
+
+if [ -f /etc/profile.d/java.sh ]; then
+   . /etc/profile.d/java.sh
+fi
+
+/opt/rocks/bin/rocks report host osg condor config &hostname; | /opt/rocks/bin/rocks report script | /bin/sh
+</file>
+
+<!-- Give apache rights to cat pool password -->
+<file name="/etc/sudoers" mode="append" perms="0440">
+apache ALL=(ALL) NOPASSWD: /bin/cat /var/lib/condor/pool_password
+</file>
+
+<file name="/etc/auto.osg" mode="append" >
+#if your ce is different from default you need to change &OSGCEPrivate; to your current private ce here 
+ce &OSGCEPrivate;:/scratch/&amp;
+app  &OSGCEPrivate;:/scratch/&amp;
+</file>
+
+<file name="/etc/auto.master" mode="append" >
+/sharesoft/osg  /etc/auto.osg  --timeout=120
+/cvmfs /etc/auto.cvmfs
+</file>
+
+
+</post>
+
+</kickstart> 
+

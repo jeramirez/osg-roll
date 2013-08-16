@@ -1,0 +1,45 @@
+<?xml version="1.0" standalone="no"?>
+<kickstart >
+
+<description>
+	Install screen for osg hadoop defaults NodeName/NodeSecondary
+</description>
+
+<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+</copyright>
+
+
+<changelog>
+        $Log: osg-screen-hadoop.xml,v $
+        Revision 0.0  2012/10/05 05:48:53  eduardo
+        Initial Revision
+</changelog>
+
+<screen>
+	<title>OSG Hadoop Default Configuration</title>
+
+	<variable>
+		<label>OSG Hadoop Name Node</label>
+		<name>OSG_HadoopNameNode</name>
+		<type>string</type>
+		<size>20</size>
+		<default>compute-0-0</default>
+		<value>&OSG_HadoopNameNode;</value>
+		<help>This is the default Hadoop Name Node</help>
+	</variable>
+	<variable>
+		<label>OSG Hadoop Secondary Node</label>
+		<name>OSG_HadoopSecondaryNode</name>
+		<type>string</type>
+		<size>20</size>
+		<default>compute-0-1</default>
+		<value>&OSG_HadoopSecondaryNode;</value>
+		<help>This is the default Hadoop Secondary Node</help>
+	</variable>
+
+</screen>
+
+</kickstart >
+

@@ -1,0 +1,110 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-rsv.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<package>libxml2.&arch;</package>
+<package>yum-priorities</package>
+<package>yum-cron</package>
+<package>mod_ssl</package>
+
+
+<post>
+<!-- 
+     this xml should be called after yum.xml
+     yum.xml requires libxml2.&arch; for VMs
+-->
+### Create the Gratia User Just in case was not created by client
+#gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
+#rsv:x:452:100:RSV monitoring user:/home/rsvuser:/bin/bash
+#cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
+/usr/sbin/groupadd -g 464 gratia
+/usr/sbin/useradd -u 464 -g 464 -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+/usr/sbin/groupadd -g 91 tomcat
+/usr/sbin/useradd -u 91 -g 91 -c "Tomcat" -s /bin/sh -d /usr/share/tomcat5 tomcat
+/usr/sbin/groupadd -g 467 cndrcron
+/usr/sbin/useradd -u 466 -g 467 -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+/usr/sbin/groupadd -g 452 rsv
+/usr/sbin/useradd -u 452 -c "RSV monitoring user" -s /bin/bash -d /var/rsv rsv
+
+ <!-- install osg-rsv from local mirror-->
+touch /root/yum-install.log
+yum install rsv  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+<!-- Listen secure port like OSG 1.2 (in osg3 is optional) -->
+yum install mod_ssl  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+echo "cp -p /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.orig" &gt;&gt; /root/yum-install.log
+cp -p /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.orig 
+echo 'sed -i -e "s#Listen 80#Listen 8000#" /etc/httpd/conf/httpd.conf' &gt;&gt; /root/yum-install.log
+sed -i -e "s#Listen 80#Listen 8000#" /etc/httpd/conf/httpd.conf
+echo "cp -p /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.orig" &gt;&gt; /root/yum-install.log
+cp -p /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.orig
+echo 'sed -i -e "s#Listen 443#Listen 8443#" /etc/httpd/conf.d/ssl.conf' &gt;&gt; /root/yum-install.log
+sed -i -e "s#Listen 443#Listen 8443#" /etc/httpd/conf.d/ssl.conf
+echo 'sed -i -e "s#VirtualHost _default_:443#VirtualHost _default_:8443#" /etc/httpd/conf.d/ssl.conf' &gt;&gt; /root/yum-install.log
+sed -i -e "s#VirtualHost _default_:443#VirtualHost _default_:8443#" /etc/httpd/conf.d/ssl.conf
+echo 'sed -i -e "s#SSLCertificateFile /etc/pki/tls/certs/localhost.crt#SSLCertificateFile /etc/grid-security/http/httpcert2.pem#" /etc/httpd/conf.d/ssl.conf' &gt;&gt; /root/yum-install.log
+sed -i -e "s#SSLCertificateFile /etc/pki/tls/certs/localhost.crt#SSLCertificateFile /etc/grid-security/http/httpcert2.pem#" /etc/httpd/conf.d/ssl.conf
+echo 'sed -i -e "s#SSLCertificateKeyFile /etc/pki/tls/private/localhost.key#SSLCertificateKeyFile /etc/grid-security/http/httpkey2.pem#" /etc/httpd/conf.d/ssl.conf' &gt;&gt; /root/yum-install.log
+sed -i -e "s#SSLCertificateKeyFile /etc/pki/tls/private/localhost.key#SSLCertificateKeyFile /etc/grid-security/http/httpkey2.pem#" /etc/httpd/conf.d/ssl.conf
+
+
+ <!-- customize firewall rules for osg-rsv-server  -->
+<eval mode="xml">
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-RSV-TCP-PORT network=public service=8443 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks report host firewall &hostname;
+</eval>
+
+<file name="/root/install_rsv_cert.sh" perms="0750" >
+#!/bin/sh
+
+THISHOST=`hostname`
+THISEXEC=$0
+DIRNAME=`dirname $THISEXEC`
+CERTSDIR="&OSG_StoredCertsDir;/&hostname;"
+
+#temporary solution (or permanent?) while figuring out
+#how to import certs at installation step in a secure way
+if [ ! -f $DIRNAME/rsvcert.pem ]; then
+  cp -p $CERTSDIR/rsvcert.pem $DIRNAME/.
+fi
+if [ ! -f $DIRNAME/rsvkey.pem ]; then
+  cp -p $CERTSDIR/rsvkey.pem  $DIRNAME/.
+fi
+
+echo "installing grid rsv certs on $THISHOST"
+echo "searching certs in $DIRNAME"
+if [ -f $DIRNAME/rsvcert.pem ]&amp;&amp;[ -f $DIRNAME/rsvkey.pem  ]; then
+  [ ! -d /etc/grid-security/rsv ]&amp;&amp; mkdir /etc/grid-security/rsv
+  cp -p $DIRNAME/rsvcert.pem /etc/grid-security/rsv/.
+  cp -p $DIRNAME/rsvkey.pem /etc/grid-security/rsv/.
+  chown rsv:root /etc/grid-security/rsv/rsvcert.pem
+  chown rsv:root /etc/grid-security/rsv/rsvkey.pem
+  chmod 444 /etc/grid-security/rsv/rsvcert.pem
+  chmod 400 /etc/grid-security/rsv/rsvkey.pem
+fi
+if [ -f /etc/grid-security/http/httpcert.pem ]&amp;&amp;[ -f /etc/grid-security/http/httpkey.pem ]; then
+  cp -p /etc/grid-security/http/httpcert.pem /etc/grid-security/http/httpcert2.pem
+  cp -p /etc/grid-security/http/httpkey.pem /etc/grid-security/http/httpkey2.pem
+  chown apache. /etc/grid-security/http/http*2.pem
+fi
+</file>
+
+</post>
+
+</kickstart> 
+

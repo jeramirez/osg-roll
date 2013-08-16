@@ -1,0 +1,81 @@
+<?xml version="1.0" standalone="no"?>
+<kickstart >
+
+<description>
+	Install screen for osg hadoop defaults NodeName/NodeSecondary
+</description>
+
+<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+</copyright>
+
+
+<changelog>
+        $Log: osg-screen-grid-servers.xml,v $
+        Revision 0.0  2012/10/05 05:48:53  eduardo
+        Initial Revision
+</changelog>
+
+<screen>
+	<title>OSG CE/SE/GUMS Default Configuration</title>
+
+	<variable>
+		<label>OSG Public CE Server Name</label>
+		<name>OSG_CEServer</name>
+		<type>string</type>
+		<size>40</size>
+		<default>rocks-ce.public.domain</default>
+		<value>&OSG_CEServer;</value>
+		<help>This is the default public name of the grid gatekeeper</help>
+	</variable>
+	<variable>
+		<label>OSG Private CE Server Name</label>
+		<name>OSGCEPrivate</name>
+		<type>string</type>
+		<size>20</size>
+		<default>login-0-0</default>
+		<value>&OSGCEPrivate;</value>
+		<help>This is the default private name of the grid gatekeeper</help>
+	</variable>
+	<variable>
+		<label>OSG Public SE Server Name</label>
+		<name>OSG_SEServer</name>
+		<type>string</type>
+		<size>40</size>
+		<default>rocks-se.public.domain</default>
+		<value>&OSG_SEServer;</value>
+		<help>This is the default public name of bestman server</help>
+	</variable>
+	<variable>
+		<label>OSG Private SE Server Name</label>
+		<name>OSGSEPrivate</name>
+		<type>string</type>
+		<size>20</size>
+		<default>login-0-1</default>
+		<value>&OSGSEPrivate;</value>
+		<help>This is the default private name of bestman server</help>
+	</variable>
+	<variable>
+		<label>OSG Public GUMS Server Name</label>
+		<name>OSG_GumsServer</name>
+		<type>string</type>
+		<size>40</size>
+		<default>rocks-gums.public.domain</default>
+		<value>&OSG_GumsServer;</value>
+		<help>This is the default public name of GUMS server</help>
+	</variable>
+	<variable>
+		<label>OSG Private GUMS Server Name</label>
+		<name>OSGGumsPrivate</name>
+		<type>string</type>
+		<size>20</size>
+		<default>login-0-2</default>
+		<value>&OSGGumsPrivate;</value>
+		<help>This is the default private name of GUMS server</help>
+	</variable>
+
+</screen>
+
+</kickstart >
+

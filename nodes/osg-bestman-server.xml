@@ -1,0 +1,137 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-bestman-server.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<package>libxml2.&arch;</package>
+<package>yum-priorities</package>
+<package>yum-cron</package>
+<package>ktune</package>
+<package>lcmaps</package>
+<package>lcas-lcmaps-gt4-interface</package>
+<package>vo-client</package>
+<package>bestman2-plugin-eduardo</package>
+<package>perl-libwww-perl</package>
+<package>perl-URI</package>
+
+
+<post>
+<!-- 
+     this xml should be called after yum.xml
+     yum.xml requires libxml2.&arch; for VMs
+-->
+### Create the Bestman User
+#Caltech#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
+#/usr/sbin/useradd -u 459 -g 410 -c "Bestman SRM user" -s /sbin/nologin bestman
+#OSG#bestman:x:459:410:BeStMan 2 Server user:/etc/bestman2:/bin/bash
+/usr/sbin/groupadd -g 410 bestman
+/usr/sbin/useradd -u 459 -g 410 -c "Bestman 2 Server user" -s /sbin/nologin -d /etc/bestman2 bestman
+#gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
+/usr/sbin/groupadd -g 464 gratia
+/usr/sbin/useradd -u 464 -g 464 -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+
+ <!-- install osg-bestman2-server from local mirror-->
+touch /root/yum-install.log
+yum install osg-ca-certs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+yum install bestman2-server  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+
+ <!-- customize /etc/bestman2/conf/bestman2.rc configuration for osg-bestman-server  -->
+sed -i -e "s@### localPathListAllowed=@localPathListAllowed=&OSG_SRMlocalPathListAllowed;@" /etc/bestman2/conf/bestman2.rc
+sed -i -e "s@### supportedProtocolList=@supportedProtocolList=&OSG_SRMsupportedProtocolList;@" /etc/bestman2/conf/bestman2.rc
+sed -i -e "s@### pluginLib=/usr/share@#ed pluginLib=/usr/share@" /etc/bestman2/conf/bestman2.rc
+sed -i -e "s@### protocolSelectionPolicy=PROTOCOL_POLICY@#ed protocolSelectionPolicy=class=plugin.RoundRobinWithPath\&amp;jarFile=RRWP.jar\&amp;name=gsiftp\&amp;param=/usr/share/java/bestman2/plugin/gsiftp.servers.txt@" /etc/bestman2/conf/bestman2.rc
+sed -i -e "s@### GUMSProtocol=XACML@GUMSProtocol=XACML@" /etc/bestman2/conf/bestman2.rc
+sed -i -e "s@### GUMSserviceURL=@GUMSserviceURL=https://&OSG_GumsServer;:8443/gums/services/GUMSXACMLAuthorizationServicePort@" /etc/bestman2/conf/bestman2.rc
+
+ <!-- customize /etc/sysconfig/bestman2 configuration for osg-bestman-server  -->
+sed -i -e "s/# GLOBUS_TCP_PORT_RANGE=/GLOBUS_TCP_PORT_RANGE=&OSG_GlobusTcpPortRange;/" /etc/sysconfig/bestman2
+sed -i -e "s/# GLOBUS_TCP_SOURCE_RANGE=/GLOBUS_TCP_SOURCE_RANGE=&OSG_GlobusTcpSourceRange;/" /etc/sysconfig/bestman2
+sed -i -e "s@# BESTMAN_PLUGIN=@#ed BESTMAN_PLUGIN=/usr/share/java/bestman2/plugin/RRWP.jar@" /etc/sysconfig/bestman2
+
+
+ <!-- customize firewall rules for osg-bestman-server  -->
+
+<eval mode="xml">
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-GLOBUS-TCP-PORT-RANGE network=public service="&OSG_GlobusPortRange;" protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-GLOBUS-UDP-PORT-RANGE network=public service="&OSG_GlobusPortRange;" protocol="udp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-BESTMAN-SECURE-TCP-PORT network=public service=8443 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-BESTMAN-SECURE-UDP-PORT network=public service=8443 protocol="udp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-BESTMAN-TCP-PORT network=public service=8080 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-BESTMAN-UDP-PORT network=public service=8080 protocol="udp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks report host firewall &hostname;
+</eval>
+
+ <!-- customize /etc/sudoers configuration for osg-bestman-server  -->
+sed -i -e "s/Defaults    requiretty/#Defaults    requiretty/" /etc/sudoers
+<file name="/etc/sudoers" mode="append" perms="0440" >
+Cmnd_Alias SRM_CMD = /bin/rm, /bin/mkdir, /bin/rmdir, /bin/mv, /bin/cp, /bin/ls
+Runas_Alias SRM_USR = ALL, !root
+bestman   ALL=(SRM_USR) NOPASSWD: SRM_CMD
+</file>
+chmod 440 /etc/sudoers
+
+ <!-- customize lcmaps.db configuration osg-bestman-server has lcmaps as dependence -->
+sed -i -e "s#yourgums.yourdomain#&OSG_GumsServer;#" /etc/lcmaps.db
+
+ <!-- activate /etc/grid-security/gsi-authz.conf for use of gums in configuration of osg-bestman-server -->
+sed -i -e "s@# globus_mapping@globus_mapping@" /etc/grid-security/gsi-authz.conf
+
+<file name="/root/install_cert_se.sh" perms="0750" >
+#!/bin/sh
+
+THISHOST=`hostname`
+THISEXEC=$0
+DIRNAME=`dirname $THISEXEC`
+SESERVER="&OSG_SEServer;"
+CERTSDIR="&OSG_StoredCertsDir;/&hostname;"
+
+#temporary solution (or permanent?) while figuring out 
+#how to import certs at installation step in a secure way
+if [ ! -f $DIRNAME/hostcert.pem ]; then
+  cp -p $CERTSDIR/hostcert.pem $DIRNAME/.
+fi
+if [ ! -f $DIRNAME/hostkey.pem ]; then
+  cp -p $CERTSDIR/hostkey.pem  $DIRNAME/.
+fi
+
+if [ "$THISHOST" == "$SESERVER" ]||[ "$THISHOST" == "&hostname;" ]; then
+  echo "installing grid certs on $THISHOST"
+  echo "searching certs in $DIRNAME"
+  cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
+  cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  chown root:root /etc/grid-security/hostcert.pem
+  chown root:root /etc/grid-security/hostkey.pem
+  chmod 444 /etc/grid-security/hostcert.pem
+  chmod 400 /etc/grid-security/hostkey.pem
+  cp -p /etc/grid-security/hostcert.pem /etc/grid-security/bestman/bestmancert.pem
+  cp -p /etc/grid-security/hostkey.pem /etc/grid-security/bestman/bestmankey.pem
+  chown bestman:bestman /etc/grid-security/bestman/bestmancert.pem
+  chown bestman:bestman /etc/grid-security/bestman/bestmankey.pem
+  chmod 440 /etc/sudoers
+else
+  echo "$THISHOST Wrong server to install "
+fi
+
+</file>
+touch /root/cert-install.log
+/root/install_cert_se.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+
+</post>
+
+</kickstart> 
+

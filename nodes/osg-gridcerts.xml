@@ -1,0 +1,44 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-gridcerts.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+
+<post>
+
+<eval>
+/opt/rocks/bin/rocks add host sec_attr &hostname; attr=hostcert value="`cat &OSG_StoredCertsDir;/&hostname;/hostcert.pem`" crypted=true
+/opt/rocks/bin/rocks add host sec_attr &hostname; attr=hostkey value="`cat &OSG_StoredCertsDir;/&hostname;/hostkey.pem`" crypted=true
+</eval>
+
+<file name="/root/hostcert.pem.uuencode" owner="root:root" perms="0444">
+<eval>
+cat &OSG_StoredCertsDir;/&hostname;/hostcert.pem | uuencode -m /root/hostcert.pem.uuencode
+</eval>
+</file>
+
+<file name="/root/hostkey.pem.uuencode" owner="root:root" perms="0400">
+<eval>
+cat &OSG_StoredCertsDir;/&hostname;/hostkey.pem | uuencode -m /root/hostkey.pem.uuencode
+</eval>
+</file>
+
+</post>
+
+</kickstart> 
+

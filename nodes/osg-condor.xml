@@ -1,0 +1,58 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The osg Roll.
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log: osg-condor.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	initial creation 
+
+	</changelog>
+
+	<package>libxml2.&arch;</package>
+	<package>yum-priorities</package>
+	<package>yum-cron</package>
+	<package>compat-libstdc++-33</package>
+	<package>automake16</package>
+	<package>automake16</package>
+	<package>perl-DateManip</package>
+	<package>perl-XML-Simple</package>
+	<package>condor</package>
+
+
+
+<post>
+
+<file name="/etc/services" mode="append">
+condor_negotiator  9614/tcp     # Condor daemon 
+condor_collector   9618/tcp     # Condor daemon
+</file>
+
+### Create the Condor User
+#condor:x:407:407:Condor Daemon Account:/home/condor:/bin/bash
+#condor:x:404:404:Owner of Condor Daemons:/var/lib/condor:/sbin/nologin
+#/usr/sbin/useradd -u 407 -g 407 -c "Condor Daemon Account" -s /bin/bash -d /home/condor condor
+### Make sure is the same as condor roll in case disabling condor roll/enabling osg roll
+
+/usr/sbin/groupmod -g &OSG_condorgid; condor
+/usr/sbin/usermod -u &OSG_condoruid; -g &OSG_condorgid;  condor
+chown -R condor:condor /var/log/condor
+chown -R condor:condor /var/run/condor
+
+/bin/mkdir -p /var/lib/condor/cred_dir
+
+</post>
+
+</kickstart> 
+

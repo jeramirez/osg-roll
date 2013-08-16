@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-cvmfs.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<package>libxml2.&arch;</package>
+<package>yum-priorities</package>
+<package>yum-cron</package>
+
+
+<post>
+touch /root/yum-install.log
+echo "install osg cvmfs" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+### Create the cvmfs user
+#cvmfs:x:470:470:CernVM-FS service account:/var/cache/cvmfs2:/sbin/nologin
+
+echo creating cvmfs user &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+echo "/usr/sbin/groupadd -g &OSG_cvmfsgid; cvmfs" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+echo "/usr/sbin/useradd -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c \"CernVM-FS service account\" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+/usr/sbin/groupadd -g &OSG_fusegid; fuse
+/usr/sbin/groupadd -g &OSG_cvmfsgid; cvmfs
+/usr/sbin/useradd -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs
+
+
+ <!-- install cvmfs from local mirror-->
+echo "yum install cvmfs" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+yum install cvmfs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+
+<file name="/etc/fuse.conf" perms="0644" >
+user_allow_other
+</file>
+
+<file name="/etc/cvmfs/default.local" perms="0644" >
+CVMFS_REPOSITORIES=&OSG_CVMFS_REPOSITORIES;
+CVMFS_CACHE_BASE=&OSG_CVMFS_CACHE_BASE;
+CVMFS_QUOTA_LIMIT=&OSG_CVMFS_QUOTA_LIMIT;
+CVMFS_HTTP_PROXY="&OSG_CVMFS_HTTP_PROXY;"
+</file>
+
+<file name="/etc/cvmfs/config.d/cms.cern.ch.local" perms="0644" >
+export CMS_LOCAL_SITE="&OSG_CMS_LOCAL_SITE;"
+</file>
+
+<file name="/etc/cvmfs/domain.d/cern.ch.local" perms="0644" >
+CVMFS_SERVER_URL="http://cvmfs.fnal.gov:8000/opt/@org@;http://cvmfs.racf.bnl.gov:8000/opt/@org@;http://cvmfs-stratum-one.cern.ch:8000/opt/@org@;http://cernvmfs.gridpp.rl.ac.uk:8000/opt/@org@"
+</file>
+
+</post>
+
+</kickstart> 
+

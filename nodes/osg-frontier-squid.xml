@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-frontier-squid.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<package>libxml2.&arch;</package>
+<package>yum-priorities</package>
+<package>yum-cron</package>
+
+
+<post>
+touch /root/yum-install.log
+echo "install osg frontier squid" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+### Create the squid user
+#squid:x:450:450:squid management user:/home/squid:/sbin/nologin
+echo creating squid user &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+echo "/usr/sbin/groupadd -g &OSG_squidgid; squid" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+echo "/usr/sbin/useradd -u &OSG_squiduid; -g &OSG_squidgid; -c \"squid management user\" -s /sbin/nologin -d /home/squid squid" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+/usr/sbin/groupadd -g &OSG_squidgid; squid
+/usr/sbin/useradd -u &OSG_squiduid; -g &OSG_squidgid; -c "squid management user" -s /sbin/nologin -d /home/squid squid
+
+
+ <!-- install frontier-squid from local mirror-->
+echo "yum install frontier-squid" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+yum install frontier-squid  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+
+ <!-- customize firewall rules for frontier-squid-server  -->
+<eval mode="xml">
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-SQUID-UDP-PORT network=public service=3401 protocol="udp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW --source 128.142.0.0/16 and 188.185.0.0/17"
+/opt/rocks/bin/rocks report host firewall &hostname;
+</eval>
+
+</post>
+
+</kickstart> 
+

@@ -1,0 +1,102 @@
+<?xml version="1.0" standalone="no"?>
+
+<graph>
+
+	<description>
+	The OSG Roll
+
+	</description>
+
+	<copyright>
+	Copyright (c) 2000 - 2012 The Regents of the University of California.
+	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	
+	</copyright>
+
+	<changelog>
+	$Log  osg.xml,v $
+        Revision 0.0  2012/10/05 05:48:53  eduardo
+        starting point
+	</changelog>
+
+	<order head="screen-partitioning">
+		<tail>osg-screen-hadoop</tail>
+		<tail>osg-screen-grid-servers</tail>
+        </order>
+
+
+	<order head="database-data">
+		<tail>osg-server</tail>
+	</order>
+
+	<!--
+		make sure osg-server is after autofs-server due to
+		autofs-server setting up the default home directory for
+		useradd and osg-server setting up the osg users accounts
+	-->
+	<order head="autofs-server">
+		<tail>osg-server</tail>
+	</order>
+
+	<order head="osg-condor">
+		<tail>osg-condor-client</tail>
+		<tail>osg-server</tail>
+	</order>
+
+	<!--
+		make sure osg-hadoop-datanode is after osg-hadoop-pre due to
+		osg-hadoop-pre setting up the default home directory for
+		useradd and setting up the uid/gid for osg hadoop users accounts
+	-->
+	<order head="osg-hadoop-pre">
+		<tail>osg-hadoop</tail>
+	</order>
+
+	<!-- make sure yum conf is set -->
+	<order head="yum">
+		<tail>osg-gums</tail>
+		<tail>osg-condor</tail>
+		<tail>osg-wnclient-glexec</tail>
+		<tail>osg-hadoop-pre</tail>
+		<tail>osg-bestman-server</tail>
+		<tail>osg-frontier-squid</tail>
+		<tail>osg-cvmfs</tail>
+	</order>
+
+	<order head="osg-client">
+		<tail>osg-wnclient-glexec</tail>
+	</order>
+
+	<order head="client">
+		<tail>osg-bestman-server</tail>
+	</order>
+
+	<order head="osg-hadoop">
+		<tail>osg-hadoop-gridftp</tail>
+	</order>
+
+
+	<!-- add edges here -->
+	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
+	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
+	<edge from="client" to="osg-client" arch="i386,x86_64" cond="OSG_Client"/>
+	<edge from="client" to="osg-hadoop-pre" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_CE=='condor' or OSG_CE=='sge')"/>
+	<edge from="client" to="osg-bestman-server" arch="i386,x86_64" cond="OSG_SE"/>
+	<edge from="osg-hadoop-pre" to="osg-hadoop" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_CE=='condor' or OSG_CE=='sge')"/>
+	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
+	<edge from="osg-hadoop" to="osg-hadoop-gridftp" arch="i386,x86_64" cond="OSG_GFTP_HDFS"/>
+	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
+	<edge from="client" to="osg-ce-condor" arch="i386,x86_64" cond="OSG_CE=='condor'"/>
+	<edge from="client" to="osg-ce-sge" arch="i386,x86_64" cond="OSG_CE=='sge'"/>
+	<edge from="client" to="osg-rsv" arch="i386,x86_64" cond="OSG_RSV"/>
+	<edge from="client" to="osg-gums" arch="i386,x86_64" cond="OSG_GUMS"/>
+	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="OSG_SQUID"/>
+	<edge from="client" to="osg-cvmfs" arch="i386,x86_64" cond="OSG_CVMFS"/>
+	<edge from="ssh-client" to="osg-gridcerts" arch="i386,x86_64" cond="(OSG_GUMS or OSG_SE)"/>
+	<edge from="server" to="osg-server" arch="i386,x86_64"/>
+	<edge from="server" to="osg-condor" arch="i386,x86_64"/>
+	<edge from="server" to="osg-screen-hadoop" arch="i386,x86_64"/>
+	<edge from="server" to="osg-screen-grid-servers" arch="i386,x86_64"/>
+
+</graph>
+

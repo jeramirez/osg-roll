@@ -1,0 +1,66 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-client.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<package>libxml2.&arch;</package>
+<package>yum-priorities</package>
+<package>yum-cron</package>
+
+
+<post>
+### Create the glexec User
+#glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
+#gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
+/usr/sbin/groupadd -g 463 glexec
+/usr/sbin/groupadd -g 464 gratia
+/usr/sbin/useradd -u 463 -c "gLExec user account" -s /sbin/nologin glexec
+/usr/sbin/useradd -u 464 -c "gratia runtime user" -s /sbin/nologin gratia
+
+
+<file name="/tmp/CreateGlexecGroups" perms="0755">
+#!/usr/bin/perl
+
+use strict;
+
+#
+# Definitions. Change for your site
+#
+my $start      = 0;
+my $end        = 49;
+my $startGID   = 65000;
+
+#
+# Generate the new group entries
+#
+my $gid = $startGID;
+for my $index ($start...$end) {
+  my $newAccount = sprintf("glexec%2.2d", $index);
+  system("/usr/sbin/groupadd -g ${gid} ${newAccount}");
+  $gid++;
+}
+exit;
+</file>
+
+/tmp/CreateGlexecGroups
+rm -f /tmp/CreateGlexecGroups
+
+</post>
+
+</kickstart> 
+

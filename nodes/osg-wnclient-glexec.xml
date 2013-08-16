@@ -1,0 +1,54 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-wnclient-glexec.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<post>
+<!-- 
+     this xml should be called after osg-client.xml
+     osg-client.xml has has the uid/gid for glexec users/groups accounts
+-->
+#make sure condor user exist already to avoid different uid/gid for condor  
+/usr/sbin/groupadd -g 407 condor
+/usr/sbin/useradd -u 407 -g 407 -c "Condor Daemon Account" -s /bin/bash -d /home/condor condor
+
+
+ <!-- install wn-client-glexec from local mirror-->
+yum install empty-ca-certs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+yum install osg-wn-client-glexec  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+ln -s /sharesoft/osg/ce/globus/share/certificates /etc/grid-security/certificates
+
+ <!-- customize lcmaps.db configuration osg-wn-client-glexec has lcmaps as dependence -->
+sed -i -e "s#hostcert.pem#hostproxy.pem#" /etc/lcmaps.db
+sed -i -e "s#hostkey.pem#hostproxykey.pem#" /etc/lcmaps.db
+sed -i -e "s#yourgums.yourdomain#&OSG_GumsServer;#" /etc/lcmaps.db
+sed -i -e "s/#glexectracking = \"lcmaps_glexec_tracking.mod\"/glexectracking = \"lcmaps_glexec_tracking.mod\"/" /etc/lcmaps.db
+sed -i -e "s@#         \"-exec /usr/sbin/glexec_monitor\"@         \"-exec /usr/sbin/glexec_monitor\"@" /etc/lcmaps.db
+#ed#sed -i -e "s@#         \"-procddir /usr\"@         \"-procddir /opt/condor\"@" /etc/lcmaps.db
+<file name="/etc/lcmaps.db" mode="append">
+#start rocks additions
+verifyproxy -> gumsclient
+gumsclient -> glexectracking
+#end rocks additions
+</file>
+
+
+</post>
+
+</kickstart> 
+

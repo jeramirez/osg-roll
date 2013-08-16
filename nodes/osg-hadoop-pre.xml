@@ -1,0 +1,41 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart>
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-hadoop-pre.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<package>libxml2.&arch;</package>
+<package>yum-cron</package>
+<package>yum-priorities</package>
+
+<post>
+### Create the Hadoop User
+#hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
+#mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
+
+/usr/sbin/groupadd -g 409 hadoop
+/usr/sbin/groupadd -g 461 mapred
+/usr/sbin/useradd -u 458 -g 409 -c "Hadoop HDFS" -s /bin/bash -d /home/hadoop -m -k /etc/skel hdfs
+/usr/sbin/useradd -u 461 -g 461 -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
+
+ <!-- install hadoop from local mirror after creating users -->
+yum install hadoop-0.20-osg &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+
+</post>
+
+</kickstart> 
+

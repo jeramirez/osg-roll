@@ -1,0 +1,62 @@
+<?xml version="1.0" standalone="no"?>
+
+<kickstart >
+
+
+	<description>
+	The OSG Roll.
+	</description>
+
+	<copyright>
+         No yet Eduardo's test	
+	</copyright>
+
+<changelog>
+	$Log: osg-hadoop.xml,v $
+	Revision 0.0  2012/10/05 05:48:53  eduardo
+	Initial Revision
+	
+</changelog>
+
+<post>
+
+cp -p /etc/sysconfig/hadoop /etc/sysconfig/hadoop.save_original_install
+sed -i -e "s#@HADOOP_NAMENODE@#&OSG_HadoopNameNode;#" /etc/sysconfig/hadoop 
+sed -i -e "s#@HADOOP_REPLICATION_DEFAULT@#2#" /etc/sysconfig/hadoop
+sed -i -e "s#@HADOOP_DATADIR@#&OSG_HadoopDataDir;#" /etc/sysconfig/hadoop
+sed -i -e "s#=\${HADOOP_DATADIR}/data#=&OSG_HadoopData;#" /etc/sysconfig/hadoop
+sed -i -e "s#@HADOOP_GANGLIA_ADDRESS@#&ganglia_address;#" /etc/sysconfig/hadoop
+sed -i -e "s#@HADOOP_SECONDARY_NAMENODE@#&OSG_HadoopSecondaryNode;#" /etc/sysconfig/hadoop
+sed -i -e "s#@HADOOP_CHECKPOINT_DIRS@#&OSG_HadoopCheckPointDirs;#" /etc/sysconfig/hadoop
+sed -i -e "s#@HADOOP_CHECKPOINT_PERIOD@#&OSG_HadoopCheckPointPeriod;#" /etc/sysconfig/hadoop
+sed -i -e "s#HADOOP_UPDATE_FSTAB=0#HADOOP_UPDATE_FSTAB=&OSG_HadoopUpdateFstab;#" /etc/sysconfig/hadoop
+
+ <!-- customize hadoop configuration should be for dfs.umaskmode -->
+sed -i -e "s#002#022#" /etc/hadoop-0.20/conf/core-site.xml.in
+
+ <!-- customize hadoop logs to only 30 days/10MB size-->
+  <!-- first comment originals -->
+sed -i -e "s/log4j.appender.DRFA/#ed#log4j.appender.DRFA/" /etc/hadoop-0.20/conf/log4j.properties
+  <!-- second append changes -->
+<file name="/etc/hadoop-0.20/conf/log4j.properties" mode="append">
+#start rocks additions
+#really Rolling File Appender but need on DRFA (do not know why)
+log4j.appender.DRFA=org.apache.log4j.RollingFileAppender
+log4j.appender.DRFA.File=${hadoop.log.dir}/${hadoop.log.file}
+log4j.appender.DRFA.MaxBackupIndex=30
+log4j.appender.DRFA.MaxFileSize=10MB
+log4j.appender.DRFA.layout=org.apache.log4j.PatternLayout
+log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
+#end rocks additions
+</file>
+
+ <!-- set configuration hadoop datanode -->
+/etc/init.d/hadoop-firstboot start
+
+#set directly on data nodes
+#chkconfig hadoop on
+
+</post>
+
+</kickstart> 
+
