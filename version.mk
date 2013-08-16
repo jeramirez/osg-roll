@@ -1,0 +1,6 @@
+ROLLNAME	= osg
+VERSION		= 3.1.16
+RELEASE		= 0
+COLOR		= cyan
+
+REDHAT.ROOT	= $(CURDIR)
