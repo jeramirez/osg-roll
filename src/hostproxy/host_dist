@@ -1,0 +1,76 @@
+#!/bin/bash
+
+source "$0.cfg"
+
+# create a private tmp dir
+hodi_tmpdir_def="/tmp/hodi_XXXXXXXX"
+hodi_tmpdir=`mktemp -d "${hodi_tmpdir_def}"`
+if [ $? -ne 0 ]; then
+    echo "Cannot create temp '${hodi_tmpdir_def}'" 1>&2
+    exit 1
+fi
+
+if [ -n "${keytab}" ] && [ -f "${keytab}" ]; then
+    export KRB5CCNAME="${hodi_tmpdir}/krb5cc_service"
+    $krb5bin/kinit -k -t "${keytab}" "${krbprinc}" 
+    res=$?
+    if [ $res -ne 0 ]; then
+	echo "Error getting kerberos principle ($res)" 1>&2
+	rm -fr "$hodi_tmpdir"
+	exit 2
+    fi
+fi
+
+x509proxy="${hodi_tmpdir}/x509proxy.pem"
+x509proxykey="${hodi_tmpdir}/x509proxykey.pem"
+
+if [ -n "${vdtbase}" ] && [ -f "${vdtbase}" ]; then
+    source "${vdtbase}/setup.sh"
+fi
+
+nodes=`grep -v "^#" "$0.nodes"`
+res=$?
+if [ $res -ne 0 ]; then
+    echo "Cannot read $0.nodes! ($res)" 1>&2
+    rm -fr "$hodi_tmpdir"
+    exit 2
+fi
+
+# extract proxy from keys
+grid_tmpout="${hodi_tmpdir}/grid_tmpout"
+grid_tmperr="${hodi_tmpdir}/grid_tmperr"
+grid-proxy-init -cert $x509cert -key $x509certkey -valid $x509proxyvalid -out $x509proxy > "$grid_tmpout" 2> "$grid_tmperr"
+res=$?
+if [ $res -ne 0 ]; then
+    echo "grid-proxy-init failed! ($res)" 1>&2
+    echo "---" 1>&2
+    cat  "$grid_tmpout" 1>&2
+    echo "---" 1>&2
+    cat  "$grid_tmperr" 1>&2
+    rm -fr "$hodi_tmpdir"
+    exit 2
+fi
+
+# extract key from proxy
+ssl_tmpout="$hodi_tmpdir/ssl_tmpout"
+ssl_tmperr="$hodi_tmpdir/ssl_tmperr"
+openssl rsa -in $x509proxy -out $x509proxykey > "$ssl_tmpout" 2> "$ssl_tmperr"
+res=$?
+if [ $res -ne 0 ]; then
+    echo "openssl rsa failed! ($res)" 1>&2
+    echo "---" 1>&2
+    cat  "$ssl_tmpout" 1>&2
+    echo "---" 1>&2
+    cat  "$ssl_tmperr" 1>&2
+    rm -fr "$hodi_tmpdir"
+    exit 2
+fi
+
+# copy over the proxy and the key
+"$0.cpy" "$hodi_tmpdir" "$sshbin" "$x509proxy" "$remotex509proxy" "$x509proxykey" "$remotex509proxykey" $max_threads $thread_timeout $nodes
+
+
+rm -fr "$hodi_tmpdir"
+exit 0
+
+

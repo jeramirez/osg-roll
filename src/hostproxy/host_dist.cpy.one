@@ -1,0 +1,57 @@
+#!/bin/bash
+#
+# copy to one node
+#
+
+hodi_tmpdir="$1"
+sshbin="$2"
+node="$3"
+x509proxy="$4"
+remotex509proxy="$5"
+x509proxykey="$6"
+remotex509proxykey="$7"
+
+# copy over the proxy and the key
+copy_tmpout="$hodi_tmpdir/copy_tmpout.$node"
+copy_tmperr="$hodi_tmpdir/copy_tmperr.$node"
+
+$sshbin/scp -q -B "${x509proxy}" "root@${node}:${remotex509proxy}.new" > "$copy_tmpout" 2> "$copy_tmperr"
+res=$?
+if [ $res -ne 0 ];then
+      echo "Node ${node}: Error copying proxy" 1>&2
+      echo "---" 1>&2
+      cat  "$copy_tmpout" 1>&2
+      echo "---" 1>&2
+      cat  "$copy_tmperr" 1>&2
+      exit 1
+else
+      $sshbin/scp -q -B "${x509proxykey}" "root@${node}:${remotex509proxykey}.new" > "$copy_tmpout" 2> "$copy_tmperr"
+      res=$?
+      if [ $res -ne 0 ];then
+        echo "Node ${node}: Error copying proxy key" 1>&2
+        echo "---" 1>&2
+        cat  "$copy_tmpout" 1>&2
+        echo "---" 1>&2
+        cat  "$copy_tmperr" 1>&2
+        exit 1
+      else
+        # no errors, rename
+        $sshbin/ssh "root@${node}" "/bin/mv -f ${remotex509proxy} ${remotex509proxy}.old;/bin/mv -f ${remotex509proxy}.new ${remotex509proxy};/bin/mv -f ${remotex509proxykey} ${remotex509proxykey}.old;/bin/mv -f ${remotex509proxykey}.new ${remotex509proxykey}" > "$copy_tmpout" 2> "$copy_tmperr"
+	res=$?
+	if [ $res -ne 0 ]; then
+	    echo "Node ${node}: Error renaming proxy and key" 1>&2
+            echo "---" 1>&2
+            cat  "$copy_tmpout" 1>&2
+            echo "---" 1>&2
+            cat  "$copy_tmperr" 1>&2
+	    exit 1
+	else
+	    echo "Node ${node}: Success"
+	fi
+      fi
+fi
+
+
+exit 0
+
+
