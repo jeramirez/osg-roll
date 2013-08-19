@@ -1,0 +1,3 @@
+gsiftp://cms-grid0.hep.uprm.edu:2811/data/se/
+gsiftp://cms-se.hep.uprm.edu:2811/mnt/hadoop/
+#gsiftp://alpha00.hep.uprm.edu:2811/mnt/hadoop/

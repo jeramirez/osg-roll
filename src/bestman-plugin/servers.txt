@@ -1,0 +1,2 @@
+/data/se/=cms-grid0.hep.uprm.edu:2811
+/mnt/hadoop/=cms-se.hep.uprm.edu:2811

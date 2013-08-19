@@ -1,0 +1,29 @@
+#############################################################################
+
+plugin RRWP.jar
+----------------
+This plugin combine multiple gridftps based on their path, but with round robin capabilities.
+It is and improved version of mount.jar (MountPoint.java).
+Its utility is to combine gridftp and gridftp-hdfs in one bestman server and each group has round robin capabilities.
+A plugin class is added for reading gsiftp server lists from a file (format is one server per line as shown in gsiftp.servers.txt)
+it also refreshes when the file modification is detected.
+
+Two required entries in bestman2.rc are:
+protocolSelectionPolicy=class=plugin.RoundRobinWithPath&jarFile=RRWP.jar&name=gsiftp&param=/usr/share/java/bestman2/gsiftp.servers.txt
+pluginLib=/usr/share/java/bestman2/plugin
+
+
+
+plugin mount.jar
+----------------
+This plugin requires edit MountPoint.java to replace servers list. 
+cms-grid0.hep.uprm.edu, cms-se.hep.uprm.edu should be replaced by your own servers then compile (see README.compile_plugins).
+Its utility is to combine gridftp and gridftp-hdfs in one bestman server.
+A plugin class is added for reading gsiftp server lists from a file (format is one server per line as shown in servers.txt)
+
+Two required entries in bestman2.rc are:
+protocolSelectionPolicy=class=plugin.MountPoint&jarFile=mount.jar&name=gsiftp&param=/usr/share/java/bestman2/servers.txt
+pluginLib=/usr/share/java/bestman2/plugin
+
+
+
