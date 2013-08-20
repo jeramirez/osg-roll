@@ -67,7 +67,7 @@ endif
 
 
 
-rpm pkg::
+rpm pkg:: download
 	for i in $(CURDIR)/$(VERSION.MAJOR)/* ; do \
 		if [ ! -d $(REDHAT.RPMS)/x86_64 ] ; then \
 			mkdir $(REDHAT.RPMS)/x86_64 ; \
@@ -78,3 +78,5 @@ rpm pkg::
 	done
 
 clean::
+download::
+	cd $(CURDIR)/$(VERSION.MAJOR);. $(CURDIR)/$(VERSION.MAJOR)/files.$(VERSION.MAJOR)
