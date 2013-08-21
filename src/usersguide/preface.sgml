@@ -1,0 +1,22 @@
+<preface id="preface" xreflabel="preface">
+<title>Preface</title>
+
+
+<para>
+The Rocks osg Roll uses the latest stable OSG Release
+to provide High Throughput Computing environment for Rocks clusters.
+The Rocks osg Roll builds on the very good work by the OSG team,
+to seamlessly install and configure the <emphasis>de facto</emphasis> standard grid
+middleware on Rocks Clusters.
+
+</para>
+
+
+<para>
+Please visit the <ulink
+url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/"> Open Science Grid
+site</ulink> to learn more about their release and the individual
+software components.
+</para>
+
+</preface>

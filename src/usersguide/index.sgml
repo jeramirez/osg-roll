@@ -1,0 +1,47 @@
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook V3.1//EN" [
+	<!ENTITY preface    SYSTEM "preface.sgml">
+	<!ENTITY installing SYSTEM "installing.sgml">
+	<!ENTITY customizing SYSTEM "customizing.sgml">
+	<!ENTITY using SYSTEM "using.sgml">
+	<!ENTITY copyrights SYSTEM "copyrights.sgml">
+	<!ENTITY % entities SYSTEM "entities.sgml">
+	%entities;
+]>
+
+<book>
+<bookinfo>
+
+	<title> osg roll: Users Guide </title>
+
+	<subtitle>
+		<inlinemediaobject>
+			<imageobject>
+				<imagedata fileref="images/osg-logo.png">
+			</imageobject>
+		</inlinemediaobject>
+	</subtitle>
+
+	<edition>&document-version;</edition>
+
+	<pubdate>&document-pubdate;</pubdate>
+
+	<copyright id="copyright" xreflabel="copyright">
+		<year>&document-year;</year>
+		<holder>The copyright holder, and UC Regents</holder>
+	</copyright>
+
+	<releaseinfo>
+		<ulink url="roll-osg-usersguide.pdf">(PDF version)</ulink>
+	</releaseinfo>
+
+</bookinfo>
+
+&preface;
+&installing;
+&customizing;
+&using;
+&source-roll-commands;
+&copyrights;
+
+</book>
+

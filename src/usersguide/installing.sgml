@@ -1,0 +1,91 @@
+<chapter id="installing" xreflabel="Installing">
+
+
+<title>Installing the osg Roll</title>
+
+<para>
+
+The &document-rollname; &roll; can be installed during the Frontend installation or added
+to a running frontend. In either case, client nodes must be (re)installed.
+</para>
+
+<section id="on-a-new-server" xreflabel="On a New Server">
+<title>On a New Server</title>
+
+
+
+<para>
+	
+When the &document-rollname; &roll; is installed during the initial installation of your server (or cluster), 
+the procedure is documented in section 1.2 of &rocks; usersguide. 
+You should reach a screen as shown below.
+
+<screenshot>
+	<graphic fileref="images/rocks_install.png" scale=50></graphic>
+</screenshot>
+
+</para>
+
+
+<para>
+Select the osg rool from the list of available rolls when you see a screen like shown below:
+<screenshot>
+	<graphic fileref="images/rolls_selected.png" scale=50></graphic>
+</screenshot>
+
+</para>
+
+<para>
+During the installation process, there will be two screens related to the osg roll. As shown below.
+
+</para>
+
+<para>
+The first to choose the default hadoop primary and secondary servers. 
+<screenshot>
+	<graphic fileref="images/hadoop_screen.png" scale=50></graphic>
+</screenshot>
+
+</para>
+
+<para>
+The second to choose the default gridservers CE (gatekeeper), SE (bestman), GUMS servers.
+<screenshot>
+	<graphic fileref="images/gridserver_screen.png" scale=50></graphic>
+</screenshot>
+If not sure leave it as is, these default can be changed later any time. 
+</para>
+
+<para>
+Once the osg roll is loaded the installer will continue installation
+automatically with no further user input. 
+
+</para>
+
+<para>
+Other appliances can be made part of the execution pool through setting an appliance attribute and reinstalling those nodes.
+
+</para>
+
+
+</section>
+
+<section id="Install-running" xreflabel="Install on Running System">
+<title>Install on Running System</title>
+<para>
+The &document-rollname; &roll; can be installed on a running system. The following assumes
+that roll is available in .iso form and is called "&document-rollname;.iso".
+</para>
+<screen>
+$ su - root
+# rocks add roll &document-rollname;.iso
+# rocks enable roll &document-rollname;
+# rocks create distro
+# rocks run roll osg | bash
+# shutdown -r now
+</screen>
+
+</section>
+
+
+</chapter>

@@ -1,0 +1,853 @@
+<chapter id="customizing" xreflabel="Customizing the OSG Roll">
+
+
+<title>Customizing the OSG Roll</title>
+
+<section id="customizing-osg" xreflabel="Customizing OSG">
+<title>Customizing the OSG Roll</title>
+
+<para>
+
+This section describes the default OSG configuration and some simple
+customizations that can be applied in Rocks with version &gt;= 5.4
+</para>
+
+<para>
+By default, Hadoop, Condor and WorkerClient with glexec are installed on Rocks
+<emphasis>compute</emphasis> appliances, while Gridftp and gatekeper server on <emphasis>login-0-0</emphasis> host 
+and
+Gridftp hadoop and bestman2 on <emphasis>login-0-1</emphasis> host. For Rocks 5.2 and newer, the OSG
+roll makes use of <emphasis>attributes</emphasis>
+to enable Hadoop, Condor and WorkerClient with glexec, Bestman2 server, Gridftp server, hdfs gridftp server, gatekeeper (CE) server to be installed on any appliance.
+This may be particularly useful to groups who are including the Xen/KVM roll
+and would like OSG servers to install on VM Container appliances. 
+</para>
+
+<para>
+The basic customizations that can be applied without and scripting/programming
+by setting global, appliance, or host attributes. Please see the
+commands <computeroutput> rocks set attr help </computeroutput>
+and
+<computeroutput> rocks list attr help </computeroutput>
+
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll</title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_GumsServer
+</entry>
+<entry>
+Configure Gums server name used on any particular Appliance or Host installation.
+Default: rocks-gums.&amp;Kickstart_PublicDNSDomain;
+(rocks-gums.public.domain on a New Cluster Server install)
+</entry>
+</row>
+
+<row>
+<entry>
+OSGGUMSPrivate
+</entry>
+<entry>
+Configure which cluster node is the gums server node (private domain).
+Default: login-0-2
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CEServer
+</entry>
+<entry>
+Configure Grid gatekeeper server name used on any particular Appliance or Host or gatekeeper installation.
+Default: rocks-ce.&amp;Kickstart_PublicDNSDomain;
+(rocks-ce.public.domain on a New Cluster Server install)
+</entry>
+</row>
+
+<row>
+<entry>
+OSGCEPrivate
+</entry>
+<entry>
+Configure which cluster node is the Grid gatekeeper server node (private domain).
+Default: login-0-0
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SEServer
+</entry>
+<entry>
+Configure bestman server name used on any particular Appliance or Host or bestaman server installation.
+Default: rocks-se.&amp;Kickstart_PublicDNSDomain;
+(rocks-se.public.domain on a New Cluster Server install)
+</entry>
+</row>
+
+<row>
+<entry>
+OSGSEPrivate
+</entry>
+<entry>
+Configure which cluster node is the bestman server node (private domain).
+Default: login-0-1
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GFTPServer
+</entry>
+<entry>
+Configure gridftp server name (non-hdfs) used on any particular Appliance or Host installation.
+Default: rocks-ce.&amp;Kickstart_PublicDNSDomain;
+</entry>
+</row>
+
+
+<row>
+<entry>
+OSG_HadoopNameNode
+</entry>
+<entry>
+Configure Hadoop NodeName server name used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_NAMENODE=compute-0-0 in /etc/sysconfig/hadoop
+Default: compute-0-0
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopSecondaryNode
+</entry>
+<entry>
+Configure Hadoop SecondaryName server name used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_SECONDARY_NAMENODE=compute-0-1 in /etc/sysconfig/hadoop
+Default: compute-0-1
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopDataDir
+</entry>
+<entry>
+Configure Hadoop base data dir used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_DATADIR=/hadoop in /etc/sysconfig/hadoop
+Default: /hadoop
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopData
+</entry>
+<entry>
+Configure Hadoop data dir used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_DATA=/hadoop/data in /etc/sysconfig/hadoop
+Default: /hadoop/data
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopCheckPointDirs
+</entry>
+<entry>
+Configure Hadoop check point dirs used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_CHECKPOINT_DIRS=/home/hadoop,/scratch/hadoop in /etc/sysconfig/hadoop
+Default: /home/hadoop,/scratch/hadoop
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopCheckPointPeriod
+</entry>
+<entry>
+Configure Hadoop check point period used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_CHECKPOINT_PERIOD=600 in /etc/sysconfig/hadoop
+Default: 600
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopUpdateFstab
+</entry>
+<entry>
+Configure Hadoop for update fstab used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_UPDATE_FSTAB=1 in /etc/sysconfig/hadoop
+Default: 1
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GlobusPortRange
+</entry>
+<entry>
+Configure Globus Port Range used on any particular Appliance or Host installation.
+This entry is used for setting iptable firewall on grid servers. 
+Default: 20000:25000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GlobusTcpPortRange
+</entry>
+<entry>
+Configure Globus TCP Port Range used on any particular Appliance or Host installation.
+This entry is used for setting GLOBUS_TCP_PORT_RANGE on grid servers. (note change : by , compared with OSG_GlobusPortRange)
+Default: 20000,25000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GlobusTcpSourceRange
+</entry>
+<entry>
+Configure Globus TCP Source Range used on any particular Appliance or Host installation.
+This entry is used for setting GLOBUS_TCP_SOURCE_RANGE on grid servers. (note change : by , compared with OSG_GlobusPortRange)
+Default: 20000,25000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SRMlocalPathListAllowed
+</entry>
+<entry>
+Configure localPathListAllowed used on any particular Appliance or Host installation of bestman server.
+Check for a line like this: localPathListAllowed=/mnt/hadoop;/data/se in /etc/bestman2/conf/bestman2.rc
+Default: /mnt/hadoop;/data/se
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SRMsupportedProtocolList
+</entry>
+<entry>
+Set supportedProtocolList used on any particular Appliance or Host installation of bestman server. This is the default gridftp server.
+Check for a line like this: gsiftp://rocks-ce.&amp;Kickstart_PublicDNSDomain;:2811 in /etc/bestman2/conf/bestman2.rc
+Default: gsiftp://rocks-ce.&amp;Kickstart_PublicDNSDomain;:2811
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Client
+</entry>
+<entry>
+Enable/Disable OSG worker node Client Installation on any particular Appliance or Host. Install includes glexec.
+Default: true (on compute appliance)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE
+</entry>
+<entry>
+Enable/Disable osg-ce-condor (="condor") or osg-ce-sge (="sge") Installation on any particular Appliance or Host.
+Default: condor (on login-0-0)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SE
+</entry>
+<entry>
+Enable/Disable bestman-server Installation on any particular Appliance or Host.
+Default: true (on login-0-1)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GRIDFTP
+</entry>
+<entry>
+Enable/Disable standalone gridftp server Installation on any particular Appliance or Host.
+Default: true (on login-0-0)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GFTP_HDFS
+</entry>
+<entry>
+Enable/Disable hadoop gridftp server Installation on any particular Appliance or Host.
+Default: true (on login-0-1)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_StoredCertsDir
+</entry>
+<entry>
+Set Base Dir where grid certs are stored for Appliance or Host installation.
+During installation of CE or SE hostcert.pem and hostkey.pem are copied to /root. 
+Default: /root/certs
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_Client
+</entry>
+<entry>
+Enable/Disable Condor Client Installation on any particular Appliance or Host.
+Default: true (on compute appliance)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_Master
+</entry>
+<entry>
+Redefine the Condor Master that nodes use. Default: public frontend name
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_Network 
+</entry>
+<entry>
+Define which network interface is used for Condor traffic. Default: frontends are set to public, clients are set to private.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_Daemons
+</entry>
+<entry>
+Define which Condor execution daemons are installed. Default: 
+[MASTER (global)], 
+[MASTER, SCHEDD, COLLECTOR, NEGOTIATOR (frontends)],  
+[MASTER, SCHEDD (login appliance)],
+[MASTER, STARTD (compute appliance)]
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_PortLow 
+</entry>
+<entry>
+Lower Port range that Condor will use to communicate among 
+daemons. Removal of this Attribute will result in removal of the LOWPORT entry in 01_rocks_condor_config.local after syncing the configuration. Default: 40000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_PortHigh 
+</entry>
+<entry>
+Upper Port range that Condor will use to communicate among 
+daemons. Removal of this Attribute will result in removal of the HIGHPORT entry in 01_rocks_condor_config.local after syncing the configuration. Default: 50000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_HostAllow
+</entry>
+<entry>
+Comma separates list of allowed readers/writers for Condor. Translates to 
+HOSTALLOW directive in Condor Configuration file. Default: + rocks-ce
+</entry>
+</row>
+
+
+<row>
+<entry>OSG_Condor_PasswordAuth </entry>
+<entry>
+ Use a shared pool password, instead of host-based 
+authentication. Default: no. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableMPI 
+</entry>
+<entry>
+Configure a local scheduler for MPI Universe Support. Default: no
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableAMAZON_EC2 
+</entry>
+<entry>
+Configure a local scheduler for AMAZON_EC2 Support. Default: no
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableT3GRID_SUBMIT
+</entry>
+<entry>
+Configure a local grid submitter for interactive nodes (I use to called it CRAB submit). Default: no
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableT3GRID_CMSSW
+</entry>
+<entry>
+Configure a local compute nodes for CMS jobs. Default: yes
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GUMSBackupDir
+</entry>
+<entry>
+Configure the directory in which is located the backup config files and database for gums. Default: /path/to/gums/backup
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GUMSDNADMIN
+</entry>
+<entry>
+Configure the admin DN for gums used in the configuration scripts. Default: /DC=org/DC=doegrids/OU=People/CN=Name M LastName 123456
+</entry>
+</row>
+
+
+<row>
+<entry>
+OSG_squiduid
+</entry>
+<entry>
+Configure uid for squid user. Default: 450
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_squidgid
+</entry>
+<entry>
+Configure gid for squid user (group). Default: 450
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_cvmfsuid
+</entry>
+<entry>
+Configure uid for cvmfs user. Default: 470
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_cvmfsgid
+</entry>
+<entry>
+Configure gid for cvmfs user (group). Default: 470
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_fusegid
+</entry>
+<entry>
+Configure gid for fuse group. Default: 408
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS_REPOSITORIES
+</entry>
+<entry>
+Configure CVMFS_REPOSITORIES for cvmfs. Default: cms.cern.ch
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS_CACHE_BASE
+</entry>
+<entry>
+Configure CVMFS_CACHE_BASE for cvmfs. Default: "/var/cache/cvmfs"
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS_QUOTA_LIMIT
+</entry>
+<entry>
+Configure CVMFS_QUOTA_LIMIT for cvmfs (in MB). Default: 10000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS_HTTP_PROXY
+</entry>
+<entry>
+Configure CVMFS_HTTP_PROXY for cvmfs. Default: "http://login-0-2:3128"
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CMS_LOCAL_SITE
+</entry>
+<entry>
+Configure CMS_LOCAL_SITE for cvmfs. Default: "T3_US_PuertoRico"
+</entry>
+</row>
+
+
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+</section>
+
+<!-- ***************************************************************** -->
+<section id="config-examples-hadoop" xreflabel="Hadoop Configuration Examples">
+<title>Examples of Hadoop Configuration</title>
+<para>
+The following are short examples of how to customize Hadoop using 
+Rocks commands.
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Hadoop Node Name on all compute Appliances:
+<computeroutput>rocks set appliance attr compute OSG_HadoopNameNode value=hadoop-0-0 </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Hadoop Secondary Name on all compute Appliances:
+<computeroutput>rocks set appliance attr compute OSG_HadoopSecondaryNode value=hadoop-0-1 </computeroutput>
+</para>
+</listitem>
+
+<listitem>
+<para>
+Change default Hadoop Data Dir on all compute Appliances, for example two data disks:
+<computeroutput>rocks set appliance attr compute OSG_HadoopData value="/hadoop/data,/hadoop2/data" </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+
+</para>
+
+</section> 
+
+<!-- ***************************************************************** -->
+<section id="config-examples-gums" xreflabel="How to customize Gums server">
+<title>How to set new Gums server</title>
+<para>
+The following are short examples of how to customize gums server using 
+Rocks commands before kickstarting.
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Gums server Name on all compute Appliances:
+<computeroutput>rocks set appliance attr compute OSG_GumsServer value="my-gums.my.edu." </computeroutput>
+</para>
+</listitem>
+<listitem>
+<para>
+Change default Gums server Name on a host:
+<computeroutput>rocks set host attr se-0-0 OSG_GumsServer value="my-gums.my.edu." </computeroutput>
+</para>
+</listitem>
+<listitem>
+<para>
+Change default Gums server Name global:
+<computeroutput>rocks set attr OSG_GumsServer value="my-gums.myglobal.edu." </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+
+</para>
+</section> 
+<!-- ***************************************************************** -->
+<section id="config-examples-gridftp" xreflabel="How to customize Default Gridftp server">
+<title>How to set Default Gridftp server used for Bestman</title>
+<para>
+The following are short examples of how to customize default gridftp server using 
+Rocks commands.
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Gridftp server Name global:
+<computeroutput>rocks set attr OSG_SRMsupportedProtocolList  value="gsiftp://mygridftp.my.edu:2811" </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</section> 
+
+
+<!-- ***************************************************************** -->
+<section id="config-examples-condor" xreflabel="Condor Configuration Examples">
+<title>Examples of Condor Configuration</title>
+<para>
+The following are short examples of how to customize Condor using 
+Rocks commands.
+
+<itemizedlist>
+
+<listitem>
+<para>
+Enable Condor Client on all VM-Containers Appliances:
+<computeroutput>rocks add appliance attr vm-container OSG_Condor_Client true </computeroutput>
+</para>
+</listitem>
+
+<listitem>
+<para>
+Disable Condor on particular node:
+<computeroutput>rocks set host attr compute-0-0 OSG_Condor_Client false </computeroutput>
+</para>
+</listitem>
+
+
+<listitem>
+<para>
+Define a New Condor Master:
+<computeroutput>rocks set attr OSG_Condor_Master central-master.my.edu </computeroutput>
+</para>
+</listitem>
+
+<listitem>
+<para>
+Enable MPI/Dedicated Scheduler:
+<computeroutput>rocks set attr OSG_Condor_EnableMPI true</computeroutput>. 
+</para>
+<para>
+Actively-running Condor
+daemons must be reconfigured for this attribute to take affect. 
+This can be achieved dynamically on compute and frontend appliances using
+<computeroutput>rocks sync host osg condor frontend compute</computeroutput>. 
+</para>
+<para> Reinstalled nodes
+will build the correct configuration.
+</para>
+</listitem>
+
+</itemizedlist>
+
+</para>
+
+</section> 
+
+<section id="reconfiguring-condor" xreflabel="Reconfiguring Condor">
+<title>Reconfiguring Condor after Installation </title>
+<para>
+The configuration of Condor is done during the install, the resulting 
+configuration files are located in /etc/condor/config.d/. To reconfigure Condor 
+on a node,  make appropriate attribute using the commands above  and then run
+<screen>
+# rocks sync host osg condor &lt;hostname&gt;
+</screen>
+</para>
+<para>
+This will rewrite the 01_rocks_condor_config.local on the file and then calls the Condor
+command <computeroutput>/usr/sbin/condor_reconfig</computeroutput>
+</para>
+
+<note>
+<para>
+To view the contents of the 01_rocks_condor_config.local before making changes, use
+<computeroutput>rocks report host osg condor config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+<para>
+To find information about administrating  and using Condor Pools
+please see the original Condor manual at <ulink
+url="http://www.cs.wisc.edu/condor/manual">Condor
+manuals</ulink> or <ulink url="condor-Manual"> locally </ulink>.
+</para>
+
+</section>
+
+<section id="reconfiguring-hadoop" xreflabel="Reconfiguring Hadoop">
+<title>Reconfiguring Hadoop after Installation </title>
+<para>
+The configuration of Hadoop is done during the install, the resulting 
+configuration file is /etc/sysconfig/hadoop. To reconfigure Hadoop 
+on a node,  make appropriate attribute using the commands above  and then run
+<screen>
+# rocks sync host osg hadoop &lt;hostname&gt;
+</screen>
+</para>
+<para>
+This will rewrite the file /etc/sysconfig/hadoop and then calls the Hadoop
+command <computeroutput>service hadoop-firstboot start</computeroutput>
+</para>
+
+<note>
+<para>
+To view the contents of the /etc/sysconfig/hadoop before making changes, use
+<computeroutput>rocks report host osg hadoop config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+</section>
+
+<section id="customize-squid" xreflabel="Customize Squid">
+<title>Customizing Frontier Squid after Installation </title>
+<para>
+The default customization of Squid is done during the install, the resulting 
+configuration file is /etc/squid/customize.sh. To reconfigure squid 
+on a node,  make appropriate attribute using the commands above  and then run
+<screen>
+# rocks sync host osg squid &lt;hostname&gt;
+</screen>
+</para>
+<para>
+This will rewrite the file /etc/squid/customize.sh then you can start the service with the
+command <computeroutput>service frontier-squid start</computeroutput>
+</para>
+
+<note>
+<para>
+To view the contents of the /etc/squid/customize.sh before making changes, use
+<computeroutput>rocks report host osg squid config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+</section>
+
+
+<!-- ***************************************************************** -->
+<section id="condor-advanced-configuration" xreflabel="Making Deeper Changes">
+<title>Programatically changing the Contents of 01_rocks_condor_config.local</title>
+<para>
+Condor configuration is localized into /etc/condor/config.d/01_rocks_condor_config.local.
+This file is generated programatically from the output of 
+<computeroutput>rocks report host osg condor config &lt;hostname&gt;
+</computeroutput>.
+</para>
+<para>
+The command <computeroutput>rocks report host osg condor config</computeroutput>
+is defined by the OSG roll and is written in Python. This report command is 
+extensible through Rocks command plugins. 
+</para>
+<para>
+To see a sample Condor plugin, 
+view the file in location
+<computeroutput>
+/opt/rocks/lib/python2.4/site-packages/rocks/commands/report/host/osg/condor/config/plugin_sample.py
+</computeroutput>, which is reproduced here.
+<screen>
+# $Id$
+import rocks.commands
+
+class Plugin(rocks.commands.Plugin):
+
+	def provides(self):
+		return 'sample'
+
+	def run(self, argv):
+		# Argv contains the hostname and the in memory key-value store
+	        # that is eventually written to 
+		# /etc/condor/config.d/01_rocks_condor_config.local
+		# plugins can add/change/remove keys from the store
+
+		# 1. Get the hostname and the key-value store, which
+		#    is a python dictionary 
+		host, kvstore = argv 
+
+		# The following would add CONDOR_SAMPLE=Sample Plugin
+		# the key = value dictionary (kvstore)  that is written out
+		#
+		# Example 1. Read an attribute from the database and set 
+		# the values
+		value = self.db.getHostAttr(host, 'Condor_HostAllow')
+		kvstore['CONDOR_SAMPLE'] = value 
+		
+		# Example 2. Set the key CONDOR_SAMPLE to the hostname 
+		kvstore['CONDOR_SAMPLE'] = host 
+
+		# Example 3. Remove a key from the dictionary
+		if 'CONDOR_SAMPLE' in kvstore:
+			del kvstore['CONDOR_SAMPLE']
+
+RollName = "condor"
+</screen>
+</para>
+
+<para>
+Users/Roll Developers can add their own plugins for the 
+"report host condor config" command to overwrite, add, and/or delete
+key,value pairs that are written into /etc/condor/config.d/01_rocks_condor_config.local.
+</para>
+<para>
+In the above code sample, the Condor report command driver passes
+the hostname and the dictionary of already defined key,value pairs
+(kvstore in the sample code).  The sample code shows several different 
+examples of changing the key 'CONDOR_SAMPLE'.
+</para>
+
+<para>
+Plugins are written in Python, are called in random order,
+ and must be named "plugin_&lt;name&gt;.py".  
+</para>
+<para>
+Plugins also enable any 
+desired configurations to be properly applied with the command
+<computeroutput>
+rocks sync host osg condor config
+</computeroutput>.
+</para>
+</section>
+</chapter>
+

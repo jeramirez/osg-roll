@@ -1,0 +1,299 @@
+<chapter id="using" xreflabel="Using the osg Roll">
+
+
+<title>Using the osg Roll</title>
+
+<section id="Install-SE" xreflabel="Example Install bestman server + gridftp hadoop">
+<title>Example Install bestman server + gridftp hadoop</title>
+<para>
+Bestman can be installed as follow.
+
+</para>
+<screen>
+$ su - root
+#
+###set public interface
+#
+#rocks set host interface ip se-0-0 iface=eth1 ip=1.2.3.4
+#rocks set host interface name se-0-0 iface=eth1 name=rocks-se
+#rocks set host interface subnet se-0-0 eth1 public
+#rocks set host attr se-0-0 primary_net public
+#rocks add host route se-0-0 0.0.0.0 1.2.3.1 netmask=0.0.0.0
+#rocks add host attr se-0-0 OSG_SE value=true
+#rocks add host attr se-0-0 OSG_GFTP_HDFS value=true
+###sample of customizing/changing attribute
+#rocks set host attr se-0-0 OSG_SRMsupportedProtocolList value="gsiftp://rocks-se.mypublic.edu:2811"
+###setting service certs
+###rocks 5.5
+#  rocks add host sec_attr se-0-0 attr=hostcert value="`cat /path/to/cert/hostcert.pem`" crypted=true
+#  rocks add host sec_attr se-0-0 attr=hostkey value="`cat /path/to/certkey/hostkey.pem`" crypted=true
+###rocks 5.6
+#  rocks add host sec_attr se-0-0 attr=hostcert value="/path/to/cert/hostcert.pem" crypted=true
+#  rocks add host sec_attr se-0-0 attr=hostkey value="/path/to/certkey/hostkey.pem" crypted=true
+
+#
+### reinstall
+#
+#shoot-node se-0-0
+
+#
+### post install
+#
+#cp hostcert.pem and hostkey.pem to /root/.
+#rocks sync host sec_attr se-0-0
+#rocks run host se-0-0 command='/root/install_se_cert.sh'
+#rocks run host se-0-0 command='chkconfig bestman2 on'
+#rocks run host se-0-0 command='chkconfig globus-gridftp-server on'
+
+</screen>
+</section>
+
+<section id="Install-CE" xreflabel="Example Install ce server + gridftp + rsv">
+<title>Example Install ce server (condor) + gridftp + rsv</title>
+<para>
+ce-condor + gridftp + rsv can be installed as follow. (rsv is configured like in OSG 1.2)
+
+</para>
+<screen>
+$ su - root
+#
+###set public interface
+#
+#rocks set host interface ip ce-0-0 iface=eth1 ip=1.2.3.5
+#rocks set host interface name ce-0-0 iface=eth1 name=rocks-ce
+#rocks set host interface subnet ce-0-0 eth1 public
+#rocks set host attr ce-0-0 primary_net public
+#rocks add host route ce-0-0 0.0.0.0 1.2.3.1 netmask=0.0.0.0
+#rocks add host attr ce-0-0 OSG_CE value="condor"
+#rocks add host attr ce-0-0 OSG_GRIDFTP value=true
+#rocks add host attr ce-0-0 OSG_RSV value=true
+#rocks add host attr ce-0-0 OSG_Condor_Daemons value="MASTER, SCHEDD"
+#
+###sample of customizing/changing attribute
+#rocks set host attr ce-0-0 OSG_SRMsupportedProtocolList value="gsiftp://rocks-ce.mypublic.edu:2811"
+###place where grid certs are stored 
+###this example needs hostcert, httpcert, rsvcert
+###    /my/nfs/path/for/certs/ce-0-0/rsvcert.pem
+###    /my/nfs/path/for/certs/ce-0-0/rsvkey.pem
+###    /my/nfs/path/for/certs/ce-0-0/httpcert.pem
+###    /my/nfs/path/for/certs/ce-0-0/httpkey.pem
+#rocks set host atrr ce-0-0 OSG_StoredCertsDir value="/my/nfs/path/for/certs"
+###setting service certs
+#rocks 5.5
+#  rocks add host sec_attr ce-0-0 attr=hostcert value="`cat /path/to/cert/hostcert.pem`" crypted=true
+#  rocks add host sec_attr ce-0-0 attr=hostkey value="`cat /path/to/certkey/hostkey.pem`" crypted=true
+#rocks 5.6
+#  rocks add host sec_attr ce-0-0 attr=hostcert value="/path/to/cert/hostcert.pem" crypted=true
+#  rocks add host sec_attr ce-0-0 attr=hostkey value="/path/to/certkey/hostkey.pem" crypted=true
+
+#
+# reinstall
+#
+#shoot-node ce-0-0
+
+#
+# post install
+#
+#rocks sync host sec_attr ce-0-0
+#rocks run host ce-0-0 command='/root/install_ce_cert.sh'
+#rocks run host ce-0-0 command='/root/install_rsv_cert.sh'
+#edit for your site /etc/osg/config.d/30-gip.ini
+#edit for your site /etc/osg/config.d/40-siteinfo.ini
+#rocks run host ce-0-0 command='configure-osg -v'
+#rocks run host ce-0-0 command='configure-osg -c'
+
+#rocks run host ce-0-0 command='chkconfig condor on'
+#rocks run host ce-0-0 command='chkconfig globus-gatekeeper on'
+#rocks run host ce-0-0 command='chkconfig fetch-crl3-cron on'
+#rocks run host ce-0-0 command='chkconfig fetch-crl3-boot on'
+#rocks run host ce-0-0 command='chkconfig globus-gridftp-server on'
+#rocks run host ce-0-0 command='chkconfig condor-cron on'
+#rocks run host ce-0-0 command='chkconfig rsv on'
+
+#services for ce-condor
+#rocks run host ce-0-0 command='service condor start'
+#rocks run host ce-0-0 command='service globus-gatekeeper start'
+#services for gridftp
+#rocks run host ce-0-0 command='service globus-gridftp-server start'
+#services for rsv
+#rocks run host ce-0-0 command='service condor-cron start'
+#rocks run host ce-0-0 command='service rsv start'
+#rocks run host ce-0-0 command='service http start'
+
+</screen>
+</section>
+
+
+<section id="Install-GUMS" xreflabel="Example Install gums server + squid + cvmfs">
+<title>Example Install gums server + squid + cvmfs</title>
+<para>
+gums + squid + cvmfs can be installed as follow.
+
+</para>
+<screen>
+$ su - root
+#
+###set public interface
+#
+#rocks set host interface ip gums-0-0 iface=eth1 ip=1.2.3.6
+#rocks set host interface name gums-0-0 iface=eth1 name=rocks-gums
+#rocks set host interface subnet gums-0-0 eth1 public
+#rocks set host attr gums-0-0 primary_net public
+#rocks add host route gums-0-0 0.0.0.0 1.2.3.1 netmask=0.0.0.0
+#rocks add host attr gums-0-0 OSG_GUMS value=true
+#rocks add host attr gums-0-0 OSG_SQUID value=true
+#rocks add host attr gums-0-0 OSG_CVMFS value=true
+#
+#
+###sample of customizing/changing attribute
+#rocks set host attr gums-0-0 OSG_GUMSBackupDir value=/home/myusers/mygumsbackups
+#rocks set host attr gums-0-0 OSG_SquidCacheDir value=/scratch/squid
+#rocks set host attr gums-0-0 OSG_SquidCacheDirSize value=30000
+#rocks set host attr gums-0-0 OSG_CMS_LOCAL_SITE value=T3_US_MySite
+#rocks set host attr gums-0-0 OSG_CVMFS_CACHE_BASE value=/scratch/cvmfs
+#rocks set host attr gums-0-0 OSG_CVMFS_HTTP_PROXY value="http://mysquid-0-0:3128"
+###setting service certs
+#rocks set host atrr gums-0-0 OSG_StoredCertsDir value="/my/nfs/path/for/certs"
+#rocks 5.5
+#  rocks add host sec_attr gums-0-0 attr=hostcert value="`cat /path/to/cert/hostcert.pem`" crypted=true
+#  rocks add host sec_attr gums-0-0 attr=hostkey value="`cat /path/to/certkey/hostkey.pem`" crypted=true
+
+#
+# reinstall
+#
+#shoot-node gums-0-0
+
+#
+# post install
+#
+#for services gums
+#https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallGums
+#rocks sync host sec_attr gums-0-0
+#rocks run host gums-0-0 command='/root/install_gums_cert.sh'
+#rocks run host gums-0-0 command='/root/ConfigureGumsUpgradeFromPacman.sh'
+#rocks run host gums-0-0 command='fetch-crl3'
+#rocks run host gums-0-0 command='service fetch-crl3-boot start'
+#rocks run host gums-0-0 command='service fetch-crl3-cron start'
+#rocks run host gums-0-0 command='service tomcat5 start'
+#rocks run host gums-0-0 command='chkconfig fetch-crl3-cron on'
+#rocks run host gums-0-0 command='chkconfig fetch-crl3-boot on'
+#rocks run host gums-0-0 command='chkconfig tomcat5 on'
+#rocks run host gums-0-0 command='chkconfig mysqld on'
+#
+#services frontier squid
+#https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallFrontierSquid
+#rocks sync host osg squid gums-0-0
+#rocks run host gums-0-0 command='service frontier-squid start'
+#rocks run host gums-0-0 command='chkconfig frontier-squid on'
+#
+#services cvmfs
+#https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallCvmfs
+#rocks 5.5/6.0 (maybe 5.6/6.1)#rocks run host gums-0-0 command='usermod -G fuse cvmfs'
+#rocks run host gums-0-0 command='service cvmfs restartautofs'
+
+</screen>
+</section>
+
+<section id="Install-hostproxy" xreflabel="Example for setting hostproxy on wn nodes">
+<title>Example for setting hostproxy on wn nodes</title>
+<para>
+Hostproxy requires access the whole cluster, you need to set a pair key or just reuse the frontend node.
+Also the certs used to proxy by default are located in /etc/grid-security (hostcert.pem,hostkey.pem).
+
+</para>
+<screen>
+#
+#in frontend cp pair keys to ce-0-0
+#
+$ su - root
+#scp -p .ssh/id_rsa ce-0-0:.ssh/.
+#scp -p .ssh/id_rsa.pub ce-0-0:.ssh/.
+#ssh ce-0-0
+
+#
+# in ce-0-0
+#
+#yum install hostproxy
+#cd /opt/hostproxy
+
+#
+#	set list of worker nodes
+#
+#rocks report host attr attr=OSG_Client | grep true | sed s/:\ true/.local/g >> host_dist.nodes
+
+#
+#	set cron to renew proxys
+#
+#cp update-hostproxy.cron /etc/cron.d/.
+
+#
+#	or run manually
+#
+#/opt/hostproxy/host_dist
+
+</screen>
+</section>
+
+<!-- ***************************************************************** -->
+<section id="Update-OSG" xreflabel="How to update OSG">
+<title>How to Update OSG packages</title>
+<para>
+OSG can be updated creating a local mirror as follow.
+
+</para>
+<screen>
+$ su - root
+#cd /export/rocks/install
+#rocks create mirror http://repo.grid.iu.edu/3.0/el5/osg-release/x86_64 rollname=osg-updates version=5.5.1
+##this creates an iso file osg-updates-5.5.1-0.x86_64.disk1.iso
+
+#rocks remove roll osg-updates
+#rocks add roll osg-updates-5.5.1-0.x86_64.disk1.iso
+#rocks enable roll osg-updates
+#rocks create distro
+
+#in SE for example
+yum update bestman-server
+
+</screen>
+</section>
+
+
+<!-- ***************************************************************** -->
+<section id="condor-password-security" xreflabel="Condor Pool Password Security">
+<title>Using a pool password to secure Condor Communications</title>
+<para>
+The default Rocks configuration is to use host-based authentication. This is a good and simple choice for a cluster with a private network.  
+With the Rocks 5.4 version of the Condor  Roll, it is straightforward to set up a "Pool Password"
+that utilizes a shared secret among pool members.  This is especially useful
+when allowing remote systems to report directly to the Condor collector on your cluster.  The EC2 Roll can utilize a pool password for a higher security.
+</para>
+<para>
+The following, straightforward will create, copy and enable a
+system-wide shared-secret pool password.
+<orderedlist>
+<listitem>
+<para>
+Create a pool password. Use
+<computeroutput> rocks create osg condor password</computeroutput>
+</para>
+</listitem>
+<listitem>
+<para>
+Enable pool password security. Use <computeroutput> rocks set attr OSG_Condor_Password yes</computeroutput>
+</para>
+</listitem>
+<listitem>
+<para>
+Reconfigure Condor Daemons and copy new pool password. Use
+<computeroutput> rocks sync host osg condor syncpassword=yes localhost compute
+</computeroutput>
+</para>
+</listitem>
+</orderedlist>
+</para>
+</section>
+
+
+
+</chapter>
