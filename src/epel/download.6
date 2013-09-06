@@ -1,0 +1,57 @@
+#internet 2 mirror
+#rsync://rsync.gtlib.gatech.edu/fedora-epel
+#x86_64
+#------
+#mysql-connector-java-5.1.12-2.el5.x86_64.rpm
+#mysql-connector-java-*,\ #not in sl6
+#jakarta-commons-cli-javadoc-*.el6.x86_64.rpm
+#jakarta-commons-cli-*.el6.x86_64.rpm
+#gsoap-*.el6.x86_64.rpm
+#gsoap-*.el6.i686.rpm
+#gsoap-devel-*.el6.x86_64.rpm
+#gsoap-devel-*.el6.i686.rpm
+#is-interface-*.el6.i686.rpm
+#is-interface-*.el6.x86_64.rpm
+#is-interface-devel-*.el6.i686.rpm
+#is-interface-devel-*.el6.x86_64.rpm
+#iperf-*.el6.x86_64.rpm
+rsync -av \
+rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/{\
+jakarta-commons-cli{-javadoc-,-}*,\
+gsoap{-devel-,-}*,\
+is-interface{-devel-,-}*,\
+iperf-*\
+}.el6.{x86_64,i686}.rpm \
+x86_64/.
+ 
+#debug
+#bouncycastle-debuginfo-1.45-6.el5.x86_64.rpm
+#bouncycastle-debuginfo-*,\ # not is sl6
+#jakarta-commons-cli-debuginfo-*.el6.x86_64.rpm
+#gsoap-debuginfo-*.el6.x86_64.rpm
+#iperf-debuginfo-*.el6.x86_64.rpm
+rsync -av \
+rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/debug/{\
+jakarta-commons-cli-debuginfo-*,\
+gsoap-debuginfo-*,\
+iperf-debuginfo-*\
+}.el6.x86_64.rpm \
+debug/.
+
+#noarch
+#jakarta-commons-io-javadoc-1.4-3.el5.noarch.rpm
+#jakarta-commons-io-1.4-3.el5.noarch.rpm
+#jakarta-commons-io-*,\ # not is sl6
+#perl-XML-DOM-1.44-2.el5.noarch.rpm
+#perl-XML-DOM-1.*,\ # not is sl6
+#perl-XML-RegExp-0.03-2.el5.noarch.rpm
+#perl-XML-RegExp-*,\ # not in sl6
+#bouncycastle-*.el6.noarch.rpm
+#bouncycastle-javadoc-*.el6.noarch.rpm
+#fetch-crl-*.el6.noarch.rpm
+rsync -av \
+rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/{\
+bouncycastle{-javadoc-,-}*,\
+fetch-crl-*\
+}.el6.noarch.rpm \
+noarch/.
