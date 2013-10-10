@@ -50,11 +50,36 @@ log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
 #end rocks additions
 </file>
 
+ <!-- add configuration hadoop secondary when public interface is set default but hadoop is in private network-->
+<file name="/root/tweak_hadoop_secondary.sh" perms="0750" >
+#!/bin/sh
+
+if [ "&primary_net;" == "public" ]&amp;&amp;[ "&hostname;" == "&OSG_HadoopSecondaryNode;" ]; then
+cp -p /etc/hadoop/conf/hdfs-site.xml.in /etc/hadoop/conf/hdfs-site.xml.in_original_install
+MYIFACE=`rocks list host interface &hostname; | grep private | cut -d\  -f2`
+#in case no interface info at install, use eth0 as default
+if [ "$MYIFACE" == "" ]; then
+MYIFACE=eth0  
+fi
+sed -i -e "s#&lt;/configuration&gt;#&lt;property&gt;\n  &lt;name&gt;dfs.secondary.dns.interface&lt;/name&gt;\n  &lt;value&gt;$MYIFACE&lt;/value&gt;\n  &lt;description&gt;\n    The name of the network interface from which the secondary should report its IP address.\n  &lt;/description&gt;\n&lt;/property&gt;\n&lt;/configuration&gt;#" /etc/hadoop/conf/hdfs-site.xml.in
+fi
+</file>
+
  <!-- set configuration hadoop datanode -->
 /etc/init.d/hadoop-firstboot start
 
+  <!-- alternate configuration hadoop daemon to use osg attributes, 
+       needed when server is using public interface for hostname 
+       but hadoop needs private interface to identify server 
+  -->
+cp -p /etc/init.d/hadoop /etc/init.d/hadoop-osg-rocks
+sed -i -e "s#\`/bin/hostname -s\`#\"&hostname;\"#" /etc/init.d/hadoop-osg-rocks
+sed -i -e "s#/var/lock/subsys/hadoop#/var/lock/subsys/hadoop-osg-rocks#" /etc/init.d/hadoop-osg-rocks
+sed -i -e "s#'hadoop'#'hadoop-osg-rocks'#" /etc/init.d/hadoop-osg-rocks
+
 #set directly on data nodes
 #chkconfig hadoop on
+#chkconfig hadoop-osg-rocks on
 
 </post>
 

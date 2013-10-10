@@ -27,6 +27,10 @@
 #hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
 #mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
 
+echo "checking /etc/group in osg-hadoop-pre" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+cat /etc/group &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+echo "end checking /etc/group" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+/usr/sbin/groupadd -g &OSG_fusegid; fuse
 /usr/sbin/groupadd -g 409 hadoop
 /usr/sbin/groupadd -g 461 mapred
 /usr/sbin/useradd -u 458 -g 409 -c "Hadoop HDFS" -s /bin/bash -d /home/hadoop -m -k /etc/skel hdfs
