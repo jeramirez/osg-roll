@@ -189,8 +189,32 @@ $ su - root
 #services cvmfs
 #https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallCvmfs
 #rocks 5.5/6.0 (maybe 5.6/6.1)#rocks run host gums-0-0 command='usermod -G fuse cvmfs'
-#rocks run host gums-0-0 command='service cvmfs restartautofs'
+#rocks run host gums-0-0 command='service autofs restart'
 
+</screen>
+</section>
+
+<section id="Install-CVMFS" xreflabel="Example for installing cvmfs on wn nodes after OS install">
+<title>Example for installing cvmfs on wn nodes after OS install</title>
+<para>
+Cvmfs can be installed as follow.
+
+</para>
+<screen>
+$ su - root
+#
+###sample of customizing/changing attribute
+#
+#rocks add appliance attr compute OSG_CVMFS value=true
+#rocks set appliance attr compute OSG_CVMFS_QUOTA_LIMIT value=30000
+#rocks set appliance attr compute OSG_CMS_LOCAL_SITE value=T3_US_MySite
+#rocks set appliance attr compute OSG_CVMFS_CACHE_BASE value=/scratch/cvmfs
+#rocks set appliance attr compute OSG_CVMFS_HTTP_PROXY value="http://mysquid-0-0:3128"
+#
+###install cvmfs on nodes
+#rocks sync host osg cvmfs install compute
+#rocks run host compute command="service autofs restart"
+#
 </screen>
 </section>
 
