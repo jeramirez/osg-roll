@@ -58,10 +58,15 @@
 
 REDHAT.ROOT = $(CURDIR)/../../
 REDHAT.RPMS = $(REDHAT.ROOT)/RPMS
-#-include $(ROCKSROOT)/etc/Rules.mk
-#include Rules.mk
+ROCKS.OS.VERSION.MAJOR=$(shell lsb_release -rs | cut -d . -f 1)
+ifeq ($(strip $(ROCKS.OS.VERSION.MAJOR)), 5)
+VERSION.MAJOR = 5
+else
+VERSION.MAJOR = 6
+endif
 
 rpm pkg::
+	./download.$(VERSION.MAJOR)
 	for i in $(CURDIR)/x86_64/* ; do \
 		if [ ! -d $(REDHAT.RPMS)/x86_64 ] ; then \
 			mkdir $(REDHAT.RPMS)/x86_64 ; \
