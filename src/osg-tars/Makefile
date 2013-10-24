@@ -65,16 +65,19 @@ else
 VERSION.MAJOR = 6
 endif
 
-
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
+
+pretar:: download
+
+download:
+	. files
 
 
 build::
 
 
 install::
-	. files
 	mkdir -p $(ROOT)/$(PKGROOT)
 	(                                                               \
 		$(INSTALL) -m 0755 osg-client-$(VERSION)-$(RELEASE).el$(VERSION.MAJOR).x86_64.tar.gz $(ROOT)/$(PKGROOT) ;            \
