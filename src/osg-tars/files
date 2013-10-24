@@ -1,8 +1,14 @@
 #!/bin/bash
 
-TARVER=3.1.22
-rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-client-$TARVER-1.el5.x86_64.tar.gz .
-rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-client-$TARVER-1.el6.x86_64.tar.gz .
-rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-wn-client-$TARVER-1.el5.x86_64.tar.gz .
-rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-wn-client-$TARVER-1.el6.x86_64.tar.gz .
+TARVER=`cat version.mk | grep VERSION | cut -d\  -f 3`
+MAJVER=`lsb_release -rs | cut -d . -f 1`
+FILE1=osg-client-$TARVER-1.el$MAJVER.x86_64.tar.gz
+FILE2=osg-wn-client-$TARVER-1.el$MAJVER.x86_64.tar.gz
 
+#rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-client-$TARVER-1.el5.x86_64.tar.gz .
+#rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-client-$TARVER-1.el6.x86_64.tar.gz .
+#rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-wn-client-$TARVER-1.el5.x86_64.tar.gz .
+#rsync -av rsync://repo.grid.iu.edu/osg/tarball-install/$TARVER/osg-wn-client-$TARVER-1.el6.x86_64.tar.gz .
+
+[ -f $FILE1 ] || wget http://repo.grid.iu.edu/tarball-install/3.1/$TARVER/$FILE1
+[ -f $FILE2 ] || wget http://repo.grid.iu.edu/tarball-install/3.1/$TARVER/$FILE2
