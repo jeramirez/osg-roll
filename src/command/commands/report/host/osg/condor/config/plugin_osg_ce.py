@@ -69,6 +69,6 @@ class Plugin(rocks.commands.Plugin):
 
 		isgatekeeper = self.db.getHostAttr(host, 'OSG_CE')
 		if isgatekeeper is not None:
-			if (isgatekeeper.lower() == 'true' or isgatekeeper.lower() == 'yes'):
+			if (isgatekeeper.lower() == 'true' or isgatekeeper.lower() == 'yes' or isgatekeeper.lower() == 'condor'):
 				kvstore['HOSTALLOW_NEGOTIATOR_SCHEDD'] = '$(HOSTALLOW_NEGOTIATOR_SCHEDD), $(HOSTALLOW_WRITE)'
 
