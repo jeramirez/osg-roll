@@ -1,4 +1,7 @@
 #########################
+#Make sure -->javac<-- and -->jar<-- is from java 7
+#in path /etc/alternatives/java_sdk/bin/
+#########################
 #  compile plugin in release 3
 #  RoundRobinWithPath.java --> RRWP.jar
 #########################
