@@ -1,5 +1,5 @@
 ROLLNAME	= osg
-VERSION		= 3.1.16
+VERSION		= 3.1.29
 RELEASE		= 0
 COLOR		= cyan
 

@@ -1,2 +1,2 @@
 NAME = rocks-osg-command
-RELEASE = 2
+RELEASE = 3
