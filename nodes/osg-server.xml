@@ -113,14 +113,16 @@ fi
 /opt/rocks/bin/rocks add appliance attr compute OSG_Client value=true
 # turn on OSG Condor Client for compute nodes
 /opt/rocks/bin/rocks add appliance attr compute OSG_Condor_Client value=true
+
+###sample of how to set servers CE,SE,griftp
 # set OSG CE server
-/opt/rocks/bin/rocks add host attr &OSGCEPrivate; OSG_CE value="condor"
+#/opt/rocks/bin/rocks add host attr &OSGCEPrivate; OSG_CE value="condor"
 # set OSG bestman server
-/opt/rocks/bin/rocks add host attr &OSGSEPrivate; OSG_SE value=true
+#/opt/rocks/bin/rocks add host attr &OSGSEPrivate; OSG_SE value=true
 # set OSG gridftp hadoop server
-/opt/rocks/bin/rocks add host attr $OSGGridftpHdfsPrivate OSG_GFTP_HDFS value=true
+#/opt/rocks/bin/rocks add host attr $OSGGridftpHdfsPrivate OSG_GFTP_HDFS value=true
 # set OSG gridftp server
-/opt/rocks/bin/rocks add host attr $OSGGridftpPrivate OSG_GRIDFTP value=true
+#/opt/rocks/bin/rocks add host attr $OSGGridftpPrivate OSG_GRIDFTP value=true
 
 ###  Put the OSG_CondorMaster into the database
 CMaster=&Kickstart_PublicHostname;
