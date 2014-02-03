@@ -4,7 +4,7 @@
 
 
 	<description>
-	OSG Roll for Server Install 
+	OSG Roll for Server Install
 	OSG Central configuration (includes condor shipped with osg)
 	</description>
 
@@ -106,7 +106,7 @@ fi
 /opt/rocks/bin/rocks add attr OSG_SRMsupportedProtocolList value=$OSGSRMsupportedProtocolList
 /opt/rocks/bin/rocks add attr OSG_StoredCertsDir value=$OSGStoredCertsDir
 /opt/rocks/bin/rocks add attr OSG_GUMSBackupDir value=$OSGGUMSBackupDir
-/opt/rocks/bin/rocks add attr OSG_GUMSDNADMIN value=$OSGGUMSDNADMIN
+/opt/rocks/bin/rocks add attr OSG_GUMSDNADMIN value="$OSGGUMSDNADMIN"
 
 
 # turn on OSG Client for compute nodes
