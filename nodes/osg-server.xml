@@ -43,8 +43,8 @@ if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGSEPrivate`" == "x
 /opt/rocks/bin/rocks add attr OSGSEPrivate value=$OSGSEPrivate
 fi
 OSGGUMSPrivate="login-0-2"
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGGUMSPrivate`" == "x" ]; then
-/opt/rocks/bin/rocks add attr OSGGUMSPrivate value=$OSGGUMSPrivate
+if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGGumsPrivate`" == "x" ]; then
+/opt/rocks/bin/rocks add attr OSGGumsPrivate value=$OSGGUMSPrivate
 fi
 OSGGridftpPrivate="login-0-0"
 OSGGridftpHdfsPrivate="login-0-1"
