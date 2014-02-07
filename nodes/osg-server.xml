@@ -150,6 +150,11 @@ CMaster=&Kickstart_PublicHostname;
 # parameters related with condor install
 /opt/rocks/bin/rocks add attr OSG_condoruid value=407
 /opt/rocks/bin/rocks add attr OSG_condorgid value=407
+# parameters related with hadoop install
+/opt/rocks/bin/rocks add attr OSG_hdfsuid value=458
+/opt/rocks/bin/rocks add attr OSG_hadoopgid value=409
+/opt/rocks/bin/rocks add attr OSG_mapreduid value=461
+/opt/rocks/bin/rocks add attr OSG_mapredgid value=461
 # parameters related with squid-frontier install
 /opt/rocks/bin/rocks add attr OSG_squiduid value=450
 /opt/rocks/bin/rocks add attr OSG_squidgid value=450
@@ -238,14 +243,41 @@ for my $index ($start...$end) {
 exit;
 </file>
 
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server" perms="0755">
+<!-- hadoop config related post install -->
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop" perms="0755">
 #!/bin/sh
 
-### This users are for backward compatibility (&lt; rocks5.5)
-if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
 ### Create the Hadoop, mapred User
 #hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
 #mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
+
+OSG_hadoopgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hadoopgid`
+OSG_hdfsuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hdfsuid`
+OSG_mapredgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapredgid`
+OSG_mapreduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapreduid`
+
+/usr/sbin/groupadd -g ${OSG_hadoopgid} hadoop
+/usr/sbin/useradd -u ${OSG_hdfsuid} -g ${OSG_hadoopgid} -c "Hadoop HDFS" -s /bin/bash -d /export/home/hadoop hdfs
+
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
+/usr/sbin/groupadd -g ${OSG_mapredgid} mapred
+/usr/sbin/useradd -u ${OSG_mapreduid} -g ${OSG_mapredgid} -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
+
+#end backward compatibility ( &lt;rocks 5.5)
+fi
+
+/opt/rocks/bin/rocks sync users &gt; /dev/null 2&gt;&amp;1
+sed -i -e "s@/home/hdfs@/home/hadoop@" /etc/auto.home
+sed -i -e "s@hdfs@hadoop@" /etc/auto.home
+
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop /root/post-90-osg-server-hadoop.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop
+</file>
+
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server" perms="0755">
+#!/bin/sh
+
 ### Create the glexec User
 #glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
 ### Create the Bestman User
@@ -257,10 +289,8 @@ if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&a
 ### Create the rsv,cndrcron Users
 #cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
 
-/usr/sbin/groupadd -g 409 hadoop
-/usr/sbin/groupadd -g 461 mapred
-/usr/sbin/useradd -u 458 -g 409 -c "Hadoop HDFS" -s /bin/bash -d /export/home/hadoop hdfs
-/usr/sbin/useradd -u 461 -g 461 -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
 /usr/sbin/groupadd -g 463 glexec
 /usr/sbin/useradd -u 463 -g 463 -c "gLExec user account" -s /sbin/nologin glexec
 /usr/sbin/groupadd -g 464 gratia
@@ -278,11 +308,6 @@ fi
 
 /tmp/CreateGlexecGroups
 rm -f /tmp/CreateGlexecGroups
-
-
-
-/opt/rocks/bin/rocks sync users &gt; /dev/null 2&gt;&amp;1
-/usr/sbin/usermod -d /home/hadoop hdfs
 
 cp /etc/rc.d/rocksconfig.d/post-90-osg-server /root/post-90-osg-server.script_runned
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server
