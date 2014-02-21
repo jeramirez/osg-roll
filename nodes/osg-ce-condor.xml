@@ -157,6 +157,7 @@ if [ "$THISHOST" == "$CESERVER" ]; then
   chown root:root /etc/grid-security/hostkey.pem
   chmod 444 /etc/grid-security/hostcert.pem
   chmod 400 /etc/grid-security/hostkey.pem
+  [ -d /etc/grid-security/http ]||mkdir /etc/grid-security/http
   cp -p /etc/grid-security/hostcert.pem /etc/grid-security/http/httpcert.pem
   cp -p /etc/grid-security/hostkey.pem /etc/grid-security/http/httpkey.pem
   chown -R tomcat:root /etc/grid-security/http

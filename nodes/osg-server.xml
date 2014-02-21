@@ -390,6 +390,9 @@ touch /etc/auto.master
 echo "${CEshare}  /etc/auto.osg  --timeout=120"  &gt;&gt; /etc/auto.master
 echo "/cvmfs /etc/auto.cvmfs" &gt;&gt; /etc/auto.master
 
+cd /var/411
+make clean
+make
 cp /etc/rc.d/rocksconfig.d/post-90-osg-server-autofs /root/post-90-osg-server-autofs.script_runned
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-autofs
 </file>
