@@ -24,8 +24,8 @@
      osg-client.xml has has the uid/gid for glexec users/groups accounts
 -->
 #make sure condor user exist already to avoid different uid/gid for condor  
-/usr/sbin/groupadd -g 407 condor
-/usr/sbin/useradd -u 407 -g 407 -c "Condor Daemon Account" -s /bin/bash -d /home/condor condor
+/usr/sbin/groupadd -g &OSG_condorgid; condor
+/usr/sbin/useradd -u &OSG_condoruid; -g &OSG_condorgid; -c "Condor Daemon Account" -s /sbin/nologin -d /var/lib/condor condor
 
 
  <!-- install wn-client-glexec from local mirror-->

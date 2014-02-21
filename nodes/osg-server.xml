@@ -155,6 +155,18 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_hadoopgid value=409
 /opt/rocks/bin/rocks add attr OSG_mapreduid value=461
 /opt/rocks/bin/rocks add attr OSG_mapredgid value=461
+# parameters related with CE install
+/opt/rocks/bin/rocks add attr OSG_tomcatuid value=91
+/opt/rocks/bin/rocks add attr OSG_tomcatgid value=91
+/opt/rocks/bin/rocks add attr OSG_gratiauid value=464
+/opt/rocks/bin/rocks add attr OSG_gratiagid value=464
+/opt/rocks/bin/rocks add attr OSG_CE_Export_LocalDir value="/scratch"
+/opt/rocks/bin/rocks add attr OSG_CE_Mount_ShareDir value="/sharesoft/osg"
+/opt/rocks/bin/rocks add attr OSG_CE_DataDir value="/data/se/osg"
+/opt/rocks/bin/rocks add attr OSG_WN_TmpDir value="/tmp"
+# parameters related with glexec
+/opt/rocks/bin/rocks add attr OSG_glexecuid value=463
+/opt/rocks/bin/rocks add attr OSG_glexecgid value=463
 # parameters related with squid-frontier install
 /opt/rocks/bin/rocks add attr OSG_squiduid value=450
 /opt/rocks/bin/rocks add attr OSG_squidgid value=450
@@ -218,6 +230,72 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-squid
 </post>
 
 <post>
+<!-- hadoop config related post install -->
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop" perms="0755">
+#!/bin/sh
+
+### Create the Hadoop, mapred User
+#hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
+#mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
+
+OSG_hadoopgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hadoopgid`
+OSG_hdfsuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hdfsuid`
+OSG_mapredgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapredgid`
+OSG_mapreduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapreduid`
+
+#groups are completely exported! even in 5.5 (not filtered)
+/usr/sbin/groupadd -g ${OSG_hadoopgid} hadoop
+
+/usr/sbin/useradd -u ${OSG_hdfsuid} -g ${OSG_hadoopgid} -c "Hadoop HDFS" -s /bin/bash -d /export/home/hadoop hdfs
+
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
+/usr/sbin/groupadd -g ${OSG_mapredgid} mapred
+/usr/sbin/useradd -u ${OSG_mapreduid} -g ${OSG_mapredgid} -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
+
+#end backward compatibility ( &lt;rocks 5.5)
+fi
+
+/opt/rocks/bin/rocks sync users &gt; /dev/null 2&gt;&amp;1
+sed -i -e "s@/home/hdfs@/home/hadoop@" /etc/auto.home
+sed -i -e "s@hdfs@hadoop@" /etc/auto.home
+
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop /root/post-90-osg-server-hadoop.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop
+</file>
+
+<!-- CE config related post install -->
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-gridce" perms="0755">
+#!/bin/sh
+
+### Create the tomcat User
+#tomcat:x:91:91:Tomcat:/usr/share/tomcat5:/bin/sh
+### Create the gratia User
+#gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
+
+OSG_tomcatgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_tomcatgid`
+OSG_tomcatuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_tomcatuid`
+OSG_gratiagid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_gratiagid`
+OSG_gratiauid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_gratiauid`
+
+#groups are completely exported! even in 5.5 (not filtered)
+/usr/sbin/groupadd -g ${OSG_tomcatgid} tomcat
+/usr/sbin/groupadd -g ${OSG_gratiagid} gratia
+
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
+/usr/sbin/useradd -u ${OSG_tomcatuid} -g ${OSG_tomcatgid} -c "Tomcat" -s /bin/sh -d /usr/share/tomcat&rocks_version_major; tomcat
+/usr/sbin/useradd -u ${OSG_gratiauid} -g ${OSG_gratiagid} -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+
+#end backward compatibility ( &lt;rocks 5.5)
+fi
+
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-gridce /root/post-90-osg-server-gridce.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-gridce
+</file>
+
+
+<!-- glexec config related post install -->
 #for i in {0..49}; do if [ $i -lt 10 ]; then /usr/sbin/groupadd -g 6500$i glexec0$i; else /usr/sbin/groupadd -g 650$i glexec$i; fi; done
 <file name="/tmp/CreateGlexecGroups" perms="0755">
 #!/usr/bin/perl
@@ -243,71 +321,50 @@ for my $index ($start...$end) {
 exit;
 </file>
 
-<!-- hadoop config related post install -->
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop" perms="0755">
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-glexec" perms="0755">
 #!/bin/sh
 
-### Create the Hadoop, mapred User
-#hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
-#mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
-
-OSG_hadoopgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hadoopgid`
-OSG_hdfsuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hdfsuid`
-OSG_mapredgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapredgid`
-OSG_mapreduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapreduid`
-
-/usr/sbin/groupadd -g ${OSG_hadoopgid} hadoop
-/usr/sbin/useradd -u ${OSG_hdfsuid} -g ${OSG_hadoopgid} -c "Hadoop HDFS" -s /bin/bash -d /export/home/hadoop hdfs
-
-### This users are for backward compatibility (&lt; rocks5.5)
-if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/groupadd -g ${OSG_mapredgid} mapred
-/usr/sbin/useradd -u ${OSG_mapreduid} -g ${OSG_mapredgid} -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
-
-#end backward compatibility ( &lt;rocks 5.5)
-fi
-
-/opt/rocks/bin/rocks sync users &gt; /dev/null 2&gt;&amp;1
-sed -i -e "s@/home/hdfs@/home/hadoop@" /etc/auto.home
-sed -i -e "s@hdfs@hadoop@" /etc/auto.home
-
-cp /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop /root/post-90-osg-server-hadoop.script_runned
-rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop
-</file>
-
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server" perms="0755">
-#!/bin/sh
+OSG_glexecgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_glexecgid`
+OSG_glexecuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_glexecuid`
 
 ### Create the glexec User
 #glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
-### Create the Bestman User
-#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
-### Create the gratia User
-#gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
-### Create the tomcat User
-#tomcat:x:91:91:Tomcat:/usr/share/tomcat5:/bin/sh
-### Create the rsv,cndrcron Users
-#cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
+
+#groups are completely exported! even in 5.5 (not filtered)
+/usr/sbin/groupadd -g ${OSG_glexecgid} glexec
 
 ### This users are for backward compatibility (&lt; rocks5.5)
 if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/groupadd -g 463 glexec
-/usr/sbin/useradd -u 463 -g 463 -c "gLExec user account" -s /sbin/nologin glexec
-/usr/sbin/groupadd -g 464 gratia
-/usr/sbin/useradd -u 464 -g 464 -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
-/usr/sbin/groupadd -g 410 bestman
-/usr/sbin/useradd -u 459 -g 410 -c "Bestman SRM user" -s /sbin/nologin -d /etc/bestman2 bestman
-/usr/sbin/groupadd -g 91 tomcat
-/usr/sbin/useradd -u 91 -g 91 -c "Tomcat" -s /bin/sh -d /usr/share/tomcat5 tomcat
-/usr/sbin/groupadd -g 467 cndrcron
-/usr/sbin/useradd -u 452 -c "RSV monitoring user" -s /bin/bash -d /export/home/rsvuser rsv
-/usr/sbin/useradd -u 466 -g 467 -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+/usr/sbin/useradd -u ${OSG_glexecuid} -g ${OSG_glexecgid} -c "gLExec user account" -s /sbin/nologin glexec
 
 #end backward compatibility ( &lt;rocks 5.5)
 fi
 
 /tmp/CreateGlexecGroups
 rm -f /tmp/CreateGlexecGroups
+
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec /root/post-90-osg-server-glexec.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec
+</file>
+
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server" perms="0755">
+#!/bin/sh
+
+### Create the Bestman User
+#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
+### Create the rsv,cndrcron Users
+#cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
+
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
+/usr/sbin/groupadd -g 410 bestman
+/usr/sbin/useradd -u 459 -g 410 -c "Bestman SRM user" -s /sbin/nologin -d /etc/bestman2 bestman
+/usr/sbin/groupadd -g 467 cndrcron
+/usr/sbin/useradd -u 452 -c "RSV monitoring user" -s /bin/bash -d /export/home/rsvuser rsv
+/usr/sbin/useradd -u 466 -g 467 -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+
+#end backward compatibility ( &lt;rocks 5.5)
+fi
 
 cp /etc/rc.d/rocksconfig.d/post-90-osg-server /root/post-90-osg-server.script_runned
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server
@@ -317,15 +374,24 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server
 
 <!-- Autofs related post install-->
 <post>
-<file name="/etc/auto.osg" mode="append" >
-#if your ce is different from default you need to change &OSGCEPrivate; to your current private ce here 
-ce &OSGCEPrivate;:/scratch/&amp;
-app  &OSGCEPrivate;:/scratch/&amp;
-</file>
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-autofs" perms="0755">
+#!/bin/sh
 
-<file name="/etc/auto.master" mode="append" >
-/sharesoft/osg  /etc/auto.osg  --timeout=120
-/cvmfs /etc/auto.cvmfs
+CEscratch=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_CE_Export_LocalDir`
+CEshare=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_CE_Mount_ShareDir`
+OSGCEPrivate=`/opt/rocks/bin/rocks report host attr frontend attr=OSGCEPrivate`
+
+#if your ce is different from default you need to change $OSGCEPrivate to your current private ce here
+touch /etc/auto.osg
+echo "ce ${OSGCEPrivate}:${CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
+echo "app  ${OSGCEPrivate}:$CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
+
+touch /etc/auto.master
+echo "${CEshare}  /etc/auto.osg  --timeout=120"  &gt;&gt; /etc/auto.master
+echo "/cvmfs /etc/auto.cvmfs" &gt;&gt; /etc/auto.master
+
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-autofs /root/post-90-osg-server-autofs.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-autofs
 </file>
 </post>
 

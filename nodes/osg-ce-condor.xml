@@ -18,6 +18,7 @@
 	
 </changelog>
 
+<package>rocks-osg-command</package>
 <package>libxml2.&arch;</package>
 <package>yum-priorities</package>
 <package>yum-cron</package>
@@ -37,12 +38,12 @@
 -->
 ### Create Tomcat User
 #tomcat:x:91:91:Tomcat:/usr/share/tomcat5:/bin/sh
-/usr/sbin/groupadd -g 91 tomcat
-/usr/sbin/useradd -u 91 -g 91 -c "Tomcat" -s /bin/sh -d -m /usr/share/tomcat5 tomcat
+/usr/sbin/groupadd -g &OSG_tomcatgid; tomcat
+/usr/sbin/useradd -u &OSG_tomcatuid; -g &OSG_tomcatgid; -c "Tomcat" -s /bin/sh -d -m /usr/share/tomcat&rocks_version_major; tomcat
 ### Create the Gratia User
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
-/usr/sbin/groupadd -g 464 gratia
-/usr/sbin/useradd -u 464 -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+/usr/sbin/groupadd -g &OSG_gratiagid; gratia
+/usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
 
  <!-- install osg-ce from local mirror-->
 yum install osg-ca-certs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
@@ -68,35 +69,38 @@ sed -i -e "s@# globus_mapping@globus_mapping@" /etc/grid-security/gsi-authz.conf
 sed -i -e "s@localhost@&OSG_GumsServer;@" /etc/gums/gums-client.properties
 
  <!-- pre-configure OSG already known paramenters -->
-cp -p /etc/osg/config.d/10-misc.ini /etc/osg/config.d/10-misc.ini.original
+cp -p /etc/osg/config.d/10-misc.ini /etc/osg/config.d/10-misc.ini.template
 sed -i -e "s@glexec_location = UNAVAILABLE@glexec_location = /usr/sbin/glexec@" /etc/osg/config.d/10-misc.ini
 sed -i -e "s@gums_host = DEFAULT@gums_host = &OSG_GumsServer;@" /etc/osg/config.d/10-misc.ini
 
-cp -p /etc/osg/config.d/10-storage.ini /etc/osg/config.d/10-storage.ini.original
+cp -p /etc/osg/config.d/10-storage.ini /etc/osg/config.d/10-storage.ini.template
 sed -i -e "s@se_available = FALSE@se_available = TRUE@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@default_se = UNAVAILABLE@default_se = &OSG_SEServer;@" /etc/osg/config.d/10-storage.ini
-sed -i -e "s@app_dir = UNAVAILABLE@app_dir = /sharesoft/osg/app@" /etc/osg/config.d/10-storage.ini
-sed -i -e "s@data_dir = UNAVAILABLE@data_dir = /data/se/osg@" /etc/osg/config.d/10-storage.ini
-sed -i -e "s@worker_node_temp = UNAVAILABLE@worker_node_temp = /tmp@" /etc/osg/config.d/10-storage.ini
+sed -i -e "s@app_dir = UNAVAILABLE@app_dir = &OSG_CE_Mount_ShareDir;/app@" /etc/osg/config.d/10-storage.ini
+sed -i -e "s@data_dir = UNAVAILABLE@data_dir = &OSG_CE_DataDir;@" /etc/osg/config.d/10-storage.ini
+sed -i -e "s@worker_node_temp = UNAVAILABLE@worker_node_temp = &OSG_WN_TmpDir;@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@site_read = UNAVAILABLE@site_read = srm://&OSG_SEServer;:8443/srm/v2/server@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@write_read = UNAVAILABLE@write_read = srm://&OSG_SEServer;:8443/srm/v2/server@" /etc/osg/config.d/10-storage.ini
 
-cp -p /etc/osg/config.d/15-managedfork.ini /etc/osg/config.d/15-managedfork.ini.original
+cp -p /etc/osg/config.d/15-managedfork.ini /etc/osg/config.d/15-managedfork.ini.template
 sed -i -e "s@enabled = FALSE@enabled = TRUE@" /etc/osg/config.d/15-managedfork.ini
 
-cp -p /etc/osg/config.d/20-condor.ini /etc/osg/config.d/20-condor.ini.original
+cp -p /etc/osg/config.d/20-condor.ini /etc/osg/config.d/20-condor.ini.template
 sed -i -e "s@enabled = FALSE@enabled = TRUE@" /etc/osg/config.d/20-condor.ini
 sed -i -e "s@job_contact = host.name/jobmanager-condor@job_contact = &OSG_CEServer;/jobmanager-condor@" /etc/osg/config.d/20-condor.ini
 sed -i -e "s@util_contact = host.name/jobmanager@util_contact = &OSG_CEServer;/jobmanager@" /etc/osg/config.d/20-condor.ini
 
-cp -p /etc/osg/config.d/30-gip.ini /etc/osg/config.d/30-gip.ini.original
+cp -p /etc/osg/config.d/30-gip.ini /etc/osg/config.d/30-gip.ini.template
 sed -i -e "s@batch = DEFAULT@batch = condor@" /etc/osg/config.d/30-gip.ini
 sed -i -e "s@gsiftp_host = DEFAULT@gsiftp_host = &OSG_GFTPServer;@" /etc/osg/config.d/30-gip.ini
 
-cp -p /etc/osg/config.d/40-network.ini /etc/osg/config.d/40-network.ini.original
+cp -p /etc/osg/config.d/40-network.ini /etc/osg/config.d/40-network.ini.template
 sed -i -e "s@source_range = UNAVAILABLE@source_range = &OSG_GlobusTcpSourceRange;@" /etc/osg/config.d/40-network.ini
 sed -i -e "s@port_range = UNAVAILABLE@port_range = &OSG_GlobusTcpPortRange;@" /etc/osg/config.d/40-network.ini
 sed -i -e "s@port_state_file = UNAVAILABLE@port_state_file = /var/tmp/globus-port-state.log@" /etc/osg/config.d/40-network.ini
+
+cp -p /etc/osg/config.d/01-squid.ini /etc/osg/config.d/01-squid.ini.template
+cp -p /etc/osg/config.d/40-siteinfo.ini /etc/osg/config.d/40-siteinfo.ini.template
 
  <!-- configure hostproxy to serve certificates on worker nodes -->
 <file name="/opt/hostproxy/host_dist.nodes" mode="append" >
@@ -106,17 +110,23 @@ sed -i -e "s@port_state_file = UNAVAILABLE@port_state_file = /var/tmp/globus-por
 </file>
 
 <file name="/etc/exports" mode="append">
-/scratch/ce &Kickstart_PrivateKickstartHost;(rw,async,no_root_squash) &Kickstart_PrivateNetwork;/&Kickstart_PrivateNetmask;(rw,async)
-/scratch/app &Kickstart_PrivateKickstartHost;(rw,async,no_root_squash) &Kickstart_PrivateNetwork;/&Kickstart_PrivateNetmask;(rw,async)
+&OSG_CE_Export_LocalDir;/ce &Kickstart_PrivateKickstartHost;(rw,async,no_root_squash) &Kickstart_PrivateNetwork;/&Kickstart_PrivateNetmask;(rw,async)
+&OSG_CE_Export_LocalDir;/app &Kickstart_PrivateKickstartHost;(rw,async,no_root_squash) &Kickstart_PrivateNetwork;/&Kickstart_PrivateNetmask;(rw,async)
 </file>
-mkdir -p /scratch/ce/globus/share
-rm -rf /scratch/ce/globus/share/certificates
-mv /etc/grid-security/certificates /scratch/ce/globus/share/.
-ln -s /scratch/ce/globus/share/certificates /etc/grid-security/certificates
+# create if needed /scratch/ce/globus/share
+[ -d &OSG_CE_Export_LocalDir;/ce/globus/share ]||mkdir -p &OSG_CE_Export_LocalDir;/ce/globus/share
+rm -rf &OSG_CE_Export_LocalDir;/ce/globus/share/certificates
+mv /etc/grid-security/certificates &OSG_CE_Export_LocalDir;/ce/globus/share/.
+ln -s &OSG_CE_Export_LocalDir;/ce/globus/share/certificates /etc/grid-security/certificates
+# create if needed /scratch/app/etc
+[ -d &OSG_CE_Export_LocalDir;/app/etc ]||mkdir -p &OSG_CE_Export_LocalDir;/app/etc
+chmod 1777 &OSG_CE_Export_LocalDir;/app
+chmod 1777 &OSG_CE_Export_LocalDir;/app/etc
+touch /var/tmp/globus-port-state.log
 #fetch-crl 2
-#sed -i -e "s@CRLDIR=/etc/grid-security/certificates@CRLDIR=/scratch/ce/globus/share/certificates@" /etc/fetch-crl.conf
+#sed -i -e "s@CRLDIR=/etc/grid-security/certificates@CRLDIR=&OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl.conf
 #fetch-crl 3
-sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = /scratch/ce/globus/share/certificates@" /etc/fetch-crl3.conf
+sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = &OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl3.conf
 
 
 

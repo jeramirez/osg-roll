@@ -27,10 +27,10 @@
 ### Create the glexec User
 #glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
-/usr/sbin/groupadd -g 463 glexec
-/usr/sbin/groupadd -g 464 gratia
-/usr/sbin/useradd -u 463 -c "gLExec user account" -s /sbin/nologin glexec
-/usr/sbin/useradd -u 464 -c "gratia runtime user" -s /sbin/nologin gratia
+/usr/sbin/groupadd -g &OSG_glexecgid; glexec
+/usr/sbin/groupadd -g &OSG_gratiagid; gratia
+/usr/sbin/useradd -u &OSG_glexecuid; -g OSG_glexecgid -c "gLExec user account" -s /sbin/nologin glexec
+/usr/sbin/useradd -u &OSG_gratiauid; -c -g &OSG_gratiagid; "gratia runtime user" -s /sbin/nologin gratia
 
 
 <file name="/tmp/CreateGlexecGroups" perms="0755">
