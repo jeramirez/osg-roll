@@ -339,7 +339,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 	def writeConfigNetwork(self, configFile):
 		self.addOutput(self.host, '#begin config %s' % (configFile))
-		self.addOutput(self.host, 'cp -f /etc/osg/config.d/40-network.ini.template %s' % (configFile))
+		self.addOutput(self.host, '/bin/cp -f /etc/osg/config.d/40-network.ini.template %s' % (configFile))
 		if self.OSG_GlobusTcpSourceRange > 0:
 			self.addOutput(self.host, 'sed -i -e "s@source_range = UNAVAILABLE@source_range = %s@" %s' % (self.OSG_GlobusTcpSourceRange,configFile))
 		if self.OSG_GlobusTcpPortRange > 0:
@@ -351,7 +351,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 	def writeConfigSiteInfo(self, configFile):
 		self.addOutput(self.host, '#begin config %s' % (configFile))
-		self.addOutput(self.host, 'cp -f /etc/osg/config.d/40-siteinfo.ini.template %s' % (configFile))
+		self.addOutput(self.host, '/bin/cp -f /etc/osg/config.d/40-siteinfo.ini.template %s' % (configFile))
 		group     = self.db.getHostAttr(self.host,'OSG_CE_siteinfo_group')
 		OIM_name  = self.db.getHostAttr(self.host,'OSG_CE_siteinfo_OIM_name')
 		OIM_group = self.db.getHostAttr(self.host,'OSG_CE_siteinfo_OIM_group')
@@ -387,6 +387,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.addOutput(self.host, 'sed -i -e "s@sponsor = UNAVAILABLE@sponsor = %s@" %s' % (sponsor,configFile))
 		else:
 			self.addOutput(self.host, '#attr OSG_CE_siteinfo_sponsor not defined for CE server')
+			self.addOutput(self.host, 'echo "attr OSG_CE_siteinfo_sponsor not defined for CE server"')
 			self.addOutput(self.host, '#### default is sponsor = UNAVAILABLE in %s' % (configFile))
 		if policy > 0:
 			self.addOutput(self.host, 'sed -i -e "s@site_policy = UNAVAILABLE@site_policy = %s@" %s' % (policy,configFile))
@@ -397,11 +398,13 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.addOutput(self.host, 'sed -i -e "s@contact = UNAVAILABLE@contact = %s@" %s' % (contact,configFile))
 		else:
 			self.addOutput(self.host, '#attr OSG_CE_siteinfo_contact not defined for CE server')
+			self.addOutput(self.host, 'echo "attr OSG_CE_siteinfo_contact not defined for CE server"')
 			self.addOutput(self.host, '#### default is contact = UNAVAILABLE in %s' % (configFile))
 		if email > 0:
 			self.addOutput(self.host, 'sed -i -e "s/email = UNAVAILABLE/email = %s/" %s' % (email,configFile))
 		else:
 			self.addOutput(self.host, '#attr OSG_CE_siteinfo_email not defined for CE server')
+			self.addOutput(self.host, 'echo "attr OSG_CE_siteinfo_email not defined for CE server"')
 			self.addOutput(self.host, '#### default is email = UNAVAILABLE in %s' % (configFile))
 		if city > 0:
 			self.addOutput(self.host, 'sed -i -e "s@city = UNAVAILABLE@city = %s@" %s' % (city,configFile))
@@ -569,4 +572,5 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '</file>')
 
 		self.endOutput(padChar='')
+
 
