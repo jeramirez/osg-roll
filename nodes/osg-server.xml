@@ -384,7 +384,7 @@ OSGCEPrivate=`/opt/rocks/bin/rocks report host attr frontend attr=OSGCEPrivate`
 #if your ce is different from default you need to change $OSGCEPrivate to your current private ce here
 touch /etc/auto.osg
 echo "ce ${OSGCEPrivate}:${CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
-echo "app  ${OSGCEPrivate}:$CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
+echo "app  ${OSGCEPrivate}:${CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
 
 touch /etc/auto.master
 echo "${CEshare}  /etc/auto.osg  --timeout=120"  &gt;&gt; /etc/auto.master
