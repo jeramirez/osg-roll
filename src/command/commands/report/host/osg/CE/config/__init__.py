@@ -234,7 +234,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 			else:
 				self.addOutput(self.host, '#attr %s not defined for CE server, using cpus from CE' % (OSG_CpusPerNode))
 				if iclus == 1:
-					self.addOutput(self.host, "export localcpunode=`cat /proc/cpuinfo | grep 'physical id' | sort | uniq | wc -l`")
+					self.addOutput(self.host, "export localcpunode=`cat /proc/cpuinfo | grep 'processor' | sort | uniq | wc -l`")
 				self.addOutput(self.host, 'echo "cpus_per_node = $localcpunode" &gt;&gt; %s' % (configFile))
 
 			if self.OSG_ClusterName[OSG_CoresPerNode] > 0:
@@ -558,7 +558,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.host = host
 			self.CheckIsCE()
 			if self.IsCE:
-				self.addOutput(self.host, '<file name="%s">' % (self.ConfigFile))
+				self.addOutput(self.host, '<file name="%s" perms="755" >' % (self.ConfigFile))
 				self.addOutput(self.host, '#!/bin/bash')
 				self.addOutput(self.host, '')
 				self.writeConfigMisc(self.ConfigMisc)
