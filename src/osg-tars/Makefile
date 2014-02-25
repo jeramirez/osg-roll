@@ -70,8 +70,8 @@ include Rules.mk
 
 pretar:: download
 
-download:
-	. files
+download::
+	cd $(CURDIR); . $(CURDIR)/files
 
 
 build::
