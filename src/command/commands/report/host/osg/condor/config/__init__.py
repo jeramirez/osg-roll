@@ -216,19 +216,20 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 		self.uid = info[2]
 		self.gid = info[3]
+		condoruid = self.db.getHostAttr(self.host,'OSG_condoruid')
+		condorgid = self.db.getHostAttr(self.host,'OSG_condorgid')
+		if condoruid > 0 and condoruid != info[2]:
+			self.uid = condoruid
+		if condorgid > 0 and condorgid != info[3]:
+			self.gid = condorgid
 
 	def setDefaults(self):
 		""" set condor location and config files """
 		self.user = 'condor'
 		self.releaseDir = '/usr'
 		self.configMain = '/etc/condor/condor_config'
-		self.configLocal = self.ConfigFile
 		if self.UIDdomain is not None:
 			self.dict['UID_DOMAIN'] = self.UIDdomain
-#ed		self.releaseDir = '/opt/condor'
-#ed		self.configMain = self.releaseDir + '/etc/condor_config'
-#ed		self.configLocal = self.releaseDir + '/etc/condor_config.local' 
-#ed		self.confTemplate = self.releaseDir + '/etc/examples/condor_config.generic'
 		self.getUID()
 
 	def find_executable(self, executable, path=None):
@@ -344,6 +345,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.Config()
 			self.runPlugins((host,self.dict))
 			self.OverdriveType()
-			self.writeConfigFile(self.dict, self.configLocal)
+			self.writeConfigFile(self.dict, self.ConfigFile)
 
 		self.endOutput(padChar='')
