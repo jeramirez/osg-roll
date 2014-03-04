@@ -1,0 +1,403 @@
+<chapter id="customexamples" xreflabel="Customizing the OSG Roll Examples">
+
+
+<title>Customizing the OSG Roll</title>
+
+<!-- ***************************************************************** -->
+<section id="config-examples-hadoop" xreflabel="Hadoop Configuration Examples">
+<title>Examples of Hadoop Configuration</title>
+<para>
+The following are short examples of how to customize Hadoop using 
+Rocks commands.
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Hadoop Node Name on all compute Appliances:
+<computeroutput>rocks set appliance attr compute OSG_HadoopNameNode value=hadoop-0-0 </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Hadoop Secondary Name on all compute Appliances:
+<computeroutput>rocks set appliance attr compute OSG_HadoopSecondaryNode value=hadoop-0-1 </computeroutput>
+</para>
+</listitem>
+
+<listitem>
+<para>
+Change default Hadoop Data Dir on all compute Appliances, for example two data disks:
+<computeroutput>rocks set appliance attr compute OSG_HadoopData value="/hadoop/data,/hadoop2/data" </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+
+</para>
+
+</section> 
+
+<!-- ***************************************************************** -->
+<section id="config-examples-gums" xreflabel="How to customize Gums server">
+<title>How to set new Gums server</title>
+<para>
+The following are short examples of how to customize gums server using 
+Rocks commands before kickstarting.
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Gums server Name on all compute Appliances:
+<computeroutput>rocks set appliance attr compute OSG_GumsServer value="my-gums.my.edu." </computeroutput>
+</para>
+</listitem>
+<listitem>
+<para>
+Change default Gums server Name on a host:
+<computeroutput>rocks set host attr se-0-0 OSG_GumsServer value="my-gums.my.edu." </computeroutput>
+</para>
+</listitem>
+<listitem>
+<para>
+Change default Gums server Name global:
+<computeroutput>rocks set attr OSG_GumsServer value="my-gums.myglobal.edu." </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+
+</para>
+</section> 
+<!-- ***************************************************************** -->
+<section id="config-examples-gridftp" xreflabel="How to customize Default Gridftp server">
+<title>How to set Default Gridftp server used for Bestman</title>
+<para>
+The following are short examples of how to customize default gridftp server using 
+Rocks commands.
+
+<itemizedlist>
+<listitem>
+<para>
+Change default Gridftp server Name global:
+<computeroutput>rocks set attr OSG_SRMsupportedProtocolList  value="gsiftp://mygridftp.my.edu:2811" </computeroutput>
+</para>
+</listitem>
+</itemizedlist>
+</para>
+</section> 
+
+
+<!-- ***************************************************************** -->
+<section id="config-examples-condor" xreflabel="Condor Configuration Examples">
+<title>Examples of Condor Configuration</title>
+<para>
+The following are short examples of how to customize Condor using 
+Rocks commands.
+
+<itemizedlist>
+
+<listitem>
+<para>
+Enable Condor install on all VM-Containers Appliances:
+<computeroutput>rocks add appliance attr vm-container OSG_Condor_Client true </computeroutput>
+</para>
+</listitem>
+
+<listitem>
+<para>
+Disable Condor install on particular node:
+<computeroutput>rocks set host attr compute-0-0 OSG_Condor_Client false </computeroutput>
+</para>
+</listitem>
+
+
+<listitem>
+<para>
+Define a New Condor Master:
+<computeroutput>rocks set attr OSG_Condor_Master central-master.my.edu </computeroutput>
+</para>
+</listitem>
+
+<listitem>
+<para>
+Enable MPI/Dedicated Scheduler:
+<computeroutput>rocks set attr OSG_Condor_EnableMPI true</computeroutput>. 
+</para>
+<para>
+Actively-running Condor
+daemons must be reconfigured for this attribute to take affect. 
+This can be achieved dynamically on compute and frontend appliances using
+<computeroutput>rocks sync host osg condor frontend compute</computeroutput>. 
+</para>
+<para> Reinstalled nodes
+will build the correct configuration.
+</para>
+</listitem>
+
+</itemizedlist>
+
+</para>
+
+</section> 
+
+<!-- ***************************************************************** -->
+<section id="reconfiguring-CE" xreflabel="Reconfiguring CE">
+<title>Reconfiguring CE/gatekeeper after Installation </title>
+<para>
+A primitive configuratation of CE is done during the install, the resulting
+configuration files are located in /etc/osg/config.d and is based on available 
+information at install. To reconfigure a CE node changes on the ini files located
+in /etc/osg/config.d  is needed followed by running the command osg-configure -c.
+This part is automatized by running the command
+<screen>
+# rocks sync host osg CE &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+This will rewrite 
+10-misc.ini,
+10-storage.ini, 
+15-managedfork.ini,
+20-condor.ini (or 20-sge.ini), 
+30-gip.ini, 
+40-network.ini,
+40-siteinfo.ini
+and run the osg command <computeroutput>/usr/sbin/osg-configure -c</computeroutput>
+</para>
+
+<note>
+<para>
+To view the script of changes for the inifiles before making changes, use
+<computeroutput>rocks report host osg CE config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+<note>
+<para>
+To generate the script,  login on the CE node and run
+<computeroutput>rocks report host osg CE config &lt;hostname&gt; | rocks report script | bash </computeroutput>
+the output script will be writen in <computeroutput>/tmp/Reconfigure_CE_ini_files</computeroutput>
+</para>
+</note>
+
+<para>
+To find information about CE configuration 
+please see the OSG documentation at <ulink
+url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallComputeElement#7_Configuration_Instructions">
+OSG twiki page</ulink>.
+</para>
+
+</section>
+
+<section id="reconfiguring-condor" xreflabel="Reconfiguring Condor">
+<title>Reconfiguring Condor after Installation </title>
+<para>
+The configuration of Condor is done during the install, the resulting 
+configuration files are located in /etc/condor/config.d/. To reconfigure Condor 
+on a node,  make appropriate attribute using the commands above  and then run
+<screen>
+# rocks sync host osg condor &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+This will rewrite the 01_rocks_condor_config.local on the file and then calls the Condor
+command <computeroutput>/usr/sbin/condor_reconfig</computeroutput>
+</para>
+
+<note>
+<para>
+To view the contents of the 01_rocks_condor_config.local before making changes, use
+<computeroutput>rocks report host osg condor config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+<para>
+To find information about administrating  and using Condor Pools
+please see the original Condor manual at <ulink
+url="http://www.cs.wisc.edu/condor/manual">Condor
+manuals</ulink> or <ulink url="condor-Manual"> locally </ulink>.
+</para>
+
+</section>
+
+<section id="reconfiguring-hadoop" xreflabel="Reconfiguring Hadoop">
+<title>Reconfiguring Hadoop after Installation </title>
+<para>
+The configuration of Hadoop is done during the install, the resulting 
+configuration file is /etc/sysconfig/hadoop. To reconfigure Hadoop 
+on a node,  make appropriate attribute using the commands above  and then run
+<screen>
+# rocks sync host osg hadoop &lt;hostname&gt;
+</screen>
+</para>
+<para>
+This will rewrite the file /etc/sysconfig/hadoop and then calls the Hadoop
+command <computeroutput>service hadoop-firstboot start</computeroutput>
+</para>
+
+<note>
+<para>
+To view the contents of the /etc/sysconfig/hadoop before making changes, use
+<computeroutput>rocks report host osg hadoop config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+</section>
+
+<section id="customize-squid" xreflabel="Customize Squid">
+<title>Reconfiguring Frontier Squid after Installation </title>
+<para>
+The default customization of Squid is done during the install, the resulting 
+configuration file is /etc/squid/customize.sh. To reconfigure squid 
+on a node,  make appropriate attribute using the commands above  and then run
+<screen>
+# rocks sync host osg squid &lt;hostname&gt;
+</screen>
+</para>
+<para>
+This will rewrite the file /etc/squid/customize.sh then you can start the service with the
+command <computeroutput>service frontier-squid start</computeroutput>
+</para>
+
+<note>
+<para>
+To view the contents of the /etc/squid/customize.sh before making changes, use
+<computeroutput>rocks report host osg squid config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+</section>
+
+<section id="customize-cvmfs" xreflabel="Customize CVMFS">
+<title>Reconfiguring CVMFS </title>
+<para>
+The default customization of CVMFS is done at the OS install, the resulting configuration files are:
+/etc/cvmfs/default.local, 
+/etc/cvmfs/config.d/cms.cern.ch.local,
+/etc/cvmfs/domain.d/cern.ch.local and
+/etc/fuse.conf
+To reconfigure cvmfs on a node, make appropriate attribute using the commands above and then run
+<screen>
+# rocks sync host osg cvmfs &lt;hostname&gt;
+</screen>
+</para>
+<para>
+In case cvmfs was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_CVMFS on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_CVMFS value=true
+# rocks sync host osg cvmfs install &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+This will rewrite the above files then you can reload the service with the
+command <computeroutput>cvmfs_config reload </computeroutput>
+</para>
+
+<note>
+<para>
+To view the contents of the files 
+/etc/cvmfs/default.local,
+/etc/cvmfs/config.d/cms.cern.ch.local,
+/etc/cvmfs/domain.d/cern.ch.local and 
+/etc/fuse.conf
+ before making changes, use
+<computeroutput>rocks report host osg cvmfs config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+</section>
+
+
+<!-- ***************************************************************** -->
+<section id="condor-advanced-configuration" xreflabel="Making Deeper Changes">
+<title>Programatically changing the Contents of 01_rocks_condor_config.local</title>
+<para>
+Condor configuration is localized into /etc/condor/config.d/01_rocks_condor_config.local.
+This file is generated programatically from the output of 
+<computeroutput>rocks report host osg condor config &lt;hostname&gt;
+</computeroutput>.
+</para>
+<para>
+The command <computeroutput>rocks report host osg condor config</computeroutput>
+is defined by the OSG roll and is written in Python. This report command is 
+extensible through Rocks command plugins. 
+</para>
+<para>
+To see a sample Condor plugin, 
+view the file in location
+<computeroutput>
+/opt/rocks/lib/python2.4/site-packages/rocks/commands/report/host/osg/condor/config/plugin_sample.py
+</computeroutput>, which is reproduced here.
+<screen>
+# $Id$
+import rocks.commands
+
+class Plugin(rocks.commands.Plugin):
+
+	def provides(self):
+		return 'sample'
+
+	def run(self, argv):
+		# Argv contains the hostname and the in memory key-value store
+	        # that is eventually written to 
+		# /etc/condor/config.d/01_rocks_condor_config.local
+		# plugins can add/change/remove keys from the store
+
+		# 1. Get the hostname and the key-value store, which
+		#    is a python dictionary 
+		host, kvstore = argv 
+
+		# The following would add CONDOR_SAMPLE=Sample Plugin
+		# the key = value dictionary (kvstore)  that is written out
+		#
+		# Example 1. Read an attribute from the database and set 
+		# the values
+		value = self.db.getHostAttr(host, 'Condor_HostAllow')
+		kvstore['CONDOR_SAMPLE'] = value 
+		
+		# Example 2. Set the key CONDOR_SAMPLE to the hostname 
+		kvstore['CONDOR_SAMPLE'] = host 
+
+		# Example 3. Remove a key from the dictionary
+		if 'CONDOR_SAMPLE' in kvstore:
+			del kvstore['CONDOR_SAMPLE']
+
+RollName = "condor"
+</screen>
+</para>
+
+<para>
+Users/Roll Developers can add their own plugins for the 
+"report host condor config" command to overwrite, add, and/or delete
+key,value pairs that are written into /etc/condor/config.d/01_rocks_condor_config.local.
+</para>
+<para>
+In the above code sample, the Condor report command driver passes
+the hostname and the dictionary of already defined key,value pairs
+(kvstore in the sample code).  The sample code shows several different 
+examples of changing the key 'CONDOR_SAMPLE'.
+</para>
+
+<para>
+Plugins are written in Python, are called in random order,
+ and must be named "plugin_&lt;name&gt;.py".  
+</para>
+<para>
+Plugins also enable any 
+desired configurations to be properly applied with the command
+<computeroutput>
+rocks sync host osg condor config
+</computeroutput>.
+</para>
+</section>
+</chapter>
+
