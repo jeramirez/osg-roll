@@ -111,7 +111,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.addOutput(self.host, 'sed -i -e "s@data_dir = UNAVAILABLE@data_dir = %s@" %s' % (OSG_CE_DataDir,configFile))
 		self.addOutput(self.host, 'sed -i -e "s@worker_node_temp = UNAVAILABLE@worker_node_temp = %s@" %s' % (OSG_WN_TmpDir,configFile))
 		self.addOutput(self.host, 'sed -i -e "s@site_read = UNAVAILABLE@site_read = srm://%s:8443/srm/v2/server@" %s' % (OSG_SEServer,configFile))
-		self.addOutput(self.host, 'sed -i -e "s@write_read = UNAVAILABLE@write_read = srm://%s:8443/srm/v2/server@" %s' % (OSG_SEServer,configFile))
+		self.addOutput(self.host, 'sed -i -e "s@site_write = UNAVAILABLE@site_write = srm://%s:8443/srm/v2/server@" %s' % (OSG_SEServer,configFile))
 		self.addOutput(self.host, '#end config %s' % (configFile))
 		self.addOutput(self.host, '')
 
