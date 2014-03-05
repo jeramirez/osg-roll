@@ -3,6 +3,84 @@
 
 <title>Using the osg Roll</title>
 
+<section id="Install-CE-ONLY" xreflabel="Example Install ce standalone server">
+<title>Example Install ce server (condor)</title>
+<para>
+ce-condor can be installed as follow.
+
+</para>
+<screen>
+$ su - root
+#
+###set public interface
+#
+#rocks set host interface ip ce-0-0 iface=eth1 ip=1.2.3.5
+#rocks set host interface name ce-0-0 iface=eth1 name=rocks-ce
+#rocks set host interface subnet ce-0-0 eth1 public
+#rocks set host attr ce-0-0 primary_net public
+#rocks add host route ce-0-0 0.0.0.0 1.2.3.1 netmask=0.0.0.0
+#rocks add host attr ce-0-0 OSG_CE value="condor"
+#rocks add host attr ce-0-0 OSG_Condor_Daemons value="MASTER, SCHEDD"
+#
+###sample of customizing/changing attribute
+#rocks set host attr ce-0-0 OSG_SRMsupportedProtocolList value="gsiftp://rocks-ce.mypublic.edu:2811"
+###place where grid certs are stored 
+###this example needs hostcert, httpcert
+###    /my/nfs/path/for/certs/ce-0-0/httpcert.pem
+###    /my/nfs/path/for/certs/ce-0-0/httpkey.pem
+#rocks set host atrr ce-0-0 OSG_StoredCertsDir value="/my/nfs/path/for/certs"
+###setting service certs
+#rocks 5.5
+#  rocks add host sec_attr ce-0-0 attr=hostcert value="`cat /path/to/cert/hostcert.pem`" crypted=true
+#  rocks add host sec_attr ce-0-0 attr=hostkey value="`cat /path/to/certkey/hostkey.pem`" crypted=true
+#rocks 5.6
+#  rocks add host sec_attr ce-0-0 attr=hostcert value="/path/to/cert/hostcert.pem" crypted=true
+#  rocks add host sec_attr ce-0-0 attr=hostkey value="/path/to/certkey/hostkey.pem" crypted=true
+
+#
+# reinstall
+#
+#shoot-node ce-0-0
+
+#
+# post install
+#
+#rocks sync host sec_attr ce-0-0
+#rocks run host ce-0-0 command='/root/install_ce_cert.sh'
+##Manual config
+#edit for your site /etc/osg/config.d/30-gip.ini
+#edit for your site /etc/osg/config.d/40-siteinfo.ini
+#rocks run host ce-0-0 command='configure-osg -v'
+#rocks run host ce-0-0 command='configure-osg -c'
+##OR
+##Automatic throughout attributes (survive reinstalls)
+##Example
+## Attrs used to fill gip (only need to set one time)
+#rocks add host attr ce-0-0 OSG_CE_gip_multicluster value=2
+#rocks add host attr ce-0-0 OSG_CE_gip_SubCluster1 value="MyClusterID"
+#rocks add host attr ce-0-0 OSG_CE_gip_ClusterName1 value="MyClusterName"
+#rocks add host attr ce-0-0 OSG_CE_gip_SubCluster2 value="MyClusterID2"
+#rocks add host attr ce-0-0 OSG_CE_gip_ClusterName2 value="MyClusterName2"
+## Attrs used to fill siteinfo
+#rocks add host attr ce-0-0 OSG_CE_siteinfo_sponsor value="uscms"
+#rocks add host attr ce-0-0 OSG_CE_siteinfo_contact value="Your Admin Name"
+#rocks add host attr ce-0-0 OSG_CE_siteinfo_email value="your_admin@mail.edu"
+#rocks add host attr ce-0-0 OSG_CE_siteinfo_OIM_name value="your resource OIM registered"
+#rocks add host attr ce-0-0 OSG_CE_siteinfo_OIM_group value="your resource group OIM registered"
+#rocks sync host osg CE ce-0-0
+
+#rocks run host ce-0-0 command='chkconfig condor on'
+#rocks run host ce-0-0 command='chkconfig globus-gatekeeper on'
+#rocks run host ce-0-0 command='chkconfig fetch-crl3-cron on'
+#rocks run host ce-0-0 command='chkconfig fetch-crl3-boot on'
+
+#services for ce-condor
+#rocks run host ce-0-0 command='service condor start'
+#rocks run host ce-0-0 command='service globus-gatekeeper start'
+
+</screen>
+</section>
+
 <section id="Install-SE" xreflabel="Example Install bestman server + gridftp hadoop">
 <title>Example Install bestman server + gridftp hadoop</title>
 <para>
