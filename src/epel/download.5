@@ -24,6 +24,7 @@
 #iperf-2.0.5-1.el5.x86_64.rpm
 #python-ssl-1.15-3.el5.x86_64.rpm
 #srm-ifce-1.19.0-1.el5.x86_64.rpm
+#gridftp-ifce-2.3.1-1.el5.x86_64.rpm
 rsync -av \
 rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
 jakarta-commons-cli{-javadoc-,-}1.0-6jpp_10.el5.x86_64.rpm \
@@ -39,7 +40,8 @@ rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
 iperf-2.0.5-1.el5.x86_64.rpm \
 rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/{\
 python-ssl-1.15-3.el5.x86_64.rpm\
-,srm-ifce-*.el5.x86_64.rpm\
+,srm-ifce-*.el5.{x86_64,i386}.rpm\
+,gridftp-ifce-*.el5.{x86_64,i386}.rpm\
 } x86_64/.
  
 #debug
@@ -48,6 +50,7 @@ python-ssl-1.15-3.el5.x86_64.rpm\
 #gsoap-debuginfo-2.7.13-5.el5.x86_64.rpm
 #iperf-debuginfo-2.0.5-1.el5.x86_64.rpm
 #srm-ifce-debuginfo-1.19.0-1.el5.x86_64.rpm
+#gridftp-ifce-debuginfo-2.3.1-1.el5.x86_64.rpm
 rsync -av \
 rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/debug/{\
 jakarta-commons-cli-debuginfo-1.0-6jpp_10,\
@@ -55,6 +58,7 @@ bouncycastle-debuginfo-1.45-6,\
 gsoap-debuginfo-2.7.13-5,\
 iperf-debuginfo-2.0.5-1\
 ,srm-ifce-debuginfo-*\
+,gridftp-ifce-debuginfo-*\
 }.el5.x86_64.rpm \
 debug/.
 
