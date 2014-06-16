@@ -19,12 +19,16 @@
 #is-interface-devel-*.el6.i686.rpm
 #is-interface-devel-*.el6.x86_64.rpm
 #iperf-*.el6.x86_64.rpm
+#srm-ifce-*.el6.x86_64.rpm
+#gridftp-ifce-*el6.x86_64.rpm
 rsync -av \
 rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/{\
 jakarta-commons-cli{-javadoc-,-}*,\
 gsoap{-devel-,-}*,\
 is-interface{-devel-,-}*,\
-iperf-*\
+iperf-*,\
+srm-ifce-*,\
+gridftp-ifce-*\
 }.el6.{x86_64,i686}.rpm \
 x86_64/.
  
@@ -38,7 +42,9 @@ rsync -av \
 rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/debug/{\
 jakarta-commons-cli-debuginfo-*,\
 gsoap-debuginfo-*,\
-iperf-debuginfo-*\
+iperf-debuginfo-*,\
+srm-ifce-debuginfo-*,\
+gridftp-ifce-debuginfo-*\
 }.el6.x86_64.rpm \
 debug/.
 
