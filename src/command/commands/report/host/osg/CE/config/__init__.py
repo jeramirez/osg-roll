@@ -21,9 +21,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 	"""
 
 	Output the OSG CE Local Configuration Script 
- 	Uses Rocks Attributes: OSG_CE, OSG_CEServer, OSG_SEServer, OSG_GumsServer,
+	Uses Rocks Attributes: OSG_CE, OSG_CEServer, OSG_SEServer, OSG_SquidServer, OSG_GumsServer,
 	OSG_GlobusTcpSourceRange, OSG_GlobusTcpPortRange,
-        OSG_CE_Mount_ShareDir, OSG_CE_DataDir, OSG_WN_TmpDir,
+	OSG_CE_Mount_ShareDir, OSG_CE_DataDir, OSG_WN_TmpDir,
 	OSG_GFTPServer, Info_ClusterName,
 	OSG_CE_gip_multicluster, OSG_CE_gip_NmultiSE,
 	OSG_CE_gip_SubCluster1,OSG_CE_gip_ClusterName1,OSG_CE_gip_NumberOfNodes1,OSG_CE_gip_mb_of_Ram1,OSG_CE_gip_cpu_model1,OSG_CE_gip_cpu_vendor1,
@@ -47,6 +47,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 	<param type="bool" name="test">
 	If want to test output set this parameter.
 	Default is no.
+	</param>
+
+	<param type='string' name='ConfigSquid'>
+	Defaults to: /etc/osg/config.d/01-squid.ini
 	</param>
 
 	<param type='string' name='ConfigMisc'>
@@ -85,6 +89,19 @@ class Command(rocks.commands.HostArgumentProcessor,
 	Set the OSG Gip Configuration File for ce-0-0 as /etc/osg/config.d/30-gip.ini.test 
 	</example>
 	"""
+
+	def writeConfigSquid(self, configFile):
+		OSG_SquidServer          = self.db.getHostAttr(self.host,'OSG_SquidServer')
+
+		self.addOutput(self.host, '#begin config %s' % (configFile))
+		self.addOutput(self.host, '/bin/cp -f /etc/osg/config.d/01-squid.ini.template %s' % (configFile))
+		if OSG_SquidServer > 0:
+			self.addOutput(self.host, 'sed -i -e "s@location = @location = %s@" %s' % (OSG_SquidServer,configFile))
+		else:
+			self.addOutput(self.host, 'sed -i -e "s@enabled = True@enabled = False@"' )
+			self.addOutput(self.host, 'sed -i -e "s@location = @location = UNAVAILABLE@" %s' % (configFile))
+		self.addOutput(self.host, '#end config %s' % (configFile))
+		self.addOutput(self.host, '')
 
 	def writeConfigMisc(self, configFile):
 		OSG_GumsServer          = self.db.getHostAttr(self.host,'OSG_GumsServer')
@@ -498,9 +515,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 	def run(self, params, args):
 
-		test, ConfigFile, ConfigMisc, ConfigStorage, ConfigManagedFork, ConfigSGE, ConfigCondor, ConfigGip, ConfigNetwork, ConfigSiteInfo = self.fillParams([
+		test, ConfigFile, ConfigSquid, ConfigMisc, ConfigStorage, ConfigManagedFork, ConfigSGE, ConfigCondor, ConfigGip, ConfigNetwork, ConfigSiteInfo = self.fillParams([
 				('test','n'),
 				('ConfigFile','/tmp/Reconfigure_CE_ini_files'),
+				('ConfigSquid','/etc/osg/config.d/01-squid.ini'),
 				('ConfigMisc','/etc/osg/config.d/10-misc.ini'),
 				('ConfigStorage','/etc/osg/config.d/10-storage.ini'),
 				('ConfigManagedFork','/etc/osg/config.d/15-managedfork.ini'),
@@ -513,6 +531,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 		istest = self.str2bool(test)
 		if istest:
+			ConfigSquid       = ConfigSquid + '_test'
 			ConfigMisc        = ConfigMisc + '_test'
 			ConfigStorage     = ConfigStorage + '_test'
 			ConfigManagedFork = ConfigManagedFork  + '_test'
@@ -530,6 +549,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '<file name="%s" perms="755" >' % (ConfigFile))
 				self.addOutput(self.host, '#!/bin/bash')
 				self.addOutput(self.host, '')
+				self.writeConfigSquid(ConfigSquid)
 				self.writeConfigMisc(ConfigMisc)
 				self.writeConfigStorage(ConfigStorage)
 				self.writeConfigManagedFork(ConfigManagedFork)
