@@ -126,7 +126,10 @@ touch /var/tmp/globus-port-state.log
 #fetch-crl 2
 #sed -i -e "s@CRLDIR=/etc/grid-security/certificates@CRLDIR=&OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl.conf
 #fetch-crl 3
-sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = &OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl3.conf
+if [ &rocks_version_major; -lt 6 ]; then
+FETCHCRLV=3
+fi
+sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = &OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl${FETCHCRLV}.conf
 
 
 
@@ -151,8 +154,16 @@ fi
 if [ "$THISHOST" == "$CESERVER" ]; then
   echo "installing grid certs on $THISHOST"
   echo "searching certs in $DIRNAME"
-  cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
-  cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  if [ ! -f /etc/grid-security/hostcert.pem ]; then
+     cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
+  else
+     echo "-- hostcert.pem already installed no need to install it."
+  fi
+  if [ ! -f /etc/grid-security/hostkey.pem ]; then
+      cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  else
+     echo "-- hostkey.pem already installed no need to install it."
+  fi
   chown root:root /etc/grid-security/hostcert.pem
   chown root:root /etc/grid-security/hostkey.pem
   chmod 444 /etc/grid-security/hostcert.pem
