@@ -11,6 +11,7 @@ class plugin(rocks.commands.sec_attr_plugin):
 
 	def filter(self, value):
 		certkeyfile='/root/hostkey.pem'
+		certkeyfile2='/etc/grid-security/hostkey.pem'
 		#open temporary file and write value there
 		tf, tfname= tempfile.mkstemp()
 		os.write(tf, value)
@@ -22,3 +23,7 @@ class plugin(rocks.commands.sec_attr_plugin):
 		# Move temporary file to certkeyfile
 		shutil.move(tfname, certkeyfile)
 		os.chmod(certkeyfile, 0400)
+		# Copy certkeyfile to certkeyfile2 if grid-dir exist
+		if os.path.exists('/etc/grid-security'):
+			shutil.copy(certkeyfile, certkeyfile2)
+			os.chmod(certkeyfile2, 0400)
