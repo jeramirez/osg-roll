@@ -39,11 +39,12 @@
 #Caltech#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
 #/usr/sbin/useradd -u 459 -g 410 -c "Bestman SRM user" -s /sbin/nologin bestman
 #OSG#bestman:x:459:410:BeStMan 2 Server user:/etc/bestman2:/bin/bash
-/usr/sbin/groupadd -g 410 bestman
-/usr/sbin/useradd -u 459 -g 410 -c "Bestman 2 Server user" -s /sbin/nologin -d /etc/bestman2 bestman
+/usr/sbin/groupadd -g &OSG_bestmangid; bestman
+/usr/sbin/useradd -u &OSG_bestmanuid; -g &OSG_bestmangid; -c "Bestman 2 Server user" -s /sbin/nologin -d /etc/bestman2 bestman
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
-/usr/sbin/groupadd -g 464 gratia
-/usr/sbin/useradd -u 464 -g 464 -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+/usr/sbin/groupadd -g &OSG_gratiagid; gratia
+/usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+
 
  <!-- install osg-bestman2-server from local mirror-->
 touch /root/yum-install.log
@@ -51,6 +52,7 @@ yum install osg-ca-certs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
 yum install bestman2-server  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
 
  <!-- customize /etc/bestman2/conf/bestman2.rc configuration for osg-bestman-server  -->
+cp -p /etc/bestman2/conf/bestman2.rc /etc/bestman2/conf/bestman2.rc.template
 sed -i -e "s@### localPathListAllowed=@localPathListAllowed=&OSG_SRMlocalPathListAllowed;@" /etc/bestman2/conf/bestman2.rc
 sed -i -e "s@### supportedProtocolList=@supportedProtocolList=&OSG_SRMsupportedProtocolList;@" /etc/bestman2/conf/bestman2.rc
 sed -i -e "s@### pluginLib=/usr/share@#ed pluginLib=/usr/share@" /etc/bestman2/conf/bestman2.rc
@@ -59,6 +61,7 @@ sed -i -e "s@### GUMSProtocol=XACML@GUMSProtocol=XACML@" /etc/bestman2/conf/best
 sed -i -e "s@### GUMSserviceURL=@GUMSserviceURL=https://&OSG_GumsServer;:8443/gums/services/GUMSXACMLAuthorizationServicePort@" /etc/bestman2/conf/bestman2.rc
 
  <!-- customize /etc/sysconfig/bestman2 configuration for osg-bestman-server  -->
+cp -p /etc/sysconfig/bestman2 /etc/sysconfig/bestman2.template
 sed -i -e "s/# GLOBUS_TCP_PORT_RANGE=/GLOBUS_TCP_PORT_RANGE=&OSG_GlobusTcpPortRange;/" /etc/sysconfig/bestman2
 sed -i -e "s/# GLOBUS_TCP_SOURCE_RANGE=/GLOBUS_TCP_SOURCE_RANGE=&OSG_GlobusTcpSourceRange;/" /etc/sysconfig/bestman2
 sed -i -e "s@# BESTMAN_PLUGIN=@#ed BESTMAN_PLUGIN=/usr/share/java/bestman2/plugin/RRWP.jar@" /etc/sysconfig/bestman2

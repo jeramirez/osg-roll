@@ -160,6 +160,9 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_tomcatgid value=91
 /opt/rocks/bin/rocks add attr OSG_gratiauid value=464
 /opt/rocks/bin/rocks add attr OSG_gratiagid value=464
+# parameters related with Bestman install
+/opt/rocks/bin/rocks add attr OSG_bestmanuid value=459
+/opt/rocks/bin/rocks add attr OSG_bestmangid value=409
 /opt/rocks/bin/rocks add attr OSG_CE_Export_LocalDir value="/scratch"
 /opt/rocks/bin/rocks add attr OSG_CE_Mount_ShareDir value="/sharesoft/osg"
 /opt/rocks/bin/rocks add attr OSG_CE_DataDir value="/data/se/osg"
@@ -295,6 +298,31 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-gridce
 </file>
 
 
+<!-- Bestman config related post install -->
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-bestman" perms="0755">
+#!/bin/sh
+
+### Create the Bestman User
+#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
+
+OSG_bestmangid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_bestmangid`
+OSG_bestmanuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_bestmanuid`
+
+#groups are completely exported! even in 5.5 (not filtered)
+/usr/sbin/groupadd -g ${OSG_bestmangid} bestman
+
+### This users are for backward compatibility (&lt; rocks5.5)
+if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
+/usr/sbin/useradd -u ${OSG_bestmanuid} -g ${OSG_bestmangid} -c "Bestman SRM user" -s /sbin/nologin -d /etc/bestman2 bestman
+
+#end backward compatibility ( &lt;rocks 5.5)
+fi
+
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-bestman /root/post-90-osg-server-bestman.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-bestman
+</file>
+
+
 <!-- glexec config related post install -->
 #for i in {0..49}; do if [ $i -lt 10 ]; then /usr/sbin/groupadd -g 6500$i glexec0$i; else /usr/sbin/groupadd -g 650$i glexec$i; fi; done
 <file name="/tmp/CreateGlexecGroups" perms="0755">
@@ -350,15 +378,11 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server" perms="0755">
 #!/bin/sh
 
-### Create the Bestman User
-#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
 ### Create the rsv,cndrcron Users
 #cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
 
 ### This users are for backward compatibility (&lt; rocks5.5)
 if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/groupadd -g 410 bestman
-/usr/sbin/useradd -u 459 -g 410 -c "Bestman SRM user" -s /sbin/nologin -d /etc/bestman2 bestman
 /usr/sbin/groupadd -g 467 cndrcron
 /usr/sbin/useradd -u 452 -c "RSV monitoring user" -s /bin/bash -d /export/home/rsvuser rsv
 /usr/sbin/useradd -u 466 -g 467 -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
