@@ -143,7 +143,7 @@ will build the correct configuration.
 
 <!-- ***************************************************************** -->
 <section id="reconfiguring-CE" xreflabel="Reconfiguring CE">
-<title>Reconfiguring CE/gatekeeper after Installation </title>
+<title>Reconfiguring CE/gatekeeper</title>
 <para>
 A primitive configuratation of CE is done during the install, the resulting
 configuration files are located in /etc/osg/config.d and is based on available 
@@ -181,6 +181,15 @@ To generate the script,  login on the CE node and run
 the output script will be writen in <computeroutput>/tmp/Reconfigure_CE_ini_files</computeroutput>
 </para>
 </note>
+
+<para>
+In case CE was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_CE to a given scheduler (in this example "condor") on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_CE value=condor
+# rocks sync host osg CE install &lt;hostname&gt;
+</screen>
+</para>
 
 <para>
 To find information about CE configuration 
