@@ -162,7 +162,7 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_gratiagid value=464
 # parameters related with Bestman install
 /opt/rocks/bin/rocks add attr OSG_bestmanuid value=459
-/opt/rocks/bin/rocks add attr OSG_bestmangid value=409
+/opt/rocks/bin/rocks add attr OSG_bestmangid value=410
 /opt/rocks/bin/rocks add attr OSG_CE_Export_LocalDir value="/scratch"
 /opt/rocks/bin/rocks add attr OSG_CE_Mount_ShareDir value="/sharesoft/osg"
 /opt/rocks/bin/rocks add attr OSG_CE_DataDir value="/data/se/osg"
