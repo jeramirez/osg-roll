@@ -21,7 +21,6 @@
 <package>libxml2.&arch;</package>
 <package>yum-priorities</package>
 <package>yum-cron</package>
-<package>ktune</package>
 <package>lcmaps</package>
 <package>lcas-lcmaps-gt4-interface</package>
 <package>vo-client</package>
@@ -112,17 +111,33 @@ if [ ! -f $DIRNAME/hostkey.pem ]; then
   cp -p $CERTSDIR/hostkey.pem  $DIRNAME/.
 fi
 
-if [ "$THISHOST" == "$SESERVER" ]||[ "$THISHOST" == "&hostname;" ]; then
+if [ "$THISHOST" == "$SESERVER" ]||[ "$THISHOST" == "&hostname;.local" ]; then
   echo "installing grid certs on $THISHOST"
   echo "searching certs in $DIRNAME"
-  cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
-  cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  if [ ! -f /etc/grid-security/hostcert.pem ]; then
+     cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
+  else
+     echo "-- hostcert.pem already installed no need to install it."
+  fi
+  if [ ! -f /etc/grid-security/hostkey.pem ]; then
+     cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  else
+     echo "-- hostkey.pem already installed no need to install it."
+  fi
   chown root:root /etc/grid-security/hostcert.pem
   chown root:root /etc/grid-security/hostkey.pem
   chmod 444 /etc/grid-security/hostcert.pem
   chmod 400 /etc/grid-security/hostkey.pem
-  cp -p /etc/grid-security/hostcert.pem /etc/grid-security/bestman/bestmancert.pem
-  cp -p /etc/grid-security/hostkey.pem /etc/grid-security/bestman/bestmankey.pem
+  if [ ! -f /etc/grid-security/bestman/bestmancert.pem ]; then
+     cp -p /etc/grid-security/hostcert.pem /etc/grid-security/bestman/bestmancert.pem
+  else
+     echo "-- bestmancert.pem already installed no need to install it."
+  fi
+  if [ ! -f /etc/grid-security/bestman/bestmankey.pem ]; then
+     cp -p /etc/grid-security/hostkey.pem /etc/grid-security/bestman/bestmankey.pem
+  else
+     echo "-- bestmankey.pem already installed no need to install it."
+  fi
   chown bestman:bestman /etc/grid-security/bestman/bestmancert.pem
   chown bestman:bestman /etc/grid-security/bestman/bestmankey.pem
   chmod 440 /etc/sudoers
@@ -131,9 +146,20 @@ else
 fi
 
 </file>
+</post>
+
+<post>
+<file name="/etc/rc.d/rocksconfig.d/post-98-osg-bestman-server" perms="0700">
+#!/bin/bash
+#hopefully script should run after /etc/rc.d/rocksconfig.d/post-02-411get
+# to guarantee that sec_attrs has been transfered (ie. hostcert)
+
 touch /root/cert-install.log
 /root/install_cert_se.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
 
+echo "rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-bestman-server" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-bestman-server
+</file>
 </post>
 
 </kickstart> 
