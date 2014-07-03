@@ -61,6 +61,7 @@
 		<tail>osg-bestman-server</tail>
 		<tail>osg-frontier-squid</tail>
 		<tail>osg-cvmfs</tail>
+		<tail>osg-ktune-conf</tail>
 	</order>
 
 	<order head="osg-client">
@@ -93,6 +94,8 @@
 	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="OSG_SQUID"/>
 	<edge from="client" to="osg-cvmfs" arch="i386,x86_64" cond="OSG_CVMFS"/>
 	<edge from="ssh-client" to="osg-gridcerts" arch="i386,x86_64" cond="(OSG_GUMS or OSG_SE)"/>
+	<edge from="client" to="osg-ktune-conf" arch="i386,x86_64"/>
+	<edge from="server" to="osg-ktune-conf" arch="i386,x86_64"/>
 	<edge from="server" to="osg-server" arch="i386,x86_64"/>
 	<edge from="server" to="osg-condor" arch="i386,x86_64"/>
 	<edge from="server" to="osg-screen-hadoop" arch="i386,x86_64"/>
