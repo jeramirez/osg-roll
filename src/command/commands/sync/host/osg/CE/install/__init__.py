@@ -75,7 +75,7 @@ class Command(rocks.commands.sync.host.command):
 				if is_osg_ce>0 :
 					cmd += ';echo " [OSG_CE =%s] will run on host %s" ' % (is_osg_ce,host)
 				else:
-					cmd += ';echo " OSG_CE not set on %s will not run" ' % host
+					cmd += ';echo " OSG_CE not set on host %s, will not run" ' % host
 			else:
 				cmd += 'attrs="%s" | ' % attrs
 				cmd += 'ssh %s bash > /dev/null 2>&1 ' % host

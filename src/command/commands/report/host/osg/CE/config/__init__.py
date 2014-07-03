@@ -41,7 +41,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 	</arg>
 
 	<param type='string' name='ConfigFile'>
-	Defaults to: /tmp/Reconfigure_CE_ini_files
+	Defaults to: /root/CE_ini_filesConfigurator
 	</param>
 
 	<param type="bool" name="test">
@@ -517,7 +517,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 		test, ConfigFile, ConfigSquid, ConfigMisc, ConfigStorage, ConfigManagedFork, ConfigSGE, ConfigCondor, ConfigGip, ConfigNetwork, ConfigSiteInfo = self.fillParams([
 				('test','n'),
-				('ConfigFile','/tmp/Reconfigure_CE_ini_files'),
+				('ConfigFile','/root/CE_ini_filesConfigurator'),
 				('ConfigSquid','/etc/osg/config.d/01-squid.ini'),
 				('ConfigMisc','/etc/osg/config.d/10-misc.ini'),
 				('ConfigStorage','/etc/osg/config.d/10-storage.ini'),

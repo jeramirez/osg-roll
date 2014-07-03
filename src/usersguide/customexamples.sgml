@@ -178,7 +178,7 @@ To view the script of changes for the inifiles before making changes, use
 <para>
 To generate the script,  login on the CE node and run
 <computeroutput>rocks report host osg CE config &lt;hostname&gt; | rocks report script | bash </computeroutput>
-the output script will be writen in <computeroutput>/tmp/Reconfigure_CE_ini_files</computeroutput>
+the output script will be writen in <computeroutput>/root/CE_ini_filesConfigurator</computeroutput>
 </para>
 </note>
 
@@ -195,6 +195,58 @@ by setting OSG_CE to a given scheduler (in this example "condor") on a host or a
 To find information about CE configuration 
 please see the OSG documentation at <ulink
 url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallComputeElement#7_Configuration_Instructions">
+OSG twiki page</ulink>.
+</para>
+
+</section>
+
+<!-- ***************************************************************** -->
+<section id="reconfiguring-SE" xreflabel="Reconfiguring SE">
+<title>Reconfiguring SE/bestman</title>
+<para>
+A initial configuration of Bestman server is done during the kickstart install, the resulting
+configuration files are /etc/bestman2/conf/bestman2.rc and /etc/sysconfig/bestman2. This configuration is based on available 
+information at install. To reconfigure a bestman node after changes on any attribute that build those files
+requires rebuild the configuration by running the rocks command.
+<screen>
+# rocks sync host osg bestman &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+This will rewrite 
+/etc/bestman2/conf/bestman2.rc,
+/etc/sysconfig/bestman2, 
+</para>
+
+<note>
+<para>
+To view the script of changes for the files before making changes, use
+<computeroutput>rocks report host osg bestman config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+<note>
+<para>
+To generate the script,  login on the Bestman node and run
+<computeroutput>rocks report host osg bestman config &lt;hostname&gt; | rocks report script | bash </computeroutput>
+the output script will be writen in <computeroutput>/root/BestmanConfigurator</computeroutput>
+</para>
+</note>
+
+<para>
+In case Bestman was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_SE to true on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_SE value=true
+# rocks sync host osg bestman install &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+To find information about bestman configuration 
+please see the OSG documentation at <ulink
+url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallOSGBestmanSE#4_1_Installing_BeStMan2">
 OSG twiki page</ulink>.
 </para>
 

@@ -34,7 +34,7 @@ class Command(rocks.commands.sync.host.command):
 	</param>
 
 	<example cmd='sync host osg CE ce-0-0'>
-	Write and run script /tmp/Reconfigure_CE_ini_files to rewrite inifiles and call 
+	Write and run script /root/CE_ini_filesConfigurator to rewrite inifiles and call 
 	osg-configure -c on host ce-0-0
 	</example>
 
@@ -73,7 +73,7 @@ class Command(rocks.commands.sync.host.command):
 				cmd += '; echo \; '
 			else:
 				cmd += '; '
-			cmd += 'ssh %s "/tmp/Reconfigure_CE_ini_files" ' % host
+			cmd += 'ssh %s "/root/CE_ini_filesConfigurator" ' % host
 			if not istest:
 				cmd += '> /dev/null 2>&1 '
 
