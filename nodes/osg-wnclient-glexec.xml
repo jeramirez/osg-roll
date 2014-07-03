@@ -31,7 +31,7 @@
  <!-- install wn-client-glexec from local mirror-->
 yum install empty-ca-certs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
 yum install osg-wn-client-glexec  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
-ln -s /sharesoft/osg/ce/globus/share/certificates /etc/grid-security/certificates
+ln -s &OSG_CE_Export_LocalDir;/globus/share/certificates /etc/grid-security/certificates
 
  <!-- customize lcmaps.db configuration osg-wn-client-glexec has lcmaps as dependence -->
 sed -i -e "s#hostcert.pem#hostproxy.pem#" /etc/lcmaps.db
