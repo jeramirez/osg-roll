@@ -21,7 +21,6 @@
 <package>libxml2.&arch;</package>
 <package>yum-priorities</package>
 <package>yum-cron</package>
-<package>ktune</package>
 <package>perl-libwww-perl</package>
 <package>perl-URI</package>
 <package>fetch-crl3</package>

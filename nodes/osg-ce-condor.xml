@@ -22,7 +22,6 @@
 <package>libxml2.&arch;</package>
 <package>yum-priorities</package>
 <package>yum-cron</package>
-<package>ktune</package>
 <package>lcmaps</package>
 <package>lcas-lcmaps-gt4-interface</package>
 <package>vo-client</package>
