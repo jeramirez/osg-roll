@@ -6,6 +6,8 @@
 	<!ENTITY using SYSTEM "using.sgml">
 	<!ENTITY copyrights SYSTEM "copyrights.sgml">
 	<!ENTITY % entities SYSTEM "entities.sgml">
+	<!ENTITY roll-osg "<command>osg</command>">
+	<!ENTITY roll-osg-depend "">
 	%entities;
 ]>
 
@@ -38,6 +40,7 @@
 </bookinfo>
 
 &preface;
+&source-roll-overview;
 &installing;
 &customizing;
 &customexamples;
