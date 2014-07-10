@@ -31,16 +31,16 @@
 -->
 ### Create the Gratia User Just in case was not created by client
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
-#rsv:x:452:100:RSV monitoring user:/home/rsvuser:/bin/bash
+#rsv:x:452:452:RSV monitoring user:/var/rsv:/bin/sh
 #cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
-/usr/sbin/groupadd -g 464 gratia
-/usr/sbin/useradd -u 464 -g 464 -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
-/usr/sbin/groupadd -g 91 tomcat
-/usr/sbin/useradd -u 91 -g 91 -c "Tomcat" -s /bin/sh -d /usr/share/tomcat5 tomcat
-/usr/sbin/groupadd -g 467 cndrcron
-/usr/sbin/useradd -u 466 -g 467 -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
-/usr/sbin/groupadd -g 452 rsv
-/usr/sbin/useradd -u 452 -c "RSV monitoring user" -s /bin/bash -d /var/rsv rsv
+/usr/sbin/groupadd -g &OSG_gratiagid; gratia
+/usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+/usr/sbin/groupadd -g &OSG_tomcatgid; tomcat
+/usr/sbin/useradd -u &OSG_tomcatuid; -g &OSG_tomcatgid; -c "Tomcat" -s /bin/sh -d /usr/share/tomcat&rocks_version_major; tomcat
+/usr/sbin/groupadd -g &OSG_cndrcrongid; cndrcron
+/usr/sbin/useradd -u &OSG_cndrcronuid; -g &OSG_cndrcrongid; -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+/usr/sbin/groupadd -g &OSG_rsvgid; rsv
+/usr/sbin/useradd -u &OSG_rsvuid; -g &OSG_rsvgid; -c "RSV monitoring user" -s /bin/bash -d /var/rsv rsv
 
  <!-- install osg-rsv from local mirror-->
 touch /root/yum-install.log

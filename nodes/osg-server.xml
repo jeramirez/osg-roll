@@ -182,6 +182,11 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_CVMFS_QUOTA_LIMIT value=10000
 /opt/rocks/bin/rocks add attr OSG_CVMFS_HTTP_PROXY value="http://login-0-2:3128"
 /opt/rocks/bin/rocks add attr OSG_CMS_LOCAL_SITE value=T3_US_PuertoRico
+# parameters related with rsv install
+/opt/rocks/bin/rocks add attr OSG_rsvuid value=452
+/opt/rocks/bin/rocks add attr OSG_rsvgid value=452
+/opt/rocks/bin/rocks add attr OSG_cndrcronuid value=466
+/opt/rocks/bin/rocks add attr OSG_cndrcrongid value=467
 </post>
 
 <!-- squid and cvmfs config related post install -->
@@ -375,23 +380,35 @@ cp /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec /root/post-90-osg-server-gl
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec
 </file>
 
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server" perms="0755">
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-rsv" perms="0755">
 #!/bin/sh
 
+OSG_rsvgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_rsvgid`
+OSG_rsvuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_rsvuid`
+OSG_cndrcrongid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cndrcrongid`
+OSG_cndrcronuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cndrcronuid`
+
 ### Create the rsv,cndrcron Users
+#rsv:x:452:452:RSV monitoring:/var/rsv:/bin/sh
 #cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
+
+#groups are completely exported! even in 5.5 (not filtered)
+/usr/sbin/groupadd -g ${OSG_rsvgid} rsv
+/usr/sbin/groupadd -g ${OSG_cndrcrongid} cndrcron
 
 ### This users are for backward compatibility (&lt; rocks5.5)
 if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/groupadd -g 467 cndrcron
-/usr/sbin/useradd -u 452 -c "RSV monitoring user" -s /bin/bash -d /export/home/rsvuser rsv
-/usr/sbin/useradd -u 466 -g 467 -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+/usr/sbin/useradd -u ${OSG_rsvuid} -g ${OSG_rsvgid} -c "RSV monitoring user" -s /bin/sh -d /var/rsv rsv
+/usr/sbin/useradd -u ${OSG_cndrcronuid} -g ${OSG_cndrcrongid} -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
 
 #end backward compatibility ( &lt;rocks 5.5)
+else
+touch /root/not_rsv_user.log
+touch /root/not_cndrcron_user.log
 fi
 
-cp /etc/rc.d/rocksconfig.d/post-90-osg-server /root/post-90-osg-server.script_runned
-rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-rsv /root/post-90-osg-server-rsv.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-rsv
 </file>
 
 </post>
