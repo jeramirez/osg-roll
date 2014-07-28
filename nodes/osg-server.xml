@@ -205,14 +205,14 @@ OSG_fusegid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_fusegid`
 createsquiduser=0
 ### Create the cvmfs user
 #cvmfs:x:470:470:CernVM-FS service account:/var/cache/cvmfs2:/sbin/nologin
-createcvmfsuser=0
+#createcvmfsuser=0
 ### This users are for backward compatibility (&lt; rocks5.5)
 if [ "&rocks_version;" == "5.5" ]||[ "&rocks_version;" == "5.6" ]||[ &rocks_version_major; -ge 6 ]; then
 [ ${OSG_squiduid} -gt 500 ]&amp;&amp;createsquiduser=1
-[ ${OSG_cvmfsuid} -gt 500 ]&amp;&amp;createcvmfsuser=1
+#[ ${OSG_cvmfsuid} -gt 500 ]&amp;&amp;createcvmfsuser=1
 else
 createsquiduser=1
-createcvmfsuser=1
+#createcvmfsuser=1
 fi
 
 #groups are completely exported! even in 5.5 (not filtered)
@@ -223,14 +223,21 @@ else
 touch /root/not_squid_user.log
 fi
 #groups are completely exported! even in 5.5 (not filtered)
-/usr/sbin/groupadd -g ${OSG_fusegid} fuse
-/usr/sbin/groupadd -g ${OSG_cvmfsgid} cvmfs
-if [ $createcvmfsuser -eq 1 ]; then
-/usr/sbin/useradd -u ${OSG_cvmfsuid} -g ${OSG_cvmfsgid} -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs
-usermod -G fuse cvmfs
+#provision for kvm roll (roll install fuse)
+if [ -f /bin/fusermout ];then
+/usr/sbin/groupmod -g ${OSG_fusegid} fuse
+yum reinstall fuse
 else
-touch /root/not_cvmfs_user.log
+/usr/sbin/groupadd -g ${OSG_fusegid} fuse
 fi
+/usr/sbin/groupadd -g ${OSG_cvmfsgid} cvmfs
+#always create cvmfs user
+#if [ $createcvmfsuser -eq 1 ]; then
+/usr/sbin/useradd -r -u ${OSG_cvmfsuid} -g ${OSG_cvmfsgid} -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs
+usermod -G fuse cvmfs
+#else
+#touch /root/not_cvmfs_user.log
+#fi
 
 cp /etc/rc.d/rocksconfig.d/post-90-osg-server-squid /root/post-90-osg-server-squid.script_runned
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-squid
