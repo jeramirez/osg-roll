@@ -27,7 +27,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 	OSG_GFTPServer, Info_ClusterName,
 	OSG_CE_gip_multicluster, OSG_CE_gip_NmultiSE,
 	OSG_CE_gip_SubCluster1,OSG_CE_gip_ClusterName1,OSG_CE_gip_NumberOfNodes1,OSG_CE_gip_mb_of_Ram1,OSG_CE_gip_cpu_model1,OSG_CE_gip_cpu_vendor1,
-	OSG_CE_gip_cpu_speed1,OSG_CE_gip_arch1,OSG_CE_gip_CpusPerNode1,OSG_CE_gip_CoresPerNode1,OSG_CE_gip_CoresPerNode1,
+	OSG_CE_gip_cpu_speed1,OSG_CE_gip_arch1,OSG_CE_gip_CpusPerNode1,OSG_CE_gip_CoresPerNode1,
 	OSG_CE_gip_inbound1,OSG_CE_gip_outbound1,
 	OSG_CE_gip_SE1,OSG_CE_gip_SE_OIM_Name1,OSG_CE_gip_SEServer1,
 	OSG_CE_gip_SEprovider1,OSG_CE_gip_SEimplementation1,OSG_CE_gip_SEversion1,OSG_CE_gip_SEpath1,OSG_CE_gip_SE_use_df,
@@ -98,7 +98,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		if OSG_SquidServer > 0:
 			self.addOutput(self.host, 'sed -i -e "s@location = @location = %s@" %s' % (OSG_SquidServer,configFile))
 		else:
-			self.addOutput(self.host, 'sed -i -e "s@enabled = True@enabled = False@"' )
+			self.addOutput(self.host, 'sed -i -e "s@enabled = True@enabled = False@" %s' % (configFile) )
 			self.addOutput(self.host, 'sed -i -e "s@location = @location = UNAVAILABLE@" %s' % (configFile))
 		self.addOutput(self.host, '#end config %s' % (configFile))
 		self.addOutput(self.host, '')
@@ -177,7 +177,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.addOutput(self.host, '#attr OSG_GFTPServer not defined for CE server')
 
 		if OSG_multicluster > 0:
-			ncluster = OSG_multicluster
+			ncluster = int(OSG_multicluster)
+			if ncluster < 1:
+				ncluster = 1
 		else:
 			ncluster = 1
 			self.addOutput(self.host, '#attr OSG_CE_gip_multicluster not defined for CE server, assuming one cluster')
@@ -306,9 +308,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 				if iclus == 1:
 					self.addOutput(self.host, '#      using outbound_network = TRUE' )
 					self.addOutput(self.host, 'echo "outbound_network = TRUE" &gt;&gt; %s' % (configFile))
+			self.addOutput(self.host, 'echo " " &gt;&gt; %s' % (configFile))
 
 		if OSG_NmultiSE > 0:
-			nSE = OSG_NmultiSE
+			nSE = int(OSG_NmultiSE)
+			if nSE < 0:
+				nSE = 0
 			for iclus in range(1,nSE+1):
 				OSG_SE_cluster       = 'OSG_CE_gip_SE' + str(iclus)
 				OSG_SE_OIM_Name      = 'OSG_CE_gip_SE_OIM_Name' + str(iclus)
@@ -329,7 +334,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				OSG_SEs[OSG_SE_use_df]         = self.db.getHostAttr(self.host,OSG_SE_use_df)
 
 				if OSG_SEs[OSG_SE_cluster] > 0:
-					self.addOutput(self.host, 'echo "[SE %s-1]" &gt;&gt; %s'  % (OSG_SEs[OSG_SE_cluster],configFile))
+					self.addOutput(self.host, 'echo "[SE %s]" &gt;&gt; %s'  % (OSG_SEs[OSG_SE_cluster],configFile))
 					self.addOutput(self.host, 'echo "enabled = True" &gt;&gt; %s'  % (configFile))
 					if OSG_SEs[OSG_SE_OIM_Name] >0:
 						self.addOutput(self.host, 'echo "name = %s" &gt;&gt; %s'  % (OSG_SEs[OSG_SE_OIM_Name],configFile))
