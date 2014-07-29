@@ -70,7 +70,7 @@ install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	(                                                               \
 		$(INSTALL) -m 0755 host_dist* $(ROOT)/$(PKGROOT) ;            \
-		$(INSTALL) -m 0755 update-hostproxy.cron $(ROOT)/$(PKGROOT) ;            \
+		$(INSTALL) -m 0644 update-hostproxy.cron $(ROOT)/$(PKGROOT) ;            \
 	)
 
 
