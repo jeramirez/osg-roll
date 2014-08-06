@@ -49,6 +49,7 @@ condor_collector   9618/tcp     # Condor daemon
 /usr/sbin/usermod -u &OSG_condoruid; -g &OSG_condorgid;  condor
 chown -R condor:condor /var/log/condor
 chown -R condor:condor /var/run/condor
+chown -R condor:condor /var/lib/condor
 
 /bin/mkdir -p /var/lib/condor/cred_dir
 
