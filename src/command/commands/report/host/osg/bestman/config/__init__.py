@@ -20,7 +20,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 	rocks.commands.report.command):
 	"""
 
-	Output the OSG Bestman Loca 
+	Output the OSG Bestman Local Configuration Script
 	Uses Rocks Attributes: OSG_SE, OSG_GumsServer,
 	OSG_SRMlocalPathListAllowed, OSG_SRMsupportedProtocolList, OSG_SRMusepluging,
 	OSG_GlobusTcpSourceRange, OSG_GlobusTcpPortRange
