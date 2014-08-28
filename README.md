@@ -4,16 +4,21 @@ osg-roll
 Download and Compile Roll
 -------------------------
 
+```shell
 git https://github.com/jeramirez/osg-roll.git
 cd osg-roll
 #optional#cd src/osg
 #optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.1/el5/release/x86_64
 #optional#cd ../..
-make
+make roll
+```
 
 RHEL/SL/Centos 5: epel dependencies needed for OSG packages
 -----------------------------------------------------------
 
+List of epel packages needed by OSG packages (in tab) shipped with this roll:
+
+```shel
 bouncycastle
    glite-security-trustmanager
    glite-security-util-java
@@ -69,4 +74,4 @@ fetch-crl3/fetch-crl
    osg-gridftp-xrootd
    osg-se-bestman
    osg-se-bestman-xrootd
-
+```
