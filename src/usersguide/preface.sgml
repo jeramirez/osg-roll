@@ -12,6 +12,40 @@ middleware on Rocks Clusters.
 </para>
 
 
+<itemizedlist>
+	<listitem>
+		<para>Cluster Planning:
+To understand the default value of some attributes, this &roll; roll assumes the following minimal 
+partition scheme by default:
+</para>
+
+<screen>
+/        (reformatted at kickstart)
+/var     (reformatted at kickstart)
+/scratch (a partition to host local dirs to be shared in cluster)
+/hadoop  (a partition to be used by hadoop)
+</screen>
+
+<para>
+For any given CE node/server, if the partition intended for local dirs to share is NOT "/scratch", 
+then  it can be set by using the rocks attr "OSG_CE_Export_LocalDir" to
+a desired value. 
+For example we want to share local dirs located in "/export", then use:
+</para>
+
+<screen>
+###global
+#/opt/rocks/bin/rocks set attr OSG_CE_Export_LocalDir value="/export"
+### or host specific
+#/opt/rocks/bin/rocks set host attr login-0-0 OSG_CE_Export_LocalDir value="/export"
+</screen>
+
+<para>
+Similarly, to change the default partition/dir used by hadoop, require change in rocks attrs OSG_HadoopDataDir and/or OSG_HadoopData.
+</para>
+	</listitem>
+</itemizedlist>
+
 <para>
 Please visit the <ulink
 url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/"> Open Science Grid
