@@ -174,7 +174,7 @@ fi
 touch /root/cert-install.log
 /root/install_cert_se.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
 
-echo "running  /root/BestmanConfigurator &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+echo "running  /root/BestmanConfigurator" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
 /root/BestmanConfigurator
 
 echo "rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-bestman-server" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
