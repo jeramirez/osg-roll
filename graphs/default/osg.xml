@@ -59,6 +59,7 @@
 		<tail>osg-wnclient-glexec</tail>
 		<tail>osg-hadoop-pre</tail>
 		<tail>osg-bestman-server</tail>
+		<tail>osg-xrootd-server</tail>
 		<tail>osg-frontier-squid</tail>
 		<tail>osg-cvmfs</tail>
 		<tail>osg-ktune-conf</tail>
@@ -70,6 +71,7 @@
 
 	<order head="client">
 		<tail>osg-bestman-server</tail>
+		<tail>osg-xrootd-server</tail>
 	</order>
 
 	<order head="osg-hadoop">
@@ -83,6 +85,7 @@
 	<edge from="client" to="osg-client" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="client" to="osg-hadoop-pre" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="client" to="osg-bestman-server" arch="i386,x86_64" cond="OSG_SE"/>
+	<edge from="client" to="osg-xrootd-server" arch="i386,x86_64" cond="OSG_XRD"/>
 	<edge from="osg-hadoop-pre" to="osg-hadoop" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="osg-hadoop" to="osg-hadoop-gridftp" arch="i386,x86_64" cond="OSG_GFTP_HDFS"/>

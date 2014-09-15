@@ -252,6 +252,57 @@ OSG twiki page</ulink>.
 
 </section>
 
+<!-- ***************************************************************** -->
+<section id="reconfiguring-xrootd" xreflabel="Reconfiguring Xrootd">
+<title>Reconfiguring xrootd</title>
+<para>
+A initial configuration of xrootd server is done during the kickstart install, the resulting
+configuration file is /etc/xrootd/xrootd-clustered.cfg. This configuration is based on available 
+information at install. To reconfigure a xrootd node after changes on any attribute that build 
+the .cfg file requires rebuild the configuration by running the rocks command.
+<screen>
+# rocks sync host osg xrootd &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+This will rewrite 
+/etc/xrootd/xrootd-clustered.cfg
+</para>
+
+<note>
+<para>
+To view the script of changes for the files before making changes, use
+<computeroutput>rocks report host osg xrootd config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+<note>
+<para>
+To generate the script,  login on the xrootd node and run
+<computeroutput>rocks report host osg xrootd config &lt;hostname&gt; | rocks report script | bash </computeroutput>
+the output script will be writen in <computeroutput>/root/XrootdConfigurator</computeroutput>
+</para>
+</note>
+
+<para>
+In case Xrootd was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_XRD to true on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_XRD value=true
+# rocks sync host osg xrootd install &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+To find information about xrootd configuration 
+please see the OSG documentation at <ulink
+url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallXrootd#Modify_etc_xrootd_xrootd_cluster">
+OSG twiki page</ulink>.
+</para>
+
+</section>
+
 <section id="reconfiguring-condor" xreflabel="Reconfiguring Condor">
 <title>Reconfiguring Condor after Installation </title>
 <para>

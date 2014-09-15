@@ -22,8 +22,8 @@ $ su - root
 #rocks add host attr ce-0-0 OSG_CE value="condor"
 #rocks add host attr ce-0-0 OSG_Condor_Daemons value="MASTER, SCHEDD"
 #
-##Automatic throughout attributes (survive reinstalls)
-##Example
+## Automatic throughout attributes (survive reinstalls)
+## Example
 ## Attrs used to fill gip (only need to set one time)
 #rocks add host attr ce-0-0 OSG_CE_gip_multicluster value=2
 #rocks add host attr ce-0-0 OSG_CE_gip_SubCluster1 value="MyClusterID"
@@ -49,23 +49,27 @@ $ su - root
 #
 # post install
 #
-#just in case a last minute or forgotten attr was set 
+#  just in case a last minute or forgotten attr was set 
 #             then need to sync before continue.
 #             rocks sync host attr ce-0-0
 #             rocks sync host sec_attr ce-0-0
 
-#set services to run on reboot
+#  set services to run on reboot
 #rocks run host ce-0-0 command='chkconfig condor on'
 #rocks run host ce-0-0 command='chkconfig globus-gatekeeper on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-cron on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-boot on'
 
-#start htcondor before running CE configurator (osg-configure needs condor running)
+#  start htcondor before running CE configurator (osg-configure needs condor running)
 #rocks run host ce-0-0 command='service condor start'
+#  fetch crls (osg-configure needs crls)
+#rocks run host ce-0-0 command='fetch-crl'
 #rocks sync host osg CE ce-0-0
 
-#start gatekeeper
+#  start gatekeeper
 #rocks run host ce-0-0 command='service globus-gatekeeper start'
+#  start fetch-crl cron
+#rocks run host ce-0-0 command='service fetch-crl-cron start'
 
 </screen>
 </section>
@@ -247,6 +251,58 @@ $ su - root
 #rocks run host se-0-0 command='/root/install_se_cert.sh'
 #rocks run host se-0-0 command='chkconfig bestman2 on'
 #rocks run host se-0-0 command='chkconfig globus-gridftp-server on'
+
+</screen>
+</section>
+
+<section id="Install-XROOTD" xreflabel="Example Install xrootd server">
+<title>Example Install xrootd server</title>
+<para>
+xrootd can be installed as follow.
+
+</para>
+<screen>
+$ su - root
+#
+###set public interface
+#
+#rocks set host interface ip xrootd-0-0 iface=eth1 ip=1.2.3.4
+#rocks set host interface name xrootd-0-0 iface=eth1 name=rocks-xrootd
+#rocks set host interface subnet xrootd-0-0 eth1 public
+#rocks set host attr xrootd-0-0 primary_net public
+#rocks add host route xrootd-0-0 0.0.0.0 1.2.3.1 netmask=0.0.0.0
+#rocks add host attr xrootd-0-0 OSG_XRD value=true
+#
+###site especific/changing default if needed (check defaults first)
+#
+#  rocks set host attr xrootd-0-0 OSG_CMS_LOCAL_SITE value=T3_US_MySite
+#  rocks set host attr xrootd-0-0 OSG_GumsServer value="my.gums.server"
+#  rocks set host attr xrootd-0-0 OSG_XRDServer value="rocks-xrootd.server"
+#  rocks set host attr xrootd-0-0 OSG_XROOTD_LOCAL_REDIRECTOR value="my.redir.pool.server+"
+#
+###setting user cert path (needed to download CMS_LOCAL_SITE/PhEDEx/storage.xml )
+#
+#  rocks add host attr xrootd-0-0 OSG_CMS_USERCERT value=/path/to/my/cert/usercert.pem
+#  rocks add host attr xrootd-0-0 OSG_CMS_USERKEY value=/path/to/my/cert/userkey.pem
+#
+###setting service certs
+#
+#  rocks add host sec_attr xrootd-0-0 attr=hostcert value="/path/to/cert/hostcert.pem" crypted=true
+#  rocks add host sec_attr xrootd-0-0 attr=hostkey value="/path/to/certkey/hostkey.pem" crypted=true
+
+#
+### reinstall
+#
+#shoot-node xrootd-0-0
+
+#
+### post install
+#
+#check /root/cert-install.log
+#rocks run host xrootd-0-0 command='chkconfig xrootd on'
+#rocks run host xrootd-0-0 command='chkconfig cmsd on'
+#rocks run host xrootd-0-0 command='service xrootd start'
+#rocks run host xrootd-0-0 command='service cmsd start'
 
 </screen>
 </section>
