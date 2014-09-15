@@ -81,9 +81,9 @@
 	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
 	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
 	<edge from="client" to="osg-client" arch="i386,x86_64" cond="OSG_Client"/>
-	<edge from="client" to="osg-hadoop-pre" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_CE=='condor' or OSG_CE=='sge')"/>
+	<edge from="client" to="osg-hadoop-pre" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="client" to="osg-bestman-server" arch="i386,x86_64" cond="OSG_SE"/>
-	<edge from="osg-hadoop-pre" to="osg-hadoop" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_CE=='condor' or OSG_CE=='sge')"/>
+	<edge from="osg-hadoop-pre" to="osg-hadoop" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="osg-hadoop" to="osg-hadoop-gridftp" arch="i386,x86_64" cond="OSG_GFTP_HDFS"/>
 	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
