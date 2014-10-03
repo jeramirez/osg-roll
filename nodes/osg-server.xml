@@ -367,6 +367,7 @@ cp /etc/rc.d/rocksconfig.d/post-90-osg-server-xrootd /root/post-90-osg-server-xr
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-xrootd
 </file>
 
+
 <!-- glexec config related post install -->
 #for i in {0..49}; do if [ $i -lt 10 ]; then /usr/sbin/groupadd -g 6500$i glexec0$i; else /usr/sbin/groupadd -g 650$i glexec$i; fi; done
 <file name="/tmp/CreateGlexecGroups" perms="0755">
@@ -463,11 +464,11 @@ OSGCEPrivate=`/opt/rocks/bin/rocks report host attr frontend attr=OSGCEPrivate`
 
 #if your ce is different from default you need to change $OSGCEPrivate to your current private ce here
 touch /etc/auto.osg
-echo "ce ${OSGCEPrivate}:${CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
-echo "app  ${OSGCEPrivate}:${CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
+[ "`grep -c \"^ce \" /etc/auto.osg`" != "0" ]||echo "ce ${OSGCEPrivate}:${CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
+[ "`grep -c \"^app \" /etc/auto.osg`" != "0" ]||echo "app  ${OSGCEPrivate}:${CEscratch}/&amp;" &gt;&gt; /etc/auto.osg
 
 touch /etc/auto.master
-echo "${CEshare}  /etc/auto.osg  --timeout=120"  &gt;&gt; /etc/auto.master
+[ "`grep -c ${CEshare} /etc/auto.master`" != "0" ]||echo "${CEshare}  /etc/auto.osg  --timeout=120"  &gt;&gt; /etc/auto.master
 echo "/cvmfs /etc/auto.cvmfs" &gt;&gt; /etc/auto.master
 
 cd /var/411
