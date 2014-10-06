@@ -18,7 +18,7 @@ class plugin(rocks.commands.sec_attr_plugin):
 		os.close(tf)
 		# Backup previous version if exist
 		import shutil
-		if not os.path.exits(certpath):
+		if not os.path.exists(certpath):
 			os.makedirs(certpath, 755)
 		if os.path.exists(keyfile):
 			shutil.move(keyfile, keyfile + '_' + tfname[8:])
