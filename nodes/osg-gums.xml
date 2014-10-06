@@ -23,7 +23,7 @@
 <package>yum-cron</package>
 <package>perl-libwww-perl</package>
 <package>perl-URI</package>
-<package>fetch-crl3</package>
+<package>fetch-crl</package>
 
 
 <post>
@@ -32,8 +32,8 @@
      yum.xml requires libxml2.&arch; for VMs
 -->
 #tomcat:x:91:91:Tomcat:/usr/share/tomcat5:/bin/sh
-/usr/sbin/groupadd -g 91 tomcat
-/usr/sbin/useradd -u 91 -g 91 -c "Tomcat" -s /bin/sh -d /usr/share/tomcat5 tomcat
+/usr/sbin/groupadd -g &OSG_tomcatgid; tomcat
+/usr/sbin/useradd -u &OSG_tomcatuid; -g &OSG_tomcatgid; -c "Tomcat" -s /bin/sh -d -m /usr/share/tomcat&rocks_version_major; tomcat
 #mysql:x:27:27:MySQL Server:/usr/lib/mysql:/bin/bash
 /usr/sbin/groupadd -g 27 mysql
 /usr/sbin/useradd -u 27 -g 27 -c "MySQL Server" -s /bin/bash -d /usr/lib/mysql mysql
@@ -49,11 +49,7 @@ yum install osg-gums  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
 </eval>
 
 
- <!-- create dir for tomcat/gums cert  -->
-[ ! -d /etc/grid-security/http ] &amp;&amp; mkdir /etc/grid-security/http
-chown tomcat:tomcat /etc/grid-security/http
-
-<file name="/root/install_gums_cert.sh" perms="0750" >
+<file name="/root/install_cert_gums.sh" perms="0750" >
 #!/bin/sh
 
 THISHOST=`hostname`
@@ -65,29 +61,81 @@ CERTSDIR="&OSG_StoredCertsDir;/&hostname;"
 #temporary solution (or permanent?) while figuring out
 #how to import certs at installation step in a secure way
 if [ ! -f $DIRNAME/hostcert.pem ]; then
-  cp -p $CERTSDIR/hostcert.pem $DIRNAME/.
+  if [ ! -f $CERTSDIR/hostcert.pem ]; then
+     echo "-- NO sec_attr set for hostcert NOR $CERTSDIR/hostcert.pem exist"
+  else
+     cp -p $CERTSDIR/hostcert.pem $DIRNAME/.
+  fi
 fi
 if [ ! -f $DIRNAME/hostkey.pem ]; then
-  cp -p $CERTSDIR/hostkey.pem  $DIRNAME/.
+  if [ ! -f $CERTSDIR/hostkey.pem ]; then
+     echo "-- NO sec_attr set for hostkey NOR $CERTSDIR/hostkey.pem exist"
+  else
+     cp -p $CERTSDIR/hostkey.pem  $DIRNAME/.
+  fi
 fi
 if [ ! -f $DIRNAME/httpcert.pem ]; then
-  cp -p $CERTSDIR/httpcert.pem $DIRNAME/.
+  if [ ! -f $CERTSDIR/httpcert.pem ]; then
+     echo "-- NO sec_attr set for httpcert NOR $CERTSDIR/httpcert.pem exist"
+  else
+     cp -p $CERTSDIR/httpcert.pem $DIRNAME/.
+  fi
 fi
 if [ ! -f $DIRNAME/httpkey.pem ]; then
-  cp -p $CERTSDIR/httpkey.pem  $DIRNAME/.
+  if [ ! -f $CERTSDIR/httpkey.pem ]; then
+     echo "-- NO sec_attr set for httpkey NOR $CERTSDIR/httpkey.pem exist"
+  else
+     cp -p $CERTSDIR/httpkey.pem  $DIRNAME/.
+  fi
 fi
 
-if [ "$THISHOST" == "$GUMSSERVER" ]; then
+if [ "$THISHOST" == "$GUMSSERVER" ]||[ "$THISHOST" == "&hostname;.local" ]; then
   echo "installing grid certs on $THISHOST"
   echo "searching certs in $DIRNAME"
-  cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
-  cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  if [ ! -f /etc/grid-security/hostcert.pem ]; then
+    if [ ! -f $DIRNAME/hostcert.pem ]; then
+     echo "-- hostcert.pem NOT installed, please set sec_attr hostcert for host &hostname;"
+    else
+     cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
+    fi
+  else
+     echo "-- hostcert.pem already installed no need to install it."
+  fi
+  if [ ! -f /etc/grid-security/hostkey.pem ]; then
+    if [ ! -f $DIRNAME/hostkey.pem ]; then
+     echo "-- hostkey.pem NOT installed, please set sec_attr hostkey for host &hostname;"
+    else
+     cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+    fi
+  else
+     echo "-- hostkey.pem already installed no need to install it."
+  fi
   chown root:root /etc/grid-security/hostcert.pem
   chown root:root /etc/grid-security/hostkey.pem
   chmod 444 /etc/grid-security/hostcert.pem
   chmod 400 /etc/grid-security/hostkey.pem
-  cp -p $DIRNAME/httpcert.pem /etc/grid-security/http/httpcert.pem
-  cp -p $DIRNAME/httpkey.pem /etc/grid-security/http/httpkey.pem
+  [ -d /etc/grid-security/http ]||mkdir /etc/grid-security/http
+  if [ ! -f /etc/grid-security/http/httpcert.pem ]; then
+    if [ ! -f $DIRNAME/httpcert.pem ]; then
+     echo "-- httpcert.pem NOT installed, please set sec_attr httpcert for host &hostname;"
+    else
+     cp -p $DIRNAME/httpcert.pem /etc/grid-security/http/httpcert.pem
+     echo "-- httpcert.pem copied from $DIRNAME/httpcert.pem"
+    fi
+  else
+     echo "-- httpcert.pem already installed no need to install it."
+  fi
+  if [ ! -f /etc/grid-security/http/httpkey.pem ]; then
+    if [ ! -f $DIRNAME/httpkey.pem ]; then
+     echo "-- httpkey.pem NOT installed, please set sec_attr httpkey for host &hostname;"
+    else
+     cp -p $DIRNAME/httpkey.pem /etc/grid-security/http/httpkey.pem
+     echo "-- httpkey.pem copied from $DIRNAME/httpkey.pem."
+    fi
+  else
+     echo "-- httpkey.pem already installed no need to install it."
+  fi
+
   chown -R tomcat:tomcat /etc/grid-security/http
   chmod 444 /etc/grid-security/http/httpcert.pem
   chmod 400 /etc/grid-security/http/httpkey.pem
@@ -96,11 +144,12 @@ else
 fi
 
 </file>
+
 <file name="/root/ConfigureGumsUpgradeFromPacman.sh" perms="0700" >
 #!/bin/bash
 
 #input parameters
-TABLEFROMPACMAN=&OSG_GUMSBackupDir;/gums_1_3.sql
+TABLEFROMPACMAN=&OSG_GUMSBackupDir;/gums_1_3.sql_pacman
 GUMSCONFIGPACMAN=&OSG_GUMSBackupDir;/gums.config_pacman
 ADMINID1='&OSG_GUMSDNADMIN;'
 
@@ -194,6 +243,20 @@ cat /usr/lib/gums/sql/addAdmin.mysql | sed -e "s%@ADMINDN@%$ADMINID1%g" | mysql 
 echo "it is recomended to run /usr/bin/mysql_secure_installation"
 </file>
 
+</post>
+
+<post>
+<file name="/etc/rc.d/rocksconfig.d/post-98-osg-gums-server" perms="0700">
+#!/bin/bash
+#hopefully script should run after /etc/rc.d/rocksconfig.d/post-02-411get
+# to guarantee that sec_attrs has been transfered (ie. hostcert)
+
+touch /root/cert-install.log
+/root/install_cert_gums.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+
+echo "rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-gums-server" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-gums-server
+</file>
 </post>
 
 </kickstart> 
