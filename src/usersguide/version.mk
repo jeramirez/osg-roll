@@ -9,5 +9,5 @@ SUMMARY_MAINTAINER	= Rocks Group
 SUMMARY_ARCHITECTURE	= i386, x86_64
 
 ROLL_REQUIRES		= base kernel os ganglia
-ROLL_CONFLICTS		= condor
+ROLL_CONFLICTS		= condor java
 

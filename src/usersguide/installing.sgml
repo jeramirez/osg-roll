@@ -26,9 +26,13 @@ You should reach a screen as shown below.
 
 </para>
 
-
+<note>
 <para>
-Select the osg rool from the list of available rolls when you see a screen like shown below:
+Remember conflicting rolls are HTCondor and Java.
+</para>
+</note>
+<para>
+Select the osg roll from the list of available rolls when you see a screen like shown below:
 <screenshot>
 	<graphic fileref="images/rolls_selected.png" scale=50></graphic>
 </screenshot>
