@@ -71,6 +71,8 @@ live install + config option below.
 #
 # install + config using rocks commands
 #
+#rocks sync host osg CE install ce-0-0
+#
 #  just in case a last minute or forgotten attr was set 
 #             then need to sync before continue.
 #             rocks sync host attr ce-0-0
