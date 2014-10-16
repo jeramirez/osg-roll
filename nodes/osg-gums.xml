@@ -199,6 +199,9 @@ ADMINID1='&OSG_GUMSDNADMIN;'
 GUMSPASSWD=`grep hibernate.connection.password= $GUMSCONFIGFROMRPM | sed -e "s@\t\t\thibernate.connection.password='@@" | sed -e "s@'/&gt;@@"`
 GUMSCONFIGRPM=/etc/gums/gums.config
 
+#configure tomcat to use GSI
+/var/lib/trustmanager-tomcat/configure.sh
+
 #import database from rpm
 service mysqld start
 echo '1....importing database from rpm'
@@ -228,17 +231,24 @@ echo "it is recomended to run /usr/bin/mysql_secure_installation"
 #!/bin/bash
 
 #input parameters
-GUMSPASSWD=myrocksgums
 ADMINID1='&OSG_GUMSDNADMIN;'
+
+#optional input parameters
+GUMSPASSWD=`&lt; /dev/urandom tr -dc _A-Z-a-z-0-9 | head -c${1:-16};echo;`
+GUMSCONFIGRPM=/etc/gums/gums.config
+
+#configure tomcat to use GSI
+/var/lib/trustmanager-tomcat/configure.sh
 
 service mysqld start
 echo '1....configuring a fresh install gums server'
-/usr/bin/gums-setup-mysql-database --user gums --host localhost:3306 --password $GUMSPASSWD
+/usr/bin/gums-setup-mysql-database --user gums --host localhost:3306 --password $GUMSPASSWD --template /etc/gums/gums.config.template --noprompt
 
 #set add DN admin for gums
 echo '2....adding gums DN admin'
 #gums-add-mysql-admin '/MY/DN'
 cat /usr/lib/gums/sql/addAdmin.mysql | sed -e "s%@ADMINDN@%$ADMINID1%g" | mysql -u gums --password=$GUMSPASSWD
+
 
 echo "it is recomended to run /usr/bin/mysql_secure_installation"
 </file>
