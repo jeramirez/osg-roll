@@ -93,7 +93,7 @@ sed -i -e "s@app_dir = UNAVAILABLE@app_dir = &OSG_CE_Mount_ShareDir;/app@" /etc/
 sed -i -e "s@data_dir = UNAVAILABLE@data_dir = &OSG_CE_DataDir;@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@worker_node_temp = UNAVAILABLE@worker_node_temp = &OSG_WN_TmpDir;@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@site_read = UNAVAILABLE@site_read = srm://&OSG_SEServer;:8443/srm/v2/server@" /etc/osg/config.d/10-storage.ini
-sed -i -e "s@write_read = UNAVAILABLE@write_read = srm://&OSG_SEServer;:8443/srm/v2/server@" /etc/osg/config.d/10-storage.ini
+sed -i -e "s@site_write = UNAVAILABLE@site_write = srm://&OSG_SEServer;:8443/srm/v2/server@" /etc/osg/config.d/10-storage.ini
 
 sed -i -e "s@enabled = FALSE@enabled = TRUE@" /etc/osg/config.d/15-managedfork.ini
 
