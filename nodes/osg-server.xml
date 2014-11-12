@@ -201,7 +201,7 @@ CMaster=&Kickstart_PublicHostname;
 
 <!-- squid and cvmfs config related post install -->
 <post>
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-squid" perms="0755">
+<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-frontiersquid" perms="0755">
 #!/bin/sh
 
 OSG_squiduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_squiduid`
@@ -212,7 +212,8 @@ OSG_fusegid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_fusegid`
 
 ### Create the squid user
 #squid:x:450:450:squid management user:/home/squid:/sbin/nologin
-createsquiduser=0
+#always create squid user (makes sure /home/squid exist)
+createsquiduser=1
 ### Create the cvmfs user
 #cvmfs:x:470:470:CernVM-FS service account:/var/cache/cvmfs2:/sbin/nologin
 #createcvmfsuser=0
@@ -228,7 +229,7 @@ fi
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_squidgid} squid
 if [ $createsquiduser -eq 1 ]; then
-/usr/sbin/useradd -u ${OSG_squiduid} -g ${OSG_squidgid} -c "squid management user" -s /sbin/nologin -d /export/home/squid squid
+/usr/sbin/useradd -r -u ${OSG_squiduid} -g ${OSG_squidgid} -c "squid management user" -s /sbin/nologin -d /export/home/squid -m squid
 else
 touch /root/not_squid_user.log
 fi
@@ -249,8 +250,8 @@ usermod -G fuse cvmfs
 #touch /root/not_cvmfs_user.log
 #fi
 
-cp /etc/rc.d/rocksconfig.d/post-90-osg-server-squid /root/post-90-osg-server-squid.script_runned
-rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-squid
+cp /etc/rc.d/rocksconfig.d/post-90-osg-server-frontiersquid /root/post-90-osg-server-frontiersquid.script_runned
+rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-frontiersquid
 </file>
 </post>
 
