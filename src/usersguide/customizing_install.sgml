@@ -1,0 +1,167 @@
+<!-- *****************************    triggers packages install  **************************************** -->
+<section id="customizing-triggers-osg" xreflabel="Customizing OSG packages to install">
+<title>Customizing install ('triggers') attrs</title>
+
+<para>
+By default, Hadoop, Condor and WorkerClient with glexec are installed on Rocks
+<emphasis role=strong>compute</emphasis> appliances, while Gridftp and gatekeper server <emphasis role=strong>are ready</emphasis> to install on <emphasis role=strong>login-0-0</emphasis> host
+and
+Gridftp hadoop and bestman2 <emphasis role=strong>are ready</emphasis> to install on <emphasis role=strong>login-0-1</emphasis> host. 
+</para>
+
+<para>
+For Rocks 5.4 and newer, the OSG roll makes use of <emphasis>attributes</emphasis> to enable install of
+Hadoop, Condor,  WorkerClient with glexec, 
+Bestman2 server (SE), gridftp server, hdfs gridftp server, 
+gatekeeper server (CE), squid server, gums server and cvmfs to be installed on any host or appliance.
+This may be particularly useful to groups who are including the Xen/KVM roll
+and would like OSG servers to install on VM Container appliances.
+</para>
+
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll for packages install ('triggers') </title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_Condor_Client
+</entry>
+<entry>
+Enable/Disable Condor Installation on any particular Appliance or Host.
+Default: true (on compute appliance)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Client
+</entry>
+<entry>
+Enable/Disable OSG Client installation on any particular Appliance or Host. Install includes hadoop and glexec.
+Default: true (on compute appliance)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE
+</entry>
+<entry>
+Enable/Disable Gatekeeper installation on any particular Appliance or Host. 
+Install includes hadoop (and condor if OSG_CE set to "condor"). Depending on the cluster scheduler acceptable values are "condor", "sge."
+If default configuration is kept (login-0-0 as CE), then it is needed to set OSG_CE to "condor" or "sge" on login-0-0.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SE
+</entry>
+<entry>
+Enable/Disable bestman-server installation on any particular Appliance or Host. 
+Install includes hadoop.
+If default configuration is kept (login-0-1 as SE), then it is needed to set OSG_SE to 'true' on login-0-1.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GRIDFTP
+</entry>
+<entry>
+Enable/Disable gridftp server installation on any particular Appliance or Host.
+If default configuration is kept (login-0-0 as classic gridftp server), then it is needed to set OSG_GRIDFTP to 'true' on login-0-0.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GFTP_HDFS
+</entry>
+<entry>
+Enable/Disable hadoop gridftp server installation on any particular Appliance or Host.
+Install includes hadoop.
+If default configuration is kept (login-0-1 as hdfs gridftp server), then it is needed to set OSG_GFTP_HDFS to 'true' on login-0-1.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HADOOP
+</entry>
+<entry>
+Enable/Disable hadoop installation on any particular Appliance or Host.
+Not needed if set already OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_CE on the node.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_XRD
+</entry>
+<entry>
+Enable/Disable xrootd server installation on any particular Appliance or Host.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_RSV
+</entry>
+<entry>
+Enable/Disable rsv installation on any particular Appliance or Host.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GUMS
+</entry>
+<entry>
+Enable/Disable gums server installation on any particular Appliance or Host.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SQUID
+</entry>
+<entry>
+Enable/Disable squid server installation on any particular Appliance or Host.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS
+</entry>
+<entry>
+Enable/Disable cvmfs installation on any particular Appliance or Host.
+No Default.
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+</section>

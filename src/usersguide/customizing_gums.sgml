@@ -1,0 +1,45 @@
+<!-- *****************************  gums attributes      **************************************** -->
+<section id="customizing-gums-attrs-osg" xreflabel="Customizing OSG gums attrs">
+<title>Customizing GUMS attrs</title>
+
+<para>
+Attributes used to configure GUMS Server.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll GUMS Customization</title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_GUMSBackupDir
+</entry>
+<entry>
+Configure the directory in which is located the backup config files and database for gums. Default: /path/to/gums/backup
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GUMSDNADMIN
+</entry>
+<entry>
+Configure the admin DN for gums used in the configuration scripts. Default: /DC=org/DC=doegrids/OU=People/CN=Name M LastName 123456
+</entry>
+</row>
+
+
+     </tbody>
+  </tgroup>
+</table>
+
+</para>
+</section>

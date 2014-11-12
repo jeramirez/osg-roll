@@ -1,0 +1,415 @@
+<!-- *****************************  ce attributes      **************************************** -->
+<section id="customizing-ce-attrs-osg" xreflabel="Customizing OSG ce attrs">
+<title>Customizing CE (Gatekeeper) attrs</title>
+
+
+<para>
+Attributes used to configure CE Server.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll CE Customization</title>
+  <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+     <thead>
+       <row>
+          <entry align="center">Attibute Name</entry>
+          <entry align="center">Description</entry>
+       </row>
+     </thead>
+     <tbody>
+
+<row>
+<entry>
+OSG_SquidServer
+</entry>
+<entry>
+Configure squid server name used by cluster.
+Used to fill information 'location' in <computeroutput>/etc/osg/config.d/01-squid.ini</computeroutput> on CE nodes. 
+Default: no
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GFTPServer
+</entry>
+<entry>
+Configure gridftp server name (non-hdfs or hdfs) used on any particular Appliance or Host installation.
+Used to fill information in <computeroutput>/etc/osg/config.d/30-gip.ini</computeroutput> (gsiftp_host) on CE nodes. 
+Default: rocks-ce.&amp;Kickstart_PublicDNSDomain;
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CEServer
+</entry>
+<entry>
+Configure Grid gatekeeper server public name used on any particular Appliance or Host or gatekeeper installation. 
+Used to match info in /boot/install_cert_ce.sh as condition before try installing grid-certs. 
+Also used to fill information 'job_contact' and 'util_contact' in <computeroutput>/etc/osg/config.d/20-condor.ini</computeroutput> 
+(or <computeroutput>/etc/osg/config.d/20-sge.ini</computeroutput>).
+Default: rocks-ce.&amp;Kickstart_PublicDNSDomain;
+(rocks-ce.public.domain on a New Cluster Server install)
+</entry>
+</row>
+
+<row>
+<entry>
+
+</entry>
+<entry>
+gip attributes to fill <computeroutput>/etc/osg/config.d/30-gip.ini</computeroutput>
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_multicluster
+</entry>
+<entry>
+Number of clusters. 
+If not set assumes 1.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SubCluster1
+</entry>
+<entry>
+Subcluster id, used to fill '[Subcluster id-fill-here]'
+If not set, uses cluster attribute "Info_ClusterName"
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_ClusterName1
+</entry>
+<entry>
+Subcluster name, used to fill cluster 'name'
+If not set, uses cluster attribute "Info_ClusterName"_CE_1
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_NumberOfNodes1
+</entry>
+<entry>
+Subcluster number of nodes, used to fill cluster 'node_count'
+If not set, uses number of compute nodes (at least 1). 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_mb_of_Ram1
+</entry>
+<entry>
+Subcluster RAM info, used to fill cluster 'ram_mb'
+If not set, uses RAM from CE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_cpu_model1
+</entry>
+<entry>
+Subcluster cpu model, used to fill cluster 'cpu_model'
+If not set, uses cpu model from CE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_cpu_vendor1
+</entry>
+<entry>
+Subcluster cpu vendor, used to fill cluster 'cpu_vendor'
+If not set, uses cpu vendor from CE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_cpu_speed1
+</entry>
+<entry>
+Subcluster cpu speed, used to fill cluster 'cpu_speed_mhz'
+If not set, uses cpu speed from CE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_arch1
+</entry>
+<entry>
+Subcluster arch, used to fill cluster 'cpu_platform'
+If not set, uses arch from roll base. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_CpusPerNode1
+</entry>
+<entry>
+Subcluster number of cpus per node, used to fill cluster 'cpus_per_node'
+If not set, uses number of cpus from CE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_CoresPerNode1
+</entry>
+<entry>
+Subcluster number of cores per node, used to fill cluster 'cores_per_node'
+If not set, uses number of cores from CE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_inbound1
+</entry>
+<entry>
+Subcluster inbound network, used to fill cluster 'inbound_network'
+If not set, uses FALSE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_outbound1
+</entry>
+<entry>
+Subcluster outbound network, used to fill cluster 'outbound_network'
+If not set, uses TRUE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_NmultiSE
+</entry>
+<entry>
+Number of SE servers asociated to CE
+No default. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SE1
+</entry>
+<entry>
+SE id, used to fill '[SE if-fill-here]'.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SE_OIM_Name1
+</entry>
+<entry>
+SE OIM Name, used to fill 'name'.
+No Default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SEServer1
+</entry>
+<entry>
+SE Name (fqdn) needed to fill 'srm_endpoint'.
+If not set, it will try 'OSG_SE_Server'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SEprovider1
+</entry>
+<entry>
+SE provider implemetation. Used to fill 'provider_implementation'.
+If not set, it will try 'bestman'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SEimplementation1
+</entry>
+<entry>
+SE provider implemetation. Used to fill 'implementation'.
+If not set, it will try 'bestman'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SEversion1
+</entry>
+<entry>
+SE version. Used to fill 'version'.
+No default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SEpath1
+</entry>
+<entry>
+SE default path. Used to fill 'default_path'.
+No default.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_SE_use_df
+</entry>
+<entry>
+SE flag to set df. Used to fill 'use_df'.
+If not set, will try 'True'
+</entry>
+</row>
+
+<row>
+<entry>
+
+</entry>
+<entry>
+site info attributes to fill <computeroutput>/etc/osg/config.d/40-siteinfo.ini</computeroutput>
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_group
+</entry>
+<entry>
+CE siteinfo to set group if different from OSG. Used to fill 'group'.
+If not set, will leave 'OSG'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_OIM_name
+</entry>
+<entry>
+CE siteinfo to set resource. Used to fill 'resource'. It must be the registered OIM name for the resource.
+(See https://oim.grid.iu.edu/oim/home).
+If not set, will leave 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_OIM_group
+</entry>
+<entry>
+CE siteinfo to set resource_group. Used to fill 'resource_group'. It must be the registered OIM group for the resource group.
+(See https://oim.grid.iu.edu/oim/home).
+If not set, will leave 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_sponsor
+</entry>
+<entry>
+CE siteinfo to set sponsor. Used to fill 'sponsor'.
+If not set, will leave 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_policy
+</entry>
+<entry>
+CE siteinfo to set policy. Used to fill 'site_policy'. It is expected to set web link to site policy.
+If not set, will leave 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_contact
+</entry>
+<entry>
+CE siteinfo to set contact name for the site. Used to fill 'contact'. Your sysadmin name should go here.
+If not set, will leave 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_email
+</entry>
+<entry>
+CE siteinfo to set contact email for the site. Used to fill 'email'. Your sysadmin email should go here.
+If not set, will leave 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_city
+</entry>
+<entry>
+CE siteinfo to set city location for the site. Used to fill 'city'. Your site city should go here.
+If not set, will try using rocks attr '&amp;Info_CertificateLocality;' before giving up for 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_country
+</entry>
+<entry>
+CE siteinfo to set country location for the site. Used to fill 'country'. Your site country should go here.
+If not set, will try using rocks attr '&amp;Info_CertificateCountry;' before giving up for 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_longitude
+</entry>
+<entry>
+CE siteinfo to set longitude coordinates for the site. Used to fill 'longitude'. Your site longitude coordinate should go here.
+If not set, will try using rocks attr '&amp;Info_ClusterLatlong;' before giving up for 'UNAVAILABLE'
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_siteinfo_latitude
+</entry>
+<entry>
+CE siteinfo to set latitude coordinates for the site. Used to fill 'latitude'. Your site latitude coordinate should go here.
+If not set, will try using rocks attr '&amp;Info_ClusterLatlong;' before giving up for 'UNAVAILABLE'
+</entry>
+</row>
+
+
+
+     </tbody>
+  </tgroup>
+</table>
+
+</para>
+</section>

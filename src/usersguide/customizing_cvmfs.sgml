@@ -1,0 +1,75 @@
+<!-- *****************************  cvmfs attributes      **************************************** -->
+<section id="customizing-cvmfs-attrs-osg" xreflabel="Customizing OSG cvmfs attrs">
+<title>Customizing CVMFS attrs</title>
+
+<para>
+Attributes used to configure cvmfs.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll CVMFS Customization</title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_CVMFS_REPOSITORIES
+</entry>
+<entry>
+Configure CVMFS_REPOSITORIES for cvmfs. Default: cms.cern.ch
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS_CACHE_BASE
+</entry>
+<entry>
+Configure CVMFS_CACHE_BASE for cvmfs. Default: "/var/cache/cvmfs"
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS_QUOTA_LIMIT
+</entry>
+<entry>
+Configure CVMFS_QUOTA_LIMIT for cvmfs (in MB). Default: 10000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CVMFS_HTTP_PROXY
+</entry>
+<entry>
+Configure CVMFS_HTTP_PROXY for cvmfs. Default: "http://login-0-2:3128"
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CMS_LOCAL_SITE
+</entry>
+<entry>
+Configure CMS_LOCAL_SITE for cvmfs. Default: "T3_US_PuertoRico"
+</entry>
+</row>
+
+
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+</section>
+

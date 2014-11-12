@@ -1,0 +1,104 @@
+<!-- *****************************  hadoop attributes  **************************************** -->
+<section id="customizing-hadoop-attrs-osg" xreflabel="Customizing OSG Hadoop attrs">
+<title>Customizing Hadoop</title>
+
+<para>
+By default Hadoop is installed on Rocks <emphasis role=strong>compute</emphasis> appliances. 
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll for Hadoop customization</title>
+  <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+     <thead>
+        <row>
+           <entry align="center">Attibute Name</entry>
+           <entry align="center">Description</entry>
+        </row>
+     </thead>
+     <tbody>
+
+<row>
+<entry>
+OSG_HadoopNameNode
+</entry>
+<entry>
+Configure Hadoop NodeName server name used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_NAMENODE=compute-0-0 in /etc/sysconfig/hadoop
+Default: compute-0-0
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopSecondaryNode
+</entry>
+<entry>
+Configure Hadoop SecondaryName server name used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_SECONDARY_NAMENODE=compute-0-1 in /etc/sysconfig/hadoop
+Default: compute-0-1
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopDataDir
+</entry>
+<entry>
+Configure Hadoop base data dir used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_DATADIR=/hadoop in /etc/sysconfig/hadoop
+Default: /hadoop
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopData
+</entry>
+<entry>
+Configure Hadoop data dir used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_DATA=/hadoop/data in /etc/sysconfig/hadoop
+Default: /hadoop/data
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopCheckPointDirs
+</entry>
+<entry>
+Configure Hadoop check point dirs used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_CHECKPOINT_DIRS=/home/hadoop,/scratch/hadoop in /etc/sysconfig/hadoop
+Default: /home/hadoop,/scratch/hadoop
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopCheckPointPeriod
+</entry>
+<entry>
+Configure Hadoop check point period used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_CHECKPOINT_PERIOD=600 in /etc/sysconfig/hadoop
+Default: 600
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_HadoopUpdateFstab
+</entry>
+<entry>
+Configure Hadoop for update fstab used on any particular Appliance or Host installation.
+Check for a line like this: HADOOP_UPDATE_FSTAB=1 in /etc/sysconfig/hadoop
+Default: 1
+</entry>
+</row>
+
+
+     </tbody>
+  </tgroup>
+</table>
+
+</para>
+</section>

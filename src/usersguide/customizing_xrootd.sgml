@@ -1,0 +1,60 @@
+<!-- *****************************  xrootd attributes      **************************************** -->
+<section id="customizing-xrootd-attrs-osg" xreflabel="Customizing OSG xrootd attrs">
+<title>Customizing XRootD attrs</title>
+
+<para>
+Attributes used to configure XRootD.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll XRootD Customization</title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_XROOTD_LOCAL_REDIRECTOR
+</entry>
+<entry>
+Configure your local redirector for xrootd. If not running local redirector leave default (
+This is a direct subcription to regional redirector). It requires request to be whitelisted. 
+Default: cmsxrootd.fnal.gov+
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_XROOTD_REGIONAL_REDIRECTOR
+</entry>
+<entry>
+Configure a local redirector for xrootd. This method requires to set here your subscription to your regional redirector. 
+Default: none
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CMS_LOCAL_SITE
+</entry>
+<entry>
+Configure CMS_LOCAL_SITE for xrootd. Default: "T3_US_PuertoRico"
+</entry>
+</row>
+
+
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+</section>
+

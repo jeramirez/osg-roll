@@ -2,6 +2,17 @@
 	<!ENTITY preface    SYSTEM "preface.sgml">
 	<!ENTITY installing SYSTEM "installing.sgml">
 	<!ENTITY customizing SYSTEM "customizing.sgml">
+	<!ENTITY customizing_uidgid SYSTEM "customizing_uidgid.sgml">
+	<!ENTITY customizing_install SYSTEM "customizing_install.sgml">
+	<!ENTITY customizing_hadoop SYSTEM "customizing_hadoop.sgml">
+	<!ENTITY customizing_condor SYSTEM "customizing_condor.sgml">
+	<!ENTITY customizing_common SYSTEM "customizing_commongrid.sgml">
+	<!ENTITY customizing_ce SYSTEM "customizing_ce.sgml">
+	<!ENTITY customizing_se SYSTEM "customizing_se.sgml">
+	<!ENTITY customizing_gums SYSTEM "customizing_gums.sgml">
+	<!ENTITY customizing_cvmfs SYSTEM "customizing_cvmfs.sgml">
+	<!ENTITY customizing_squid SYSTEM "customizing_squid.sgml">
+	<!ENTITY customizing_xrootd SYSTEM "customizing_xrootd.sgml">
 	<!ENTITY customexamples SYSTEM "customexamples.sgml">
 	<!ENTITY using SYSTEM "using.sgml">
 	<!ENTITY copyrights SYSTEM "copyrights.sgml">

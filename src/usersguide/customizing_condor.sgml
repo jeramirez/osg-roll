@@ -1,0 +1,133 @@
+<!-- *****************************  condor attributes  **************************************** -->
+<section id="customizing-condor-attrs-osg" xreflabel="Customizing OSG Condor attrs">
+<title>Customizing Condor</title>
+
+<para>
+By default Condor is installed on Rocks <emphasis role=strong>compute</emphasis> appliances and frontend. 
+Attributes are inspired on the original Condor roll.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll for Condor Customization</title>
+  <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+     <thead>
+       <row>
+          <entry align="center">Attibute Name</entry>
+          <entry align="center">Description</entry>
+       </row>
+     </thead>
+     <tbody>
+
+<row>
+<entry>
+OSG_Condor_Master
+</entry>
+<entry>
+Redefine the Condor Master that nodes use. Default: public frontend name
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_Network 
+</entry>
+<entry>
+Define which network interface is used for Condor traffic. Default: frontends are set to public, clients are set to private.
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_Daemons
+</entry>
+<entry>
+Define which Condor execution daemons are installed. Default: 
+[MASTER (global)], 
+[MASTER, SCHEDD, COLLECTOR, NEGOTIATOR (frontends)],  
+[MASTER, SCHEDD (login appliance)],
+[MASTER, STARTD (compute appliance)]
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_PortLow 
+</entry>
+<entry>
+Lower Port range that Condor will use to communicate among 
+daemons. Removal of this Attribute will result in removal of the LOWPORT entry in 01_rocks_condor_config.local after syncing the configuration. Default: 40000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_PortHigh 
+</entry>
+<entry>
+Upper Port range that Condor will use to communicate among 
+daemons. Removal of this Attribute will result in removal of the HIGHPORT entry in 01_rocks_condor_config.local after syncing the configuration. Default: 50000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_HostAllow
+</entry>
+<entry>
+Comma separates list of allowed readers/writers for Condor. Translates to 
+HOSTALLOW directive in Condor Configuration file. Default: + rocks-ce
+</entry>
+</row>
+
+<row>
+<entry>OSG_Condor_PasswordAuth </entry>
+<entry>
+ Use a shared pool password, instead of host-based 
+authentication. Default: no. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableMPI 
+</entry>
+<entry>
+Configure a local scheduler for MPI Universe Support. Default: no
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableAMAZON_EC2 
+</entry>
+<entry>
+Configure a local scheduler for AMAZON_EC2 Support. Default: no
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableT3GRID_SUBMIT
+</entry>
+<entry>
+Configure a local grid submitter for interactive nodes (I use to called it CRAB submit). Default: no
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_EnableT3GRID_CMSSW
+</entry>
+<entry>
+Configure a local compute nodes for CMS jobs. (See /opt/rocks/lib/python2.6/site-packages/rocks/commands/report/host/osg/condor/config/plugin_t3cmssw.py)
+Default: yes
+</entry>
+</row>
+
+     </tbody>
+  </tgroup>
+</table>
+
+</para>
+</section>

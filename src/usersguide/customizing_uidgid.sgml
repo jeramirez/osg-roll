@@ -1,0 +1,261 @@
+<!-- *****************************    uid/gid  **************************************** -->
+<section id="customizing-uid-gid-osg" xreflabel="Customizing OSG uid/gid">
+<title>Customizing user/group ID attrs</title>
+
+<para>
+This section list the default OSG configuration value of attributes used to set uid/gid for system users/groups used by
+OSG packages. 
+</para>
+
+<note>
+<para>
+Since Rocks 5.4.3 and beyond, by default Rocks uid&lt;500 are not exported to nodes. However all gid are still exported.
+</para>
+</note>
+
+<caution>
+<para>
+In case of change of gid attr also requires manually change in /etc/group on frontend since groups are exported to nodes.
+</para>
+</caution>
+
+<warning>
+<para>
+Change of <emphasis role=strong>OSG_hdfsuid</emphasis> requires additional manually change in /etc/passwd and /export/home/hadoop on frontend to
+correct ownership.
+</para>
+</warning>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll for userid/group customization (uid/gid) </title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_condoruid
+</entry>
+<entry>
+Configure uid for condor user. Created on Frontend. Default: 407
+</entry>
+</row>
+<row>
+<entry>
+OSG_condorgid
+</entry>
+<entry>
+Configure gid for condor user (group). Created on Frontend. Default: 407
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_hdfsuid
+</entry>
+<entry>
+Configure uid for hdfs user. Created on Frontend. Default: 458
+</entry>
+</row>
+<row>
+<entry>
+OSG_hadoopgid
+</entry>
+<entry>
+Configure gid for hadoop group. Created on Frontend. Default: 409
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_mapreduid
+</entry>
+<entry>
+Configure uid for mapred user (hadoop) . Default: 461
+</entry>
+</row>
+<row>
+<entry>
+OSG_mapredgid
+</entry>
+<entry>
+Configure gid for mapred group (hadoop). Created on Frontend. Default: 461
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_tomcatuid
+</entry>
+<entry>
+Configure uid for tomcat user. Default: 91
+</entry>
+</row>
+<row>
+<entry>
+OSG_tomcatgid
+</entry>
+<entry>
+Configure gid for tomcat group. Created on Frontend. Default: 91
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_gratiauid
+</entry>
+<entry>
+Configure uid for gratia user. Default: 464
+</entry>
+</row>
+<row>
+<entry>
+OSG_gratiagid
+</entry>
+<entry>
+Configure gid for gratia group. Created on Frontend. Default: 464
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_bestmanuid
+</entry>
+<entry>
+Configure uid for bestman user. Default: 459
+</entry>
+</row>
+<row>
+<entry>
+OSG_bestmangid
+</entry>
+<entry>
+Configure gid for bestman group. Created on Frontend. Default: 410
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_xrootduid
+</entry>
+<entry>
+Configure uid for xrootd user. Default: 460
+</entry>
+</row>
+<row>
+<entry>
+OSG_xrootdgid
+</entry>
+<entry>
+Configure gid for xrootd group. Default: 412
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_glexecuid
+</entry>
+<entry>
+Configure uid for glexec user. Default: 463
+</entry>
+</row>
+<row>
+<entry>
+OSG_glexecgid
+</entry>
+<entry>
+Configure gid for glexec group. Created on Frontend. Default: 464
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_squiduid
+</entry>
+<entry>
+Configure uid for squid user. Default: 450
+</entry>
+</row>
+<row>
+<entry>
+OSG_squidgid
+</entry>
+<entry>
+Configure gid for squid user (group). Default: 450
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_cvmfsuid
+</entry>
+<entry>
+Configure uid for cvmfs user. Default: 470
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_cvmfsgid
+</entry>
+<entry>
+Configure gid for cvmfs user (group). Default: 470
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_fusegid
+</entry>
+<entry>
+Configure gid for fuse group. Default: 408
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_rsvuid
+</entry>
+<entry>
+Configure uid for rsv user. Default: 452
+</entry>
+</row>
+<row>
+<entry>
+OSG_rsvgid
+</entry>
+<entry>
+Configure gid for rsv group. Created on Frontend. Default: 452
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_cndrcronuid
+</entry>
+<entry>
+Configure uid for cndrcron user (condor cron). Default: 466
+</entry>
+</row>
+<row>
+<entry>
+OSG_cndrcrongid
+</entry>
+<entry>
+Configure gid for cndrcron group (condor cronn). Created on Frontend. Default: 467
+</entry>
+</row>
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+</section>
+

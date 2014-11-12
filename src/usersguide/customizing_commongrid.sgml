@@ -1,0 +1,139 @@
+<!-- *****************************  common grid attributes  **************************************** -->
+<section id="customizing-common-attrs-osg" xreflabel="Customizing OSG common attrs">
+<title>Customizing common Cluster grid attrs</title>
+
+<para>
+Common attributes are used on <emphasis role=strong>compute</emphasis> appliances, CE, SE, GUMS, CVMFS and XRootD servers.
+</para>
+
+<para>
+<table frame='all'><title>Attributes Used in OSG Roll for common Cluster Customization</title>
+  <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+     <thead>
+       <row>
+          <entry align="center">Attibute Name</entry>
+          <entry align="center">Description</entry>
+       </row>
+     </thead>
+     <tbody>
+
+<row>
+<entry>
+OSG_GlobusPortRange
+</entry>
+<entry>
+Configure Globus Port Range used on any particular Appliance or Host installation.
+This entry is used for setting iptable firewall on grid servers. 
+Default: 20000:25000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GlobusTcpPortRange
+</entry>
+<entry>
+Configure Globus TCP Port Range used on any particular Appliance or Host installation.
+This entry is used for setting GLOBUS_TCP_PORT_RANGE on grid servers. (note change : by , compared with OSG_GlobusPortRange)
+Default: 20000,25000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GlobusTcpSourceRange
+</entry>
+<entry>
+Configure Globus TCP Source Range used on any particular Appliance or Host installation.
+This entry is used for setting GLOBUS_TCP_SOURCE_RANGE on grid servers. (note change : by , compared with OSG_GlobusPortRange)
+Default: 20000,25000
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_StoredCertsDir
+</entry>
+<entry>
+Set Base Dir where grid certs are stored for Appliance or Host installation.
+During installation of CE or SE hostcert.pem and hostkey.pem are copied to /root. 
+Default: /root/certs
+</entry>
+</row>
+
+<row>
+<entry>
+OSGCEPrivate
+</entry>
+<entry>
+Configure which cluster node is the Grid gatekeeper server node (private domain).
+Used as memory which node is acting as gatekeeper server.
+Default: login-0-0
+</entry>
+</row>
+
+<row>
+<entry>
+OSGSEPrivate
+</entry>
+<entry>
+Configure which cluster node is the bestman server node (private domain).
+Used as memory which node is acting as bestman server.
+Default: login-0-1
+</entry>
+</row>
+
+<row>
+<entry>
+OSGGUMSPrivate
+</entry>
+<entry>
+Configure which cluster node is the gums server node (private domain).
+Used as memory which node is acting as gums server.
+Default: login-0-2
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_GumsServer
+</entry>
+<entry>
+Configure Gums server name used on any particular Appliance or Host installation.
+Needed to configure authentication for gridusers in <computeroutput>/etc/lcmaps.db</computeroutput>.
+Also used to fill gums_host ( in <computeroutput>/etc/osg/config.d/10-misc.ini</computeroutput>) 
+and gums_hosts (in <computeroutput>/etc/osg/config.d/30-rsv.ini</computeroutput>)
+Default: rocks-gums.&amp;Kickstart_PublicDNSDomain;
+(rocks-gums.public.domain on a New Cluster Server install)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SEServer
+</entry>
+<entry>
+Configure bestman server public name used on any particular Appliance or Host or bestman server installation.
+Used to match info in /boot/install_cert_se.sh as condition before try installing grid-certs.
+Also used in configuring CE server to fill site_read an site_write (in <computeroutput>/etc/osg/config.d/10-storage.ini</computeroutput>).
+Default: rocks-se.&amp;Kickstart_PublicDNSDomain;
+(rocks-se.public.domain on a New Cluster Server install)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CMS_LOCAL_SITE
+</entry>
+<entry>
+Configure CMS_LOCAL_SITE for cvmfs and xrootd. Default: "T3_US_PuertoRico"
+</entry>
+</row>
+
+
+     </tbody>
+  </tgroup>
+</table>
+
+</para>
+</section>

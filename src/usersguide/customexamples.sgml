@@ -3,6 +3,25 @@
 
 <title>Customizing the OSG Roll</title>
 
+<para>
+This chapter describes some simple
+customizations that can be applied to the OSG roll in Rocks with version &gt;= 5.4
+</para>
+
+<para>
+A basic customization can be applied without any scripting/programming just
+by setting global, appliance, or host attributes and then kickstarting a node.
+</para>
+
+<para>
+Customization can be done also through rocks commands, after setting attributes.
+Please see the
+commands <computeroutput> rocks set attr help </computeroutput>,
+<computeroutput> rocks list attr help </computeroutput>
+and examples in this chapter.
+</para>
+
+
 <!-- ***************************************************************** -->
 <section id="config-examples-hadoop" xreflabel="Hadoop Configuration Examples">
 <title>Examples of Hadoop Configuration</title>

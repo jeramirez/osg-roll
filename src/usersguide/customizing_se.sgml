@@ -1,0 +1,60 @@
+<!-- *****************************  se attributes      **************************************** -->
+<section id="customizing-se-attrs-osg" xreflabel="Customizing OSG se attrs">
+<title>Customizing SE (Bestman) attrs</title>
+
+
+<para>
+Attributes used to configure SE Server.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll SE Customization</title>
+  <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+     <thead>
+        <row>
+           <entry align="center">Attibute Name</entry>
+           <entry align="center">Description</entry>
+        </row>
+     </thead>
+     <tbody>
+
+<row>
+<entry>
+OSG_SRMlocalPathListAllowed
+</entry>
+<entry>
+Configure localPathListAllowed used on any particular Appliance or Host installation of bestman server.
+Check for a line like this: localPathListAllowed=/mnt/hadoop;/data/se in <computeroutput>/etc/bestman2/conf/bestman2.rc</computeroutput>
+Default: /mnt/hadoop;/data/se
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SRMsupportedProtocolList
+</entry>
+<entry>
+Set supportedProtocolList used on any particular Appliance or Host installation of bestman server. This is the default gridftp server.
+Check for a line like this: gsiftp://rocks-ce.&amp;Kickstart_PublicDNSDomain;:2811 in <computeroutput>/etc/bestman2/conf/bestman2.rc</computeroutput>
+Default: gsiftp://rocks-ce.&amp;Kickstart_PublicDNSDomain;:2811
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SRMusepluging
+</entry>
+<entry>
+Setting "True" allow the use of plugin RoundRobinWithPath. By modifying <computeroutput>/etc/bestman2/conf/bestman2.rc</computeroutput> acordingly.
+The plugin uses <computeroutput>/usr/share/java/bestman2/plugin/gsiftp.servers.txt</computeroutput> to read the list of gridftp servers.
+Default: no
+</entry>
+</row>
+
+     </tbody>
+  </tgroup>
+</table>
+
+</para>
+</section>

@@ -1,0 +1,61 @@
+<!-- *****************************  frontier squid attributes      **************************************** -->
+<section id="customizing-squid-attrs-osg" xreflabel="Customizing OSG squid attrs">
+<title>Customizing Squid attrs</title>
+
+<para>
+Attributes used to configure frontier squid.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll Frontier Squid Customization</title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_SquidCacheMem
+</entry>
+<entry>
+Set squid cache memory. If not set rocks command will set to '512 MB'. 
+Rpm install default is '128 MB'.
+Default: node
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SquidCacheDir
+</entry>
+<entry>
+Set squid cache dir. If not set will use '/var/cache/squid'
+Default: none
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_SquidCacheDirSize
+</entry>
+<entry>
+Set cache dir size.If not set will use '10000' (10GB). 
+Default: none
+</entry>
+</row>
+
+
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+</section>
+
