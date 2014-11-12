@@ -57,6 +57,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
 				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/01-squid.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/01-squid.ini /etc/osg/config.d/01-squid.ini.template')
+				self.addOutput(self.host, '[ -f /etc/osg/config.d/10-gateway.ini ]&amp;&amp;[ ! -f /etc/osg/config.d/10-gateway.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/10-gateway.ini /etc/osg/config.d/10-gateway.ini.template')
 				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/10-misc.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/10-misc.ini /etc/osg/config.d/10-misc.ini.template')
 				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/10-storage.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/10-storage.ini /etc/osg/config.d/10-storage.ini.template')
 				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/15-managedfork.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/15-managedfork.ini /etc/osg/config.d/15-managedfork.ini.template')

@@ -71,6 +71,7 @@ sed -i -e "s@# globus_mapping@globus_mapping@" /etc/grid-security/gsi-authz.conf
  <!-- activate /etc/gums/gums-client.properties for use of gums in configuration of osg-ce -->
 sed -i -e "s@localhost@&OSG_GumsServer;@" /etc/gums/gums-client.properties
 
+[ -f /etc/osg/config.d/10-gateway.ini ]&amp;&amp;cp -p /etc/osg/config.d/10-gateway.ini /etc/osg/config.d/10-gateway.ini.template
 cp -p /etc/osg/config.d/10-misc.ini /etc/osg/config.d/10-misc.ini.template
 cp -p /etc/osg/config.d/10-storage.ini /etc/osg/config.d/10-storage.ini.template
 cp -p /etc/osg/config.d/15-managedfork.ini /etc/osg/config.d/15-managedfork.ini.template
