@@ -91,7 +91,7 @@ class Command(rocks.commands.sync.host.command):
         on host compute-0-0 if attr OSG_CVMFS is set in this host.
 	</example>
 
-	<example cmd='sync host osg cvmfs compute-0-0 test=yes'>
+	<example cmd='sync host osg cvmfs install compute-0-0 test=yes'>
 	Show the bash script that will run to install cvmfs on host compute-0-0
 	</example>
 	"""
