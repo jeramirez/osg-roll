@@ -48,6 +48,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_tomcatuid; -g &OSG_tomcatgid; -c "Tomcat" -s /bin/sh -d /usr/share/tomcat&rocks_version_major; tomcat')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_gratiagid; gratia')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia')
+				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_squidgid; squid')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_squiduid; -g &OSG_squidgid; -c "squid management user" -s /sbin/nologin -d /etc/squid squid')
 				self.addOutput(self.host, 'touch /var/log/ce-install.log')
 				self.addOutput(self.host, 'yum install osg-ca-certs  &gt;&gt; /var/log/ce-install.log 2&gt;&amp;1')
 				self.addOutput(self.host, 'yum install osg-ce-%s &gt;&gt; /var/log/ce-install.log 2&gt;&amp;1' % (osg_ce))

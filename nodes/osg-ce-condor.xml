@@ -43,6 +43,10 @@
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
 /usr/sbin/groupadd -g &OSG_gratiagid; gratia
 /usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+### Create the squid User
+#squid:x:450:450:squid management user:/etc/squid:/sbin/nologin
+/usr/sbin/groupadd -g &OSG_squidgid; squid
+/usr/sbin/useradd -r -u &OSG_squiduid; -g &OSG_squidgid; -c "squid management user" -s /sbin/nologin -d /etc/squid squid
 
  <!-- install osg-ce from local mirror-->
 yum install osg-ca-certs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
