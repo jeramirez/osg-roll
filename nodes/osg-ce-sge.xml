@@ -43,6 +43,10 @@
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
 /usr/sbin/groupadd -g &OSG_gratiagid; gratia
 /usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+### Create the squid User
+#squid:x:450:450:squid management user:/etc/squid:/sbin/nologin
+/usr/sbin/groupadd -g &OSG_squidgid; squid
+/usr/sbin/useradd -r -u &OSG_squiduid; -g &OSG_squidgid; -c "squid management user" -s /sbin/nologin -d /etc/squid squid
 
  <!-- install osg-ce from local mirror-->
 yum install osg-ca-certs  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
@@ -67,12 +71,21 @@ sed -i -e "s@# globus_mapping@globus_mapping@" /etc/grid-security/gsi-authz.conf
  <!-- activate /etc/gums/gums-client.properties for use of gums in configuration of osg-ce -->
 sed -i -e "s@localhost@&OSG_GumsServer;@" /etc/gums/gums-client.properties
 
- <!-- pre-configure OSG already known paramenters -->
+[ -f /etc/osg/config.d/10-gateway.ini ]&amp;&amp;cp -p /etc/osg/config.d/10-gateway.ini /etc/osg/config.d/10-gateway.ini.template
 cp -p /etc/osg/config.d/10-misc.ini /etc/osg/config.d/10-misc.ini.template
+cp -p /etc/osg/config.d/10-storage.ini /etc/osg/config.d/10-storage.ini.template
+cp -p /etc/osg/config.d/15-managedfork.ini /etc/osg/config.d/15-managedfork.ini.template
+cp -p /etc/osg/config.d/20-sge.ini /etc/osg/config.d/20-sge.ini.template
+cp -p /etc/osg/config.d/30-gip.ini /etc/osg/config.d/30-gip.ini.template
+cp -p /etc/osg/config.d/40-network.ini /etc/osg/config.d/40-network.ini.template
+cp -p /etc/osg/config.d/01-squid.ini /etc/osg/config.d/01-squid.ini.template
+cp -p /etc/osg/config.d/40-siteinfo.ini /etc/osg/config.d/40-siteinfo.ini.template
+
+
+ <!-- pre-configure OSG already known paramenters -->
 sed -i -e "s@glexec_location = UNAVAILABLE@glexec_location = /usr/sbin/glexec@" /etc/osg/config.d/10-misc.ini
 sed -i -e "s@gums_host = DEFAULT@gums_host = &OSG_GumsServer;@" /etc/osg/config.d/10-misc.ini
 
-cp -p /etc/osg/config.d/10-storage.ini /etc/osg/config.d/10-storage.ini.template
 sed -i -e "s@se_available = FALSE@se_available = TRUE@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@default_se = UNAVAILABLE@default_se = &OSG_SEServer;@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@app_dir = UNAVAILABLE@app_dir = &OSG_CE_Mount_ShareDir;/app@" /etc/osg/config.d/10-storage.ini
@@ -81,27 +94,20 @@ sed -i -e "s@worker_node_temp = UNAVAILABLE@worker_node_temp = &OSG_WN_TmpDir;@"
 sed -i -e "s@site_read = UNAVAILABLE@site_read = srm://&OSG_SEServer;:8443/srm/v2/server@" /etc/osg/config.d/10-storage.ini
 sed -i -e "s@site_write = UNAVAILABLE@site_write = srm://&OSG_SEServer;:8443/srm/v2/server@" /etc/osg/config.d/10-storage.ini
 
-cp -p /etc/osg/config.d/15-managedfork.ini /etc/osg/config.d/15-managedfork.ini.template
 sed -i -e "s@enabled = FALSE@enabled = TRUE@" /etc/osg/config.d/15-managedfork.ini
 
-cp -p /etc/osg/config.d/20-sge.ini /etc/osg/config.d/20-sge.ini.template
 sed -i -e "s@enabled = FALSE@enabled = TRUE@" /etc/osg/config.d/20-sge.ini
 #sed -i -e "s@sge_root = UNAVAILABLE@sge_root = NEED-SET-THIS@" /etc/osg/config.d/20-sge.ini
 #sed -i -e "s@sge_cell = UNAVAILABLE@sge_cell = NEED-SET-THIS@" /etc/osg/config.d/20-sge.ini
 sed -i -e "s@job_contact = host.name/jobmanager-sge@job_contact = &OSG_CEServer;/jobmanager-sge@" /etc/osg/config.d/20-sge.ini
 sed -i -e "s@util_contact = host.name/jobmanager@util_contact = &OSG_CEServer;/jobmanager@" /etc/osg/config.d/20-sge.ini
 
-cp -p /etc/osg/config.d/30-gip.ini /etc/osg/config.d/30-gip.ini.template
 sed -i -e "s@batch = DEFAULT@batch = sge@" /etc/osg/config.d/30-gip.ini
 sed -i -e "s@gsiftp_host = DEFAULT@gsiftp_host = &OSG_GFTPServer;@" /etc/osg/config.d/30-gip.ini
 
-cp -p /etc/osg/config.d/40-network.ini /etc/osg/config.d/40-network.ini.template
 sed -i -e "s@source_range = UNAVAILABLE@source_range = &OSG_GlobusTcpSourceRange;@" /etc/osg/config.d/40-network.ini
 sed -i -e "s@port_range = UNAVAILABLE@port_range = &OSG_GlobusTcpPortRange;@" /etc/osg/config.d/40-network.ini
 sed -i -e "s@port_state_file = UNAVAILABLE@port_state_file = /var/tmp/globus-port-state.log@" /etc/osg/config.d/40-network.ini
-
-cp -p /etc/osg/config.d/01-squid.ini /etc/osg/config.d/01-squid.ini.template
-cp -p /etc/osg/config.d/40-siteinfo.ini /etc/osg/config.d/40-siteinfo.ini.template
 
  <!-- configure hostproxy to serve certificates on worker nodes -->
 <file name="/opt/hostproxy/host_dist.nodes" mode="append" >
@@ -127,11 +133,14 @@ touch /var/tmp/globus-port-state.log
 #fetch-crl 2
 #sed -i -e "s@CRLDIR=/etc/grid-security/certificates@CRLDIR=&OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl.conf
 #fetch-crl 3
-sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = &OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl3.conf
+if [ &rocks_version_major; -lt 6 ]; then
+FETCHCRLV=3
+fi
+sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = &OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl${FETCHCRLV}.conf
 
 
 
-<file name="/root/install_ce_cert.sh" perms="0750" >
+<file name="/root/install_cert_ce.sh" perms="0750" >
 #!/bin/sh
 
 THISHOST=`hostname`
@@ -149,18 +158,36 @@ if [ ! -f $DIRNAME/hostkey.pem ]; then
   cp -p $CERTSDIR/hostkey.pem  $DIRNAME/.
 fi
 
-if [ "$THISHOST" == "$CESERVER" ]; then
+if [ "$THISHOST" == "$CESERVER" ]||[ "$THISHOST" == "&hostname;.local" ]; then
   echo "installing grid certs on $THISHOST"
   echo "searching certs in $DIRNAME"
-  cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
-  cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  if [ ! -f /etc/grid-security/hostcert.pem ]; then
+     cp -p $DIRNAME/hostcert.pem /etc/grid-security/.
+  else
+     echo "-- hostcert.pem already installed no need to install it."
+  fi
+  if [ ! -f /etc/grid-security/hostkey.pem ]; then
+      cp -p $DIRNAME/hostkey.pem /etc/grid-security/.
+  else
+     echo "-- hostkey.pem already installed no need to install it."
+  fi
   chown root:root /etc/grid-security/hostcert.pem
   chown root:root /etc/grid-security/hostkey.pem
   chmod 444 /etc/grid-security/hostcert.pem
   chmod 400 /etc/grid-security/hostkey.pem
   [ -d /etc/grid-security/http ]||mkdir /etc/grid-security/http
-  cp -p /etc/grid-security/hostcert.pem /etc/grid-security/http/httpcert.pem
-  cp -p /etc/grid-security/hostkey.pem /etc/grid-security/http/httpkey.pem
+  if [ ! -f /etc/grid-security/http/httpcert.pem ]; then
+     cp -p /etc/grid-security/hostcert.pem /etc/grid-security/http/httpcert.pem
+     echo "-- httpcert.pem copied from hostcert.pem."
+  else
+     echo "-- httpcert.pem already installed no need to install it."
+  fi
+  if [ ! -f /etc/grid-security/http/httpkey.pem ]; then
+     cp -p /etc/grid-security/hostkey.pem /etc/grid-security/http/httpkey.pem
+     echo "-- httpkey.pem copied from hostkey.pem."
+  else
+     echo "-- httpkey.pem already installed no need to install it."
+  fi
   chown -R tomcat:root /etc/grid-security/http
   chmod 440 /etc/sudoers
 else
@@ -168,8 +195,23 @@ else
 fi
 
 </file>
+</post>
 
+<post>
+<file name="/etc/rc.d/rocksconfig.d/post-98-osg-ce-server" perms="0700">
+#!/bin/bash
+#hopefully script should run after /etc/rc.d/rocksconfig.d/post-02-411get
+# to guarantee that sec_attrs has been transfered (ie. hostcert)
 
+touch /root/cert-install.log
+/root/install_cert_ce.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+
+#echo "running  /root/CE_ini_filesConfigurator" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+#/root/CE_ini_filesConfigurator
+
+echo "rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-ce-server" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-ce-server
+</file>
 </post>
 
 </kickstart> 
