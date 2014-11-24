@@ -367,7 +367,7 @@ on a node,  make appropriate attribute using the commands above  and then run
 </para>
 <para>
 This will rewrite the file /etc/sysconfig/hadoop and then calls the Hadoop
-command <computeroutput>service hadoop-firstboot start</computeroutput>
+command <computeroutput>/root/HadoopConfigurator</computeroutput>
 </para>
 
 <note>

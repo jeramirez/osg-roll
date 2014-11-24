@@ -38,6 +38,42 @@
 		<value>&OSG_HadoopSecondaryNode;</value>
 		<help>This is the default Hadoop Secondary Node</help>
 	</variable>
+	<variable>
+		<label>OSG Hadoop User ID (uid)</label>
+		<name>OSG_hdfsuid</name>
+		<type>string</type>
+		<size>20</size>
+		<default>458</default>
+		<value>&OSG_hdfsuid;</value>
+		<help>This is the defaul uid for hdfs user</help>
+	</variable>
+	<variable>
+		<label>OSG Hadoop group ID (gid)</label>
+		<name>OSG_hadoopgid</name>
+		<type>string</type>
+		<size>20</size>
+		<default>409</default>
+		<value>&OSG_hadoopgid;</value>
+		<help>This is the defaul gid for hadoop group</help>
+	</variable>
+	<variable>
+		<label>OSG MapReduce User ID (uid)</label>
+		<name>OSG_mapreduid</name>
+		<type>string</type>
+		<size>20</size>
+		<default>461</default>
+		<value>&OSG_mapreduid;</value>
+		<help>This is the defaul uid for mapred user</help>
+	</variable>
+	<variable>
+		<label>OSG MapReduce Group ID (gid)</label>
+		<name>OSG_mapredgid</name>
+		<type>string</type>
+		<size>20</size>
+		<default>461</default>
+		<value>&OSG_mapredgid;</value>
+		<help>This is the defaul uid for mapred group</help>
+	</variable>
 
 </screen>
 

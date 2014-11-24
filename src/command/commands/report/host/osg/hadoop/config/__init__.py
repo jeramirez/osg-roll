@@ -185,7 +185,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dictlines['A024_LINE']='HADOOP_SYSLOG_HOST'
 		self.dictcomment['HADOOP_SYSLOG_HOST']="# The central syslog collector.  If set, then logs will be sent to the\n# syslog server in addition to being stored locally."
 		self.dict['HADOOP_SYSLOG_HOST']=''
-		self.dictlines['A025_LINE']='HADOOP_UPDATE_FSTAB'
+		self.dictlines['A025_LINE']='HADOOP_UMASK'
+		self.dictcomment['HADOOP_UMASK']="# Default umask mode within hadoop"
+		self.dict['HADOOP_UMASK']='002'
+		self.dictlines['A026_LINE']='HADOOP_UPDATE_FSTAB'
 		self.dictcomment['HADOOP_UPDATE_FSTAB']="# Set this to '1' to automatically update fstab with an entry for \n# the hadoop fuse mount on /mnt/hadoop.  If you prefer to add this manually,\n# then you will need to add the following to fstab, replacing 'namenode.host'\n# with the fqdn of your namenode.\n# hdfs# /mnt/hadoop fuse server=namenode.host,port=9000,rdbuffer=131072,allow_other 0 0"
 		self.dict['HADOOP_UPDATE_FSTAB']='0'
 
@@ -199,6 +202,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dict['HADOOP_SECONDARY_NAMENODE'] = 'compute-0-1'
 		self.dict['HADOOP_CHECKPOINT_DIRS']= '/home/hadoop,/var/log/hadoop'
 		self.dict['HADOOP_CHECKPOINT_PERIOD']= '600'
+		self.dict['HADOOP_UMASK']= '022'
 		self.dict['HADOOP_UPDATE_FSTAB']= '0'
 
 	def fillFromRocksAttributes(self):
@@ -238,17 +242,14 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.dict['HADOOP_UPDATE_FSTAB']= "%s" % \
 				(self.db.getHostAttr(self.host, 'OSG_HadoopUpdateFstab'))
 
-#	def defineInternalStateVars(self):
-#		self.user = "hdfs"
-#		self.cm_fqdn = self.db.getHostAttr('localhost', 'OSG_Condor_Master')
-#		self.cm_domainName = self.cm_fqdn[string.find(self.cm_fqdn, '.')+1:]
-#		self.localDomain = self.db.getHostAttr('localhost','Kickstart_PrivateDNSDomain')
+		if self.db.getHostAttr(self.host,'OSG_HadoopUmask') > 0:
+			self.dict['HADOOP_UMASK']= "%s" % \
+				(self.db.getHostAttr(self.host, 'OSG_HadoopUmask'))
 
 	def setDefaults(self):
 		""" set hadoop location and config files """
 		self.user = 'hdfs'
 		self.releaseDir = '/usr'
-		self.configMain = '/etc/condor/condor_config'
 		self.configLocal = '/etc/sysconfig/hadoop' 
 
 	def find_executable(self, executable, path=None):
@@ -277,7 +278,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.initializeDictionary()
 #		self.type, self.UIDdomain, self.ConfigFile = self.fillParams([('type','Worker'),('UIDdomain',),('ConfigFile','/etc/sysconfig/hadoop') ])
 		([self.ConfigFile ])= self.fillParams([('ConfigFile','/etc/sysconfig/hadoop') ])
-#		self.defineInternalStateVars()
 		self.beginOutput()
 
                 for host in self.getHostnames(args):
@@ -286,7 +286,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.fillFromRocksAttributes()
 			self.Config()
 #			self.runPlugins((host,self.dict))
-#			self.writeConfigFile(self.dict, self.dictcomment, self.configLocal)
 			self.writeConfigFile(self.dict, self.dictcomment, self.dictlines, self.ConfigFile)
 
 		self.endOutput(padChar='')

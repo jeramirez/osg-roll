@@ -23,6 +23,13 @@
 <package>yum-priorities</package>
 
 <post>
+<eval mode="xml">
+/opt/rocks/bin/rocks report host osg hadoop install  &hostname;
+</eval>
+<!-- The following customization is superseded by the new rocks command
+     "rocks report host osg hadoop install  &hostname;"
+     This code is keep for future reference or site tweaks
+
 ### Create the Hadoop User
 #hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
 #mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
@@ -36,8 +43,9 @@ echo "end checking /etc/group" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
 /usr/sbin/useradd -u &OSG_hdfsuid; -g &OSG_hadoopgid; -c "Hadoop HDFS" -s /bin/bash -d /home/hadoop -m -k /etc/skel hdfs
 /usr/sbin/useradd -u &OSG_mapreduid; -g &OSG_mapredgid; -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
 
- <!-- install hadoop from local mirror after creating users -->
+#  install hadoop from local mirror after creating users
 yum install hadoop-0.20-osg &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+ End comment -->
 
 </post>
 

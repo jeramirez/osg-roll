@@ -122,11 +122,11 @@ class Command(rocks.commands.sync.host.command):
 			if istest:
 				cmd += 'attrs="%s" ' % attrs
 				cmd += ';echo " | ssh %s bash" ' % host
-				cmd += ';echo "; ssh %s service hadoop-firstboot start" ' % host
+				cmd += ';echo "; ssh %s /root/HadoopConfigurator" ' % host
 			else:
 				cmd += 'attrs="%s" | ' % attrs
 				cmd += 'ssh %s bash > /dev/null 2>&1 ' % host
-				cmd += '; ssh %s service hadoop-firstboot start > /dev/null 2>&1 ' % host
+				cmd += '; ssh %s /root/HadoopConfigurator > /dev/null 2>&1 ' % host
 
 			
 
