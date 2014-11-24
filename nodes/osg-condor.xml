@@ -58,6 +58,7 @@ swapuser=`getent passwd &OSG_condoruid; | cut -d: -f1`
 chown -R condor:condor /var/log/condor
 chown -R condor:condor /var/run/condor
 chown -R condor:condor /var/lib/condor
+chown -R condor:condor /var/lock/condor 
 
 /bin/mkdir -p /var/lib/condor/cred_dir
 
