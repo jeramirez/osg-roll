@@ -132,8 +132,7 @@ class Command:
 
 #check if arguments are empty, set a default
 if len(sys.argv) == 1:
-#        args = [ 'http://localhost/install/repo.grid.iu.edu/3.0/el5/osg-release'] 
-        args = [ 'http://localhost/install/repo.grid.iu.edu/osg/3.1/el5/release/x86_64'] 
+        args = [ 'http://repo.grid.iu.edu/osg/3.1/el6/release/x86_64'] 
 else:
         args = sys.argv[1:]
 
