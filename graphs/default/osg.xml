@@ -38,9 +38,11 @@
 		<tail>osg-server</tail>
 	</order>
 
+	<!-- make sure condor install before osg-client  -->
 	<order head="osg-condor">
 		<tail>osg-condor-client</tail>
 		<tail>osg-server</tail>
+		<tail>osg-client</tail>
 	</order>
 
 	<!--
@@ -78,6 +80,11 @@
 		<tail>osg-hadoop-gridftp</tail>
 	</order>
 
+	<!-- make sure frontier squid is installed before osg-ce  -->
+	<order head="osg-frontier-squid">
+		<tail>osg-ce-condor</tail>
+		<tail>osg-ce-sge</tail>
+	</order>
 
 	<!-- add edges here -->
 	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
