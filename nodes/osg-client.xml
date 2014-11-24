@@ -26,11 +26,32 @@
 <post>
 ### Create the glexec User
 #glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
+### Create the gratia User
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
+
 /usr/sbin/groupadd -g &OSG_glexecgid; glexec
+swapgid=`getent group glexec | cut -d: -f3`
+swapgroup=`getent group &OSG_glexecgid; | cut -d: -f1`
+[ ! -z "$swapgroup" ]&amp;&amp;[ "x$swapgroup" != "xglexec" ]&amp;&amp;/usr/sbin/groupmod -o -g $swapgid $swapgroup
+/usr/sbin/groupmod -g &OSG_glexecgid; glexec
+
 /usr/sbin/groupadd -g &OSG_gratiagid; gratia
-/usr/sbin/useradd -u &OSG_glexecuid; -g OSG_glexecgid -c "gLExec user account" -s /sbin/nologin glexec
-/usr/sbin/useradd -u &OSG_gratiauid; -c -g &OSG_gratiagid; "gratia runtime user" -s /sbin/nologin gratia
+swapgid=`getent group gratia | cut -d: -f3`
+swapgroup=`getent group &OSG_gratiagid; | cut -d: -f1`
+[ ! -z "$swapgroup" ]&amp;&amp;[ "x$swapgroup" != "xgratia" ]&amp;&amp;/usr/sbin/groupmod -o -g $swapgid $swapgroup
+/usr/sbin/groupmod -g &OSG_gratiagid; gratia
+
+/usr/sbin/useradd -r -u &OSG_glexecuid; -g &OSG_glexecgid; -c "gLExec user account" -s /sbin/nologin -d /etc/glexec glexec
+swapuid=`getent passwd glexec | cut -d: -f3`
+swapuser=`getent passwd &OSG_glexecuid; | cut -d: -f1`
+[ ! -z "$swapuser" ]&amp;&amp;[ "x$swapuser" != "xglexec" ]&amp;&amp;/usr/sbin/usermod -o -u $swapuid $swapuser
+/usr/sbin/usermod -u &OSG_glexecuid; -g &OSG_glexecgid; glexec
+
+/usr/sbin/useradd -r -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+swapuid=`getent passwd gratia | cut -d: -f3`
+swapuser=`getent passwd &OSG_gratiauid; | cut -d: -f1`
+[ ! -z "$swapuser" ]&amp;&amp;[ "x$swapuser" != "xgratia" ]&amp;&amp;/usr/sbin/usermod -o -u $swapuid $swapuser
+/usr/sbin/usermod -u &OSG_gratiauid; &OSG_gratiagid; gratia
 
 
 <file name="/tmp/CreateGlexecGroups" perms="0755">
