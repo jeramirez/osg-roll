@@ -45,8 +45,16 @@ condor_collector   9618/tcp     # Condor daemon
 #/usr/sbin/useradd -u 407 -g 407 -c "Condor Daemon Account" -s /bin/bash -d /home/condor condor
 ### Make sure is the same as condor roll in case disabling condor roll/enabling osg roll
 
+swapgid=`getent group condor | cut -d: -f3`
+swapgroup=`getent group &OSG_condorgid; | cut -d: -f1`
+[ ! -z "$swapgroup" ]&amp;&amp;[ "x$swapgroup" != "xcondor" ]&amp;&amp;/usr/sbin/groupmod -o -g $swapgid $swapgroup
 /usr/sbin/groupmod -g &OSG_condorgid; condor
+
+swapuid=`getent passwd condor | cut -d: -f3`
+swapuser=`getent passwd &OSG_condoruid; | cut -d: -f1`
+[ ! -z "$swapuser" ]&amp;&amp;[ "x$swapuser" != "xcondor" ]&amp;&amp;/usr/sbin/usermod -o -u $swapuid $swapuser
 /usr/sbin/usermod -u &OSG_condoruid; -g &OSG_condorgid;  condor
+
 chown -R condor:condor /var/log/condor
 chown -R condor:condor /var/run/condor
 chown -R condor:condor /var/lib/condor
