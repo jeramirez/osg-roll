@@ -115,7 +115,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dictlines={}
 		self.dictlines['A001_LINE']='HADOOP_CONF_DIR'
 		self.dictcomment['HADOOP_CONF_DIR']= "# The directory that contains the hadoop configuration files.\n# Don't change this unless you know what you're doing!"
-		self.dict['HADOOP_CONF_DIR']='/etc/hadoop-0.20/conf'
+		self.dict['HADOOP_CONF_DIR']='/etc/hadoop/conf'
 		self.dictlines['A002_LINE']='HADOOP_NAMENODE'
 		self.dictcomment['HADOOP_NAMENODE']="# The server that will act as the namenode.  This must match the\n# output of 'hostname -s' on the namenode server so that\n# /etc/init.d/hadoop can identify when it is being run on the namenode."
 		self.dict['HADOOP_NAMENODE']='@HADOOP_NAMENODE@'
