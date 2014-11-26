@@ -285,6 +285,7 @@ fi
 /opt/rocks/bin/rocks sync users &gt; /dev/null 2&gt;&amp;1
 sed -i -e "s@/home/hdfs@/home/hadoop@" /etc/auto.home
 sed -i -e "s@hdfs@hadoop@" /etc/auto.home
+/usr/sbin/usermod -d /home/hadoop hdfs
 
 cp /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop /root/post-90-osg-server-hadoop.script_runned
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop
