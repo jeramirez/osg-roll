@@ -7,6 +7,7 @@ Download and Compile Roll
 ```shell
 git clone https://github.com/jeramirez/osg-roll.git
 cd osg-roll
+git checkout --track -b 3.2.x origin/3.2.x
 #optional#cd src/osg
 #optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64
 #optional#cd ../..
