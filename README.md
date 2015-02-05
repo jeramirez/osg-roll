@@ -5,12 +5,62 @@ Download and Compile Roll
 -------------------------
 
 ```shell
-git https://github.com/jeramirez/osg-roll.git
+git clone https://github.com/jeramirez/osg-roll.git
 cd osg-roll
 #optional#cd src/osg
-#optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.1/el5/release/x86_64
+#optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.1/el6/release/x86_64
 #optional#cd ../..
 make roll
+```
+
+RHEL/SL/Centos 6: forge dependencies needed for OSG packages
+-----------------------------------------------------------
+
+List of forge packages needed by OSG packages (in tab) shipped with this roll when compiling:
+
+```shel
+rrdtool
+   perl-rrdtool
+   python-rrdtool
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
+```
+
+RHEL/SL/Centos 6: epel dependencies needed for OSG packages
+-----------------------------------------------------------
+
+List of epel packages needed by OSG packages (in tab) shipped with this roll when compiling:
+
+```shel
+bouncycastle
+fetch-crl
+gridftp-ifce
+gsoap
+iperf
+jakarta-commons-cli
+is-interface
+srm-ifce
+```
+
+RHEL/SL/Centos 5: forge dependencies needed for OSG packages
+-----------------------------------------------------------
+
+List of forge packages needed by OSG packages (in tab) shipped with this roll:
+
+```shel
+rrdtool
+   perl-rrdtool
+   python-rrdtool
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
 ```
 
 RHEL/SL/Centos 5: epel dependencies needed for OSG packages
