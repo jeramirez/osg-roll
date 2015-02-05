@@ -44,22 +44,6 @@ sed -i -e "s#002#022#" /etc/hadoop-0.20/conf/core-site.xml.in
 -->
 
 
- <!-- customize hadoop logs to only 30 days/10MB size-->
-  <!-- first comment originals -->
-sed -i -e "s/log4j.appender.DRFA/#ed#log4j.appender.DRFA/" /etc/hadoop-0.20/conf/log4j.properties
-  <!-- second append changes -->
-<file name="/etc/hadoop-0.20/conf/log4j.properties" mode="append">
-#start rocks additions
-#really Rolling File Appender but need on DRFA (do not know why)
-log4j.appender.DRFA=org.apache.log4j.RollingFileAppender
-log4j.appender.DRFA.File=${hadoop.log.dir}/${hadoop.log.file}
-log4j.appender.DRFA.MaxBackupIndex=30
-log4j.appender.DRFA.MaxFileSize=10MB
-log4j.appender.DRFA.layout=org.apache.log4j.PatternLayout
-log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
-#end rocks additions
-</file>
-
  <!-- add configuration hadoop secondary when public interface is set default but hadoop is in private network-->
 <file name="/root/tweak_hadoop_secondary.sh" perms="0750" >
 #!/bin/sh
@@ -75,21 +59,8 @@ sed -i -e "s#&lt;/configuration&gt;#&lt;property&gt;\n  &lt;name&gt;dfs.secondar
 fi
 </file>
 
- <!-- set configuration hadoop datanode -->
+ <!-- set configuration hadoop -->
 /root/HadoopConfigurator
-
-  <!-- alternate configuration hadoop daemon to use osg attributes, 
-       needed when server is using public interface for hostname 
-       but hadoop needs private interface to identify server 
-  -->
-cp -p /etc/init.d/hadoop /etc/init.d/hadoop-osg-rocks
-sed -i -e "s#\`/bin/hostname -s\`#\"&hostname;\"#" /etc/init.d/hadoop-osg-rocks
-sed -i -e "s#/var/lock/subsys/hadoop#/var/lock/subsys/hadoop-osg-rocks#" /etc/init.d/hadoop-osg-rocks
-sed -i -e "s#'hadoop'#'hadoop-osg-rocks'#" /etc/init.d/hadoop-osg-rocks
-
-#set directly on data nodes
-#chkconfig hadoop on
-#chkconfig hadoop-osg-rocks on
 
 </post>
 
