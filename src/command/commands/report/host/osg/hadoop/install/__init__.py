@@ -67,6 +67,7 @@ class Command(rocks.commands.HostArgumentProcessor,
                 for host in self.getHostnames(args):
 			self.host = host
 			loginstall  = '/var/log/hadoop-install.log'
+			hostexclude = '/etc/hadoop/conf/hosts_exclude'
 			hdfssitexml = '/etc/hadoop/conf/hdfs-site.xml.template'
 			coresitexml = '/etc/hadoop/conf/core-site.xml.template'
 			maprsitexml = '/etc/hadoop/conf/mapred-site.xml.template'
@@ -93,6 +94,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch %s' % loginstall )
 				self.addOutput(self.host, 'yum install osg-se-hadoop  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'touch %s' % hostexclude )
+				self.addOutput(self.host, '')
+				self.addOutput(self.host, '#Make sure services are turned off to prevent upgrade cases')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-datanode off')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-namenode off')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-secondarynamenode off')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
 #				template for hdfs-site.xml
