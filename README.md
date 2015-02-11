@@ -8,6 +8,7 @@ Download and Compile Roll
 git clone https://github.com/jeramirez/osg-roll.git
 cd osg-roll
 git checkout --track -b 3.2.x origin/3.2.x
+git pull
 #optional#cd src/osg
 #optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64
 #optional#cd ../..
@@ -75,4 +76,19 @@ fetch-crl/fetch-crl3
    osg-gridftp-xrootd
    osg-se-bestman
    osg-se-bestman-xrootd
+gridsite-libs
+   glite-data-util-c
+   glite-fts-client
+gfal2
+   osg-wn-client
+gfal2-core
+   gfal2-plugin-xrootd-0.3
+gfal2-plugin-gridftp
+   osg-wn-client
+gfal2-plugin-srm
+   osg-wn-client
+gfal2-transfer
+   gfal2-plugin-xrootd-0.3
+gfal2-util
+   osg-wn-client
 ```
