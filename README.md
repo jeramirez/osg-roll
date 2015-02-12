@@ -91,4 +91,11 @@ gfal2-transfer
    gfal2-plugin-xrootd-0.3
 gfal2-util
    osg-wn-client
+python-argparse
+   gfal2-util
+   osg-wn-client
+canl-c
+   gridsite-libs
+pugixml
+   gfal2-plugin-srm
 ```
