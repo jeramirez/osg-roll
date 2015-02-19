@@ -38,8 +38,8 @@ echo "/usr/sbin/useradd -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c \"CernVM-FS servi
 
 
  <!-- install cvmfs from local mirror-->
-echo "yum install oasis" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
-yum install oasis  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+echo "yum install osg-oasis" &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+yum install osg-oasis  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
 
 <file name="/etc/fuse.conf" perms="0644" >
 user_allow_other
