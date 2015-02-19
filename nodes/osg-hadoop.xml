@@ -65,7 +65,7 @@ log4j.appender.DRFA.layout.ConversionPattern=%d{ISO8601} %p %c: %m%n
 #!/bin/sh
 
 if [ "&primary_net;" == "public" ]&amp;&amp;[ "&hostname;" == "&OSG_HadoopSecondaryNode;" ]; then
-[ ! -f /etc/hadoop/conf/hdfs-site.xml.template_original_install ]||cp -p /etc/hadoop/conf/hdfs-site.xml.template /etc/hadoop/conf/hdfs-site.xml.template_original_install
+[  -f /etc/hadoop/conf/hdfs-site.xml.template_original_install ]||cp -p /etc/hadoop/conf/hdfs-site.xml.template /etc/hadoop/conf/hdfs-site.xml.template_original_install
 MYIFACE=`rocks list host interface &hostname; | grep private | cut -d\  -f2`
 #in case no interface info at install, use eth0 as default
 if [ "$MYIFACE" == "" ]; then
