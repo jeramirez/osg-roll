@@ -21,6 +21,7 @@
 <package>libxml2.&arch;</package>
 <package>yum-cron</package>
 <package>yum-priorities</package>
+<package>osg-release</package>
 
 <post>
 <eval mode="xml">
