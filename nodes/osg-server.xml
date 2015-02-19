@@ -161,6 +161,8 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_hadoopgid value=409
 /opt/rocks/bin/rocks add attr OSG_mapreduid value=461
 /opt/rocks/bin/rocks add attr OSG_mapredgid value=461
+/opt/rocks/bin/rocks add attr OSG_zookeeperuid value=406
+/opt/rocks/bin/rocks add attr OSG_zookeepergid value=406
 # parameters related with CE install
 /opt/rocks/bin/rocks add attr OSG_tomcatuid value=91
 /opt/rocks/bin/rocks add attr OSG_tomcatgid value=91
@@ -263,22 +265,26 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-frontiersquid
 ### Create the Hadoop, mapred User
 #hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
 #mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
+#zookeeper:x:406:406:ZooKeeper:/var/run/zookeeper:/sbin/nologin
 
-OSG_hadoopgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hadoopgid`
-OSG_hdfsuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hdfsuid`
-OSG_mapredgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapredgid`
-OSG_mapreduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapreduid`
+OSG_hadoopgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_hadoopgid`
+OSG_hdfsuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_hdfsuid`
+OSG_mapredgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_mapredgid`
+OSG_mapreduid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_mapreduid`
+OSG_zookeepergid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_zookeepergid`
+OSG_zookeeperuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_zookeeperuid`
 
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_hadoopgid} hadoop
+/usr/sbin/groupadd -g ${OSG_mapredgid} mapred
+/usr/sbin/groupadd -g ${OSG_zookeepergid} zookeeper
 
 /usr/sbin/useradd -u ${OSG_hdfsuid} -g ${OSG_hadoopgid} -c "Hadoop HDFS" -s /bin/bash -d /export/home/hadoop hdfs
 
 ### This users are for backward compatibility (&lt; rocks5.5)
 if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/groupadd -g ${OSG_mapredgid} mapred
-/usr/sbin/useradd -u ${OSG_mapreduid} -g ${OSG_mapredgid} -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
-
+/usr/sbin/useradd -r -u ${OSG_mapreduid} -g ${OSG_mapredgid} -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
+/usr/sbin/useradd -r -u ${OSG_zookeeperuid} -g ${OSG_zookeepergid} -c "ZooKeeper" -s /bin/nologin -d /var/run/zookeeper zookeeper
 #end backward compatibility ( &lt;rocks 5.5)
 fi
 
