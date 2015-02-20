@@ -55,6 +55,7 @@ class Command(rocks.commands.HostArgumentProcessor,
                 for host in self.getHostnames(args):
 			self.host = host
 			loginstall  = '/var/log/hadoop-upgrade.log'
+			hostexclude = '/etc/hadoop/conf/hosts_exclude'
 			hdfssitexml = '/etc/hadoop/conf/hdfs-site.xml.template'
 			coresitexml = '/etc/hadoop/conf/core-site.xml.template'
 			maprsitexml = '/etc/hadoop/conf/mapred-site.xml.template'
@@ -69,17 +70,25 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_fusegid; fuse')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_hadoopgid; hadoop')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_mapredgid; mapred')
-				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_bestmangid; bestman')
+				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_zookeepergid; zookeeper')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_hdfsuid; -g &OSG_hadoopgid; -c "Hadoop HDFS" -s /bin/bash -d /home/hadoop -m -k /etc/skel hdfs')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_mapreduid; -g &OSG_mapredgid; -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred')
-				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_bestmanuid; -g &OSG_bestmangid; -c "Bestman2 user" -s /bin/bash -d /etc/bestman2 bestman')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_zookeeperuid; -g &OSG_zookeepergid; -c "ZooKeeper" -s /bin/nologin -d /var/run/zookeeper zookeeper')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '[ -f /var/lock/subsys/hadoop ]&amp;&amp;service hadoop stop')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch %s' % loginstall )
-				self.addOutput(self.host, 'wget  http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64/osg-release-3.2-5.osg32.el6.noarch.rpm  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
-				self.addOutput(self.host, 'yum install ./osg-release-3.2-5.osg32.el6.noarch.rpm  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
-				self.addOutput(self.host, 'yum install osg-se-hadoop  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install osg-release  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum --enablerepo=osg-development install osg-se-hadoop-client  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum --enablerepo=osg-development install osg-se-hadoop-datanode  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum --enablerepo=osg-development install osg-se-hadoop-namenode  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum --enablerepo=osg-development install osg-se-hadoop-secondarynamenode  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'touch %s' % hostexclude )
+				self.addOutput(self.host, '')
+				self.addOutput(self.host, '#Make sure services are turned off to prevent upgrade cases')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-datanode off')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-namenode off')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-secondarynamenode off')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
 #				template for hdfs-site.xml
