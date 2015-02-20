@@ -5,15 +5,17 @@ Download and Compile Roll
 -------------------------
 
 ```shell
-git https://github.com/jeramirez/osg-roll.git
+git clone https://github.com/jeramirez/osg-roll.git
 cd osg-roll
+git checkout --track -b 3.1.x origin/3.1.x
+git pull
 #optional#cd src/osg
-#optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.1/el5/release/x86_64
+#optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.1/el6/release/x86_64
 #optional#cd ../..
 make roll
 ```
 
-RHEL/SL/Centos 5: epel dependencies needed for OSG packages
+RHEL/SL/Centos 6: epel dependencies needed for OSG packages
 -----------------------------------------------------------
 
 List of epel packages needed by OSG packages (in tab) shipped with this roll:
@@ -61,7 +63,7 @@ jakarta-commons-io
 iperf
    bwctl-client
    bwctl-server
-fetch-crl3/fetch-crl
+fetch-crl/fetch-crl3
    cms-xrootd
    dcache-gratia-probe
    gratia-reporting-web
