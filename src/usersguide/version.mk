@@ -1,5 +1,5 @@
 ROLL			= osg
-VERSION			= 3.2.20
+VERSION			= 3.2.21
 NAME    		= roll-$(ROLL)-usersguide
 RELEASE			= 0
 MANUALRELEASE 		= V8_2_7
