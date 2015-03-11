@@ -430,6 +430,7 @@ cp /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec /root/post-90-osg-server-gl
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec
 </file>
 
+<!-- rsv config related post install -->
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-rsv" perms="0755">
 #!/bin/sh
 
@@ -445,15 +446,27 @@ OSG_cndrcronuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cndrcro
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_rsvgid} rsv
 /usr/sbin/groupadd -g ${OSG_cndrcrongid} cndrcron
+creatersvuser=0
+createcndrcronuser=0
 
 ### This users are for backward compatibility (&lt; rocks5.5)
-if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/useradd -r -u ${OSG_rsvuid} -g ${OSG_rsvgid} -c "RSV monitoring user" -s /bin/sh -d /var/rsv rsv
-/usr/sbin/useradd -r -u ${OSG_cndrcronuid} -g ${OSG_cndrcrongid} -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
-
+if [ "&rocks_version;" == "5.5" ]||[ "&rocks_version;" == "5.6" ]||[ &rocks_version_major; -ge 6 ]; then
+[ ${OSG_rsvuid} -gt 500 ]&amp;&amp;creatersvuser=1
+[ ${OSG_cndrcronuid} -gt 500 ]&amp;&amp;createcndrcronuser=1
+else
+creatersvuser=1
+createcndrcronuser=1
 #end backward compatibility ( &lt;rocks 5.5)
+fi
+
+if [ $creatersvuser -eq 1 ]; then
+/usr/sbin/useradd -r -u ${OSG_rsvuid} -g ${OSG_rsvgid} -c "RSV monitoring user" -s /bin/sh -d /var/rsv rsv
 else
 touch /root/not_rsv_user.log
+fi
+if [ $createcndrcronuser -eq 1 ]; then
+/usr/sbin/useradd -r -u ${OSG_cndrcronuid} -g ${OSG_cndrcrongid} -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+else
 touch /root/not_cndrcron_user.log
 fi
 
