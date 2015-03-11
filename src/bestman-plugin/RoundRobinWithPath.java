@@ -25,6 +25,7 @@ public class RoundRobinWithPath implements gov.lbl.srm.policy.ISRMSelectionPolic
       try {
         java.io.BufferedReader server_list = new java.io.BufferedReader(new java.io.FileReader(_file.getCanonicalPath()));
 
+        PathMap  = new HashMap<String,Vector<String>>();// clean path for reloading 
         while (server_list.ready()) {
            String currLine = server_list.readLine();
            if ((currLine == null) || (currLine.length() == 0) || (currLine.charAt(0) == '#') ) {
@@ -114,7 +115,7 @@ public class RoundRobinWithPath implements gov.lbl.srm.policy.ISRMSelectionPolic
        String pathselected=ListOfPaths.elementAt(0);
 	Object result = null;
         int icount = CountMap.get( pathselected );
-        Vector ListOfServers = (Vector)(PathMap.get(pathselected));
+        Vector<String> ListOfServers = PathMap.get(pathselected);
         if (( icount >=0 ) && (ListOfServers.size()>0) ){
             if (icount >= ListOfServers.size() ){
                icount = ListOfServers.size() - 1;
@@ -147,7 +148,7 @@ public class RoundRobinWithPath implements gov.lbl.srm.policy.ISRMSelectionPolic
 	       pathselected=ListOfPaths.elementAt(0);
 	}
         int icount = CountMap.get( pathselected );
-        Vector ListOfServers = (Vector)(PathMap.get(pathselected));
+        Vector<String> ListOfServers = PathMap.get(pathselected);
         if (( icount >=0 ) && (ListOfServers.size()>0) ){
             if (icount >= ListOfServers.size() ){
                icount = ListOfServers.size() - 1;
