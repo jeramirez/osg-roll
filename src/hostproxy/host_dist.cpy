@@ -1,7 +1,7 @@
 #!/usr/bin/python
 
 import sys,os
-import popen2
+import subprocess
 import threading
 import time
 import signal
@@ -19,30 +19,27 @@ def copy_one(copy_one_cmd,
          x509proxykey,remotex509proxykey)
     
     print "Updating %s"%node 
-    cmd_el=popen2.Popen3(cmd,1)
-    cmd_el.tochild.close() # no input
+    cmd_el = subprocess.Popen(cmd, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, close_fds=True)
 
     start_time=time.time()
     exit_code=cmd_el.poll()
-    while (exit_code==-1):
+
+    while (exit_code==None):
         running_time=time.time()-start_time
         if running_time>timeout:
             print "Node %s: Timeout reached, killing"%node
             os.kill(cmd_el.pid,signal.SIGTERM)
             time.sleep(1)
             exit_code=cmd_el.poll()
-            if exit_code==-1:
+            if exit_code==None:
                 os.kill(cmd_el.pid,signal.SIGKILL)
                 exit_code=1
         else:
             time.sleep(1)
             exit_code=cmd_el.poll()
 
-    stderr=cmd_el.childerr.read()
-    stdout=cmd_el.fromchild.read()
-    cmd_el.childerr.close()
-    cmd_el.fromchild.close()
-    
+    (stdout,stderr)=cmd_el.communicate()
+
     if exit_code==0:
         print stdout
         #return (0,stdout)
