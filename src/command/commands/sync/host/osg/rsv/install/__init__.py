@@ -106,7 +106,7 @@ class Command(rocks.commands.sync.host.command):
 				cmd +=' /opt/rocks/bin/rocks sync host firewall %s' % host
 
 
-			if is_osg_ce>0 or istest:
+			if is_rsv>0 or istest:
 				p = Parallel(cmd)
 				threads.append(p)
 				p.start()
