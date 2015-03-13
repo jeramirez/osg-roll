@@ -88,7 +88,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_zookeepergid; zookeeper')
 				self.FixGid('&OSG_zookeepergid;','zookeeper')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_hdfsuid; -g &OSG_hadoopgid; -c "Hadoop HDFS" -s /bin/bash -d /home/hadoop -m -k /etc/skel hdfs')
-				self.FixUid('&OSG_hdfsgid;','hdfs')
+				self.FixUid('&OSG_hdfsuid;','hdfs')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_mapreduid; -g &OSG_mapredgid; -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-hdfs mapred')
 				self.FixUid('&OSG_mapreduid;','mapred')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_zookeeperuid; -g &OSG_zookeepergid; -c "ZooKeeper" -s /bin/nologin -d /var/run/zookeeper zookeeper')
