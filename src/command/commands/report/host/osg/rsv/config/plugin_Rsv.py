@@ -21,6 +21,7 @@ class Plugin(rocks.commands.Plugin):
 		OSG_gridftp              = self.db.getHostAttr(host,'OSG_GFTPServer')
 		OSG_gftplist             = self.db.getHostAttr(host,'OSG_RSVGFTPList')
 		OSG_SEServer             = self.db.getHostAttr(host,'OSG_SEServer')
+		OSG_SRMPort              = self.db.getHostAttr(host,'OSG_SRMPort')
 		OSG_SRMDIR               = self.db.getHostAttr(host,'OSG_RSVSRMTestDir')
 
 
@@ -46,7 +47,10 @@ class Plugin(rocks.commands.Plugin):
 		if osg_gums>0:
 			addOutput(host, 'sed -i -e "s@gums_hosts = UNAVAILABLE@gums_hosts = %s@" %s' % (osg_gums,configFile))
 		if OSG_SEServer>0:
-			addOutput(host, 'sed -i -e "s@srm_hosts = UNAVAILABLE@srm_hosts = %s:8443@" %s' % (OSG_SEServer,configFile))
+			if OSG_SRMPort>0:
+				addOutput(host, 'sed -i -e "s@srm_hosts = UNAVAILABLE@srm_hosts = %s:%s@" %s' % (OSG_SEServer,OSG_SRMPort,configFile))
+			else:
+				addOutput(host, 'sed -i -e "s@srm_hosts = UNAVAILABLE@srm_hosts = %s:8443@" %s' % (OSG_SEServer,configFile))
 			addOutput(host, 'sed -i -e "s@srm_webservice_path = DEFAULT@srm_webservice_path = srm/v2/server@" %s' % (configFile))
 			if OSG_SRMDIR>0:
 				addOutput(host, 'sed -i -e "s@srm_dir = DEFAULT@srm_dir = %s@" %s' % (OSG_SRMDIR,configFile))
