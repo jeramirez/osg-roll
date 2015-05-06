@@ -47,4 +47,7 @@ For more information see <xref linkend="customizing-triggers-osg">.
 <!-- *****************************  xrootd attributes      ************************************ -->
 &customizing_xrootd;
 
+<!-- *****************************  rsv attributes      ************************************ -->
+&customizing_rsv;
+
 </chapter>

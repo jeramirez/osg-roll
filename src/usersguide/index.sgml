@@ -13,6 +13,7 @@
 	<!ENTITY customizing_cvmfs SYSTEM "customizing_cvmfs.sgml">
 	<!ENTITY customizing_squid SYSTEM "customizing_squid.sgml">
 	<!ENTITY customizing_xrootd SYSTEM "customizing_xrootd.sgml">
+	<!ENTITY customizing_rsv SYSTEM "customizing_rsv.sgml">
 	<!ENTITY customexamples SYSTEM "customexamples.sgml">
 	<!ENTITY using SYSTEM "using.sgml">
 	<!ENTITY copyrights SYSTEM "copyrights.sgml">
