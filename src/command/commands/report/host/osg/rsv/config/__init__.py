@@ -21,7 +21,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 	"""
 
 	Output the OSG rsv Local Configuration Script 
-	Uses Rocks Attributes: OSG_RSV, OSG_RSV_Port, OSG_RSV_SecurePort
+	Uses Rocks Attributes: OSG_RSV, OSG_RSV_Port, OSG_RSV_SPort
 
 	<arg type='string' name='host'>
 	One host name.
