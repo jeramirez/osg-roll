@@ -23,6 +23,7 @@ class Plugin(rocks.commands.Plugin):
 		Info_ClusterName         = self.db.getHostAttr(host,'Info_ClusterName')
 		OSG_NmultiSE             = self.db.getHostAttr(host,'OSG_CE_gip_NmultiSE')
 		OSG_SEServer             = self.db.getHostAttr(host,'OSG_SEServer')
+		OSG_SRMPort              = self.db.getHostAttr(host,'OSG_SRMPort')
 		OSG_ClusterName          = {}
 		OSG_SEs                  = {}
 
@@ -171,6 +172,7 @@ class Plugin(rocks.commands.Plugin):
 				OSG_SE_cluster       = 'OSG_CE_gip_SE' + str(iclus)
 				OSG_SE_OIM_Name      = 'OSG_CE_gip_SE_OIM_Name' + str(iclus)
 				OSG_SE_Server        = 'OSG_CE_gip_SEServer' + str(iclus)
+				OSG_SE_Port          = 'OSG_CE_gip_SEPort' + str(iclus)
 				OSG_SE_provider      = 'OSG_CE_gip_SEprovider' + str(iclus)
 				OSG_SE_implementation= 'OSG_CE_gip_SEimplementation' + str(iclus)
 				OSG_SE_version       = 'OSG_CE_gip_SEversion' + str(iclus)
@@ -180,6 +182,7 @@ class Plugin(rocks.commands.Plugin):
 				OSG_SEs[OSG_SE_cluster]        = self.db.getHostAttr(host,OSG_SE_cluster)
 				OSG_SEs[OSG_SE_OIM_Name]       = self.db.getHostAttr(host,OSG_SE_OIM_Name)
 				OSG_SEs[OSG_SE_Server]         = self.db.getHostAttr(host,OSG_SE_Server)
+				OSG_SEs[OSG_SE_Port]           = self.db.getHostAttr(host,OSG_SE_Port)
 				OSG_SEs[OSG_SE_provider]       = self.db.getHostAttr(host,OSG_SE_provider)
 				OSG_SEs[OSG_SE_implementation] = self.db.getHostAttr(host,OSG_SE_implementation)
 				OSG_SEs[OSG_SE_version]        = self.db.getHostAttr(host,OSG_SE_version)
@@ -194,12 +197,19 @@ class Plugin(rocks.commands.Plugin):
 					else:
 						addOutput(host, '#attr %s not defined for SE server' % (OSG_SE_OIM_Name))
 					if OSG_SEs[OSG_SE_Server] > 0:
-						addOutput(host, 'echo "srm_endpoint = httpg://%s:8443/srm/v2/server" &gt;&gt; %s'  % (OSG_SEs[OSG_SE_Server],configFile))
+						if OSG_SEs[OSG_SE_Port] > 0:
+							addOutput(host, 'echo "srm_endpoint = httpg://%s:%s/srm/v2/server" &gt;&gt; %s'  % (OSG_SEs[OSG_SE_Server],OSG_SEs[OSG_SE_Port],configFile))
+						else:
+							addOutput(host, 'echo "srm_endpoint = httpg://%s:8443/srm/v2/server" &gt;&gt; %s'  % (OSG_SEs[OSG_SE_Server],configFile))
 					else:
 						addOutput(host, '#attr %s not defined for SE server' % (OSG_SE_Server))
 						if iclus == 1:
 							addOutput(host, '#### USING attr OSG_SEServer')
-							addOutput(host, 'echo "srm_endpoint = httpg://%s:8443/srm/v2/server" &gt;&gt; %s'  % (OSG_SEServer,configFile))
+							if OSG_SRMPort > 0:
+								addOutput(host, '#### USING attr OSG_SRMPort')
+								addOutput(host, 'echo "srm_endpoint = httpg://%s:%s/srm/v2/server" &gt;&gt; %s'  % (OSG_SEServer,OSG_SRMPort,configFile))
+							else:
+								addOutput(host, 'echo "srm_endpoint = httpg://%s:8443/srm/v2/server" &gt;&gt; %s'  % (OSG_SEServer,configFile))
 					if OSG_SEs[OSG_SE_provider] > 0:
 						addOutput(host, 'echo "provider_implementation = %s" &gt;&gt; %s'  % (OSG_SEs[OSG_SE_provider],configFile))
 					else:

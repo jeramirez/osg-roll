@@ -161,6 +161,8 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_hadoopgid value=409
 /opt/rocks/bin/rocks add attr OSG_mapreduid value=461
 /opt/rocks/bin/rocks add attr OSG_mapredgid value=461
+/opt/rocks/bin/rocks add attr OSG_zookeeperuid value=406
+/opt/rocks/bin/rocks add attr OSG_zookeepergid value=406
 # parameters related with CE install
 /opt/rocks/bin/rocks add attr OSG_tomcatuid value=91
 /opt/rocks/bin/rocks add attr OSG_tomcatgid value=91
@@ -183,10 +185,12 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_cvmfsgid value=470
 /opt/rocks/bin/rocks add attr OSG_fusegid value=408
 # parameters related with rsv install
-/opt/rocks/bin/rocks add attr OSG_rsvuid value=452
-/opt/rocks/bin/rocks add attr OSG_rsvgid value=452
+/opt/rocks/bin/rocks add attr OSG_rsvuid value=5452
+/opt/rocks/bin/rocks add attr OSG_rsvgid value=5452
 /opt/rocks/bin/rocks add attr OSG_cndrcronuid value=466
 /opt/rocks/bin/rocks add attr OSG_cndrcrongid value=467
+/opt/rocks/bin/rocks add attr OSG_RSV_Port value=80
+/opt/rocks/bin/rocks add attr OSG_RSV_SPort value=443
 # parameters site especific
 /opt/rocks/bin/rocks add attr OSG_CE_Export_LocalDir value="/scratch"
 /opt/rocks/bin/rocks add attr OSG_CE_Mount_ShareDir value="/sharesoft/osg"
@@ -263,22 +267,26 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-frontiersquid
 ### Create the Hadoop, mapred User
 #hdfs:x:458:409:Hadoop HDFS:/home/hadoop:/bin/bash
 #mapred:x:461:461:Hadoop MapReduce:/usr/lib/hadoop-0.20:/bin/bash
+#zookeeper:x:406:406:ZooKeeper:/var/run/zookeeper:/sbin/nologin
 
-OSG_hadoopgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hadoopgid`
-OSG_hdfsuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_hdfsuid`
-OSG_mapredgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapredgid`
-OSG_mapreduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_mapreduid`
+OSG_hadoopgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_hadoopgid`
+OSG_hdfsuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_hdfsuid`
+OSG_mapredgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_mapredgid`
+OSG_mapreduid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_mapreduid`
+OSG_zookeepergid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_zookeepergid`
+OSG_zookeeperuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_zookeeperuid`
 
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_hadoopgid} hadoop
+/usr/sbin/groupadd -g ${OSG_mapredgid} mapred
+/usr/sbin/groupadd -g ${OSG_zookeepergid} zookeeper
 
 /usr/sbin/useradd -u ${OSG_hdfsuid} -g ${OSG_hadoopgid} -c "Hadoop HDFS" -s /bin/bash -d /export/home/hadoop hdfs
 
 ### This users are for backward compatibility (&lt; rocks5.5)
 if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/groupadd -g ${OSG_mapredgid} mapred
-/usr/sbin/useradd -u ${OSG_mapreduid} -g ${OSG_mapredgid} -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred
-
+/usr/sbin/useradd -r -u ${OSG_mapreduid} -g ${OSG_mapredgid} -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-hdfs mapred
+/usr/sbin/useradd -r -u ${OSG_zookeeperuid} -g ${OSG_zookeepergid} -c "ZooKeeper" -s /bin/nologin -d /var/run/zookeeper zookeeper
 #end backward compatibility ( &lt;rocks 5.5)
 fi
 
@@ -422,6 +430,7 @@ cp /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec /root/post-90-osg-server-gl
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec
 </file>
 
+<!-- rsv config related post install -->
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-rsv" perms="0755">
 #!/bin/sh
 
@@ -431,21 +440,33 @@ OSG_cndrcrongid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cndrcro
 OSG_cndrcronuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cndrcronuid`
 
 ### Create the rsv,cndrcron Users
-#rsv:x:452:452:RSV monitoring:/var/rsv:/bin/sh
+#rsv:x:5452:5452:RSV monitoring:/var/rsv:/bin/sh
 #cndrcron:x:466:467:Condor-cron service:/var/lib/condor-cron:/sbin/nologin
 
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_rsvgid} rsv
 /usr/sbin/groupadd -g ${OSG_cndrcrongid} cndrcron
+creatersvuser=0
+createcndrcronuser=0
 
 ### This users are for backward compatibility (&lt; rocks5.5)
-if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/useradd -u ${OSG_rsvuid} -g ${OSG_rsvgid} -c "RSV monitoring user" -s /bin/sh -d /var/rsv rsv
-/usr/sbin/useradd -u ${OSG_cndrcronuid} -g ${OSG_cndrcrongid} -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
-
+if [ "&rocks_version;" == "5.5" ]||[ "&rocks_version;" == "5.6" ]||[ &rocks_version_major; -ge 6 ]; then
+[ ${OSG_rsvuid} -gt 500 ]&amp;&amp;creatersvuser=1
+[ ${OSG_cndrcronuid} -gt 500 ]&amp;&amp;createcndrcronuser=1
+else
+creatersvuser=1
+createcndrcronuser=1
 #end backward compatibility ( &lt;rocks 5.5)
+fi
+
+if [ $creatersvuser -eq 1 ]; then
+/usr/sbin/useradd -r -u ${OSG_rsvuid} -g ${OSG_rsvgid} -c "RSV monitoring user" -s /bin/sh -d /var/rsv rsv
 else
 touch /root/not_rsv_user.log
+fi
+if [ $createcndrcronuser -eq 1 ]; then
+/usr/sbin/useradd -r -u ${OSG_cndrcronuid} -g ${OSG_cndrcrongid} -c "Condor-cron service" -s /sbin/nologin -d /var/lib/condor-cron cndrcron
+else
 touch /root/not_cndrcron_user.log
 fi
 

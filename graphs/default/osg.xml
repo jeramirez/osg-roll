@@ -86,6 +86,12 @@
 		<tail>osg-ce-sge</tail>
 	</order>
 
+	<!-- make sure condor is installed before osg-ce  -->
+	<order head="osg-condor">
+		<tail>osg-ce-condor</tail>
+		<tail>osg-ce-sge</tail>
+	</order>
+
 	<!-- add edges here -->
 	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
 	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>

@@ -72,7 +72,25 @@
 		<size>20</size>
 		<default>461</default>
 		<value>&OSG_mapredgid;</value>
-		<help>This is the defaul uid for mapred group</help>
+		<help>This is the defaul gid for mapred group</help>
+	</variable>
+	<variable>
+		<label>OSG ZooKeeper User ID (uid)</label>
+		<name>OSG_zookeeperuid</name>
+		<type>string</type>
+		<size>20</size>
+		<default>406</default>
+		<value>&OSG_zookeeperuid;</value>
+		<help>This is the defaul uid for zookeeper user</help>
+	</variable>
+	<variable>
+		<label>OSG ZooKeeper Group ID (gid)</label>
+		<name>OSG_zookeepergid</name>
+		<type>string</type>
+		<size>20</size>
+		<default>406</default>
+		<value>&OSG_zookeepergid;</value>
+		<help>This is the defaul gid for zookeeper group</help>
 	</variable>
 
 </screen>

@@ -21,6 +21,33 @@
 #iperf-*.el6.x86_64.rpm
 #srm-ifce-*.el6.x86_64.rpm
 #gridftp-ifce-*el6.x86_64.rpm
+#gridsite-libs-*.el6.x86_64.rpm
+#gridsite-libs-*.el6.i386.rpm
+#gfal2-*.el6.x86_64.rpm
+#gfal2-all-*.el6.x86_64.rpm
+#gfal2-core-*.el6.i686.rpm
+#gfal2-core-*.el6.x86_64.rpm
+#gfal2-devel-*.el6.i686.rpm
+#gfal2-devel-*.el6.x86_64.rpm
+#gfal2-plugin-dcap-*.el6.x86_64.rpm
+#gfal2-plugin-http-*.el6.x86_64.rpm
+#gfal2-plugin-lfc-*.el6.x86_64.rpm
+#gfal2-plugin-rfio-*.el6.x86_64.rpm
+#gfal2-plugin-xrootd-0.2*.el6.x86_64.rpm
+#gfal2-plugin-gridftp-*.el6.x86_64.rpm
+#gfal2-plugin-srm-*.el6.x86_64.rpm
+#gfal2-python-*.el6.x86_64.rpm
+#gfal2-transfer-*.el6.i686.rpm
+#gfal2-transfer-*.el6.x86_64.rpm
+#canl-c-*.el6.x86_64.rpm
+#canl-c-*.el6.i686.rpm
+#canl-c-devel-*.el6.i686.rpm
+#canl-c-devel-*.el6.x86_64.rpm
+#canl-c-examples-*.el6.x86_64.rpm
+#pugixml-*.el6.i686.rpm
+#pugixml-*.el6.x86_64.rpm
+#pugixml-devel-*.el6.i686.rpm
+#pugixml-devel-*.el6.x86_64.rpm
 rsync -av \
 rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/{\
 jakarta-commons-cli{-javadoc-,-}*,\
@@ -28,7 +55,11 @@ gsoap{-devel-,-}*,\
 is-interface{-devel-,-}*,\
 iperf-*,\
 srm-ifce-*,\
-gridftp-ifce-*\
+gridftp-ifce-*,\
+gridsite-libs-*,\
+gfal2-*,\
+canl-c-*,\
+pugixml-*\
 }.el6.{x86_64,i686}.rpm \
 x86_64/.
  
@@ -59,9 +90,13 @@ debug/.
 #bouncycastle-*.el6.noarch.rpm
 #bouncycastle-javadoc-*.el6.noarch.rpm
 #fetch-crl-*.el6.noarch.rpm
+#gfal2-util-*.el6.noarch.rpm
+#python-argparse-*.el6.noarch.rpm
 rsync -av \
 rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/{\
 bouncycastle{-javadoc-,-}*,\
-fetch-crl-*\
+fetch-crl-*,\
+gfal2-util-*,\
+python-argparse-*\
 }.el6.noarch.rpm \
 noarch/.

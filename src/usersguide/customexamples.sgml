@@ -177,6 +177,7 @@ This part is automatized by running the command
 <para>
 This will rewrite 
 10-misc.ini,
+10-gateway.ini,
 10-storage.ini, 
 15-managedfork.ini,
 20-condor.ini (or 20-sge.ini), 
@@ -322,6 +323,7 @@ OSG twiki page</ulink>.
 
 </section>
 
+<!-- ***************************************************************** -->
 <section id="reconfiguring-condor" xreflabel="Reconfiguring Condor">
 <title>Reconfiguring Condor after Installation </title>
 <para>
@@ -355,6 +357,7 @@ manuals</ulink> or <ulink url="condor-Manual"> locally </ulink>.
 
 </section>
 
+<!-- ***************************************************************** -->
 <section id="reconfiguring-hadoop" xreflabel="Reconfiguring Hadoop">
 <title>Reconfiguring Hadoop after Installation </title>
 <para>
@@ -380,6 +383,7 @@ To view the contents of the /etc/sysconfig/hadoop before making changes, use
 
 </section>
 
+<!-- ***************************************************************** -->
 <section id="customize-squid" xreflabel="Customize Squid">
 <title>Reconfiguring Frontier Squid after Installation </title>
 <para>
@@ -405,6 +409,7 @@ To view the contents of the /etc/squid/customize.sh before making changes, use
 
 </section>
 
+<!-- ***************************************************************** -->
 <section id="customize-cvmfs" xreflabel="Customize CVMFS">
 <title>Reconfiguring CVMFS </title>
 <para>
@@ -441,6 +446,46 @@ To view the contents of the files
 /etc/fuse.conf
  before making changes, use
 <computeroutput>rocks report host osg cvmfs config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+
+</section>
+
+<!-- ***************************************************************** -->
+<section id="customize-rsv" xreflabel="Customize RSV">
+<title>Reconfiguring RSV </title>
+<para>
+The default customization of RSV is done at the OS install, if OSG_RSV was set to true, the resulting configuration files are:
+/etc/osg/config.d/30-rsv.ini,
+/etc/httpd/conf/httpd.conf and
+/etc/httpd/conf.d/ssl.conf
+The secure configuration will use certs located at /etc/grid-security/http/httpcerts2.pem (with key httpkey2.pem) with ownership apache.
+To reconfigure rsv on a node, make appropriate attribute changes using the commands above and then run
+<screen>
+# rocks sync host osg rsv &lt;hostname&gt;
+</screen>
+</para>
+<para>
+This will rewrite the script <computeroutput>/root/rsv_iniConfigurator</computeroutput> and run it,
+then will run "osg-configure -c" to set rsv.
+</para>
+<para>
+In case rsv was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_RSV on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_RSV value=true
+# rocks sync host osg rsv install &lt;hostname&gt;
+# ssh &lt;hostname&gt; "cp -p /etc/grid-security/http/httpcert.pem /etc/grid-security/http/httpcert2.pem"
+# ssh &lt;hostname&gt; "cp -p /etc/grid-security/http/httpkey.pem /etc/grid-security/http/httpkey2.pem"
+# ssh &lt;hostname&gt; "chown apache. /etc/grid-security/http/http*2.pem"
+</screen>
+</para>
+
+<note>
+<para>
+To view the content of the new /root/rsv_iniConfigurator before making changes, use
+<computeroutput>rocks report host osg rsv config &lt;hostname&gt;</computeroutput>
 </para>
 </note>
 

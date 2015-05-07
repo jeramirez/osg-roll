@@ -53,9 +53,11 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 	def writeBestman2RC(self, configFile):
 		OSG_GumsServer           = self.db.getHostAttr(self.host,'OSG_GumsServer')
+		OSG_GumsPort             = self.db.getHostAttr(self.host,'OSG_GumsPort')
 		localpathallowed         = self.db.getHostAttr(self.host,'OSG_SRMlocalPathListAllowed')
 		supportedprotocol        = self.db.getHostAttr(self.host,'OSG_SRMsupportedProtocolList')
 		useplugin                = self.db.getHostAttr(self.host,'OSG_SRMusepluging')
+		OSG_SRMPort              = self.db.getHostAttr(self.host,'OSG_SRMPort')
 
 		self.addOutput(self.host, '#begin config %s' % (configFile))
 		self.addOutput(self.host, '/bin/cp -f /etc/bestman2/conf/bestman2.rc.template %s' % (configFile))
@@ -65,7 +67,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.addOutput(self.host, 'sed -i -e "s@### supportedProtocolList=@supportedProtocolList=%s@" %s' % (supportedprotocol,configFile))
 		if OSG_GumsServer > 0:
 			self.addOutput(self.host, 'sed -i -e "s@### GUMSProtocol=XACML@GUMSProtocol=XACML@" %s' % (configFile))
-			self.addOutput(self.host, 'sed -i -e "s@### GUMSserviceURL=@GUMSserviceURL=https://%s:8443/gums/services/GUMSXACMLAuthorizationServicePort@" %s' % (OSG_GumsServer,configFile))
+			if OSG_GumsPort > 0:
+				self.addOutput(self.host, 'sed -i -e "s@### GUMSserviceURL=@GUMSserviceURL=https://%s:%s/gums/services/GUMSXACMLAuthorizationServicePort@" %s' % (OSG_GumsServer,OSG_GumsPort,configFile))
+			else:
+				self.addOutput(self.host, 'sed -i -e "s@### GUMSserviceURL=@GUMSserviceURL=https://%s:8443/gums/services/GUMSXACMLAuthorizationServicePort@" %s' % (OSG_GumsServer,configFile))
+		if OSG_SRMPort > 0:
+			self.addOutput(self.host, 'sed -i -e "s@securePort=8443@securePort=%s@" %s' % (OSG_SRMPort,configFile))
 		if useplugin > 0 and useplugin:
 			self.addOutput(self.host, 'sed -i -e "s@### pluginLib=/usr/share@pluginLib=/usr/share@" %s' % (configFile))
 			self.addOutput(self.host, 'sed -i -e "s@### protocolSelectionPolicy=PROTOCOL_POLICY@protocolSelectionPolicy=class=plugin.RoundRobinWithPath\&amp;jarFile=RRWP.jar\&amp;name=gsiftp\&amp;param=/usr/share/java/bestman2/plugin/gsiftp.servers.txt@" %s' % (configFile))

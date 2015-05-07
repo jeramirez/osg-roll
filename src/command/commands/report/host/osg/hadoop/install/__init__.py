@@ -67,6 +67,7 @@ class Command(rocks.commands.HostArgumentProcessor,
                 for host in self.getHostnames(args):
 			self.host = host
 			loginstall  = '/var/log/hadoop-install.log'
+			hostexclude = '/etc/hadoop/conf/hosts_exclude'
 			hdfssitexml = '/etc/hadoop/conf/hdfs-site.xml.template'
 			coresitexml = '/etc/hadoop/conf/core-site.xml.template'
 			maprsitexml = '/etc/hadoop/conf/mapred-site.xml.template'
@@ -84,13 +85,26 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.FixGid('&OSG_hadoopgid;','hadoop')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_mapredgid; mapred')
 				self.FixGid('&OSG_mapredgid;','mapred')
-				self.addOutput(self.host, '/usr/sbin/useradd -u &OSG_hdfsuid; -g &OSG_hadoopgid; -c "Hadoop HDFS" -s /bin/bash -d /home/hadoop -m -k /etc/skel hdfs')
-				self.FixUid('&OSG_hdfsgid;','hdfs')
-				self.addOutput(self.host, '/usr/sbin/useradd -u &OSG_mapreduid; -g &OSG_mapredgid; -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-0.20 mapred')
+				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_zookeepergid; zookeeper')
+				self.FixGid('&OSG_zookeepergid;','zookeeper')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_hdfsuid; -g &OSG_hadoopgid; -c "Hadoop HDFS" -s /bin/bash -d /home/hadoop -m -k /etc/skel hdfs')
+				self.FixUid('&OSG_hdfsuid;','hdfs')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_mapreduid; -g &OSG_mapredgid; -c "Hadoop MapReduce" -s /bin/bash -d /usr/lib/hadoop-hdfs mapred')
 				self.FixUid('&OSG_mapreduid;','mapred')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_zookeeperuid; -g &OSG_zookeepergid; -c "ZooKeeper" -s /bin/nologin -d /var/run/zookeeper zookeeper')
+				self.FixUid('&OSG_zookeeperuid;','zookeeper')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch %s' % loginstall )
-				self.addOutput(self.host, 'yum install hadoop-0.20-osg  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install osg-se-hadoop-client  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install osg-se-hadoop-datanode  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install osg-se-hadoop-namenode  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install osg-se-hadoop-secondarynamenode  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'touch %s' % hostexclude )
+				self.addOutput(self.host, '')
+				self.addOutput(self.host, '#Make sure services are turned off to prevent upgrade cases')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-datanode off')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-namenode off')
+				self.addOutput(self.host, 'chkconfig hadoop-hdfs-secondarynamenode off')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
 #				template for hdfs-site.xml
@@ -218,13 +232,17 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, 'echo "" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "if [ \\"\$HADOOP_UPDATE_FSTAB\\" == \\"1\\" ] ; then" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "   if [ ! -e /usr/bin/hdfs ] ; then" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
-				self.addOutput(self.host, 'echo "      echo \\"Not updating fstab because /usr/bin/hdfs not found.  Is hadoop-0.20-fuse installed?\\"" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "      echo \\"Not updating fstab because /usr/bin/hdfs not found.  Is hadoop-hdfs installed?\\"" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "   fi" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "   mkdir -p /mnt/hadoop" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "   if grep -q \'^hdfs#\' /etc/fstab ; then" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
-				self.addOutput(self.host, 'echo "      sed -i -e \\"s;^hdfs#.*;hdfs# /mnt/hadoop fuse server=\${HADOOP_NAMENODE},port=\${HADOOP_NAMEPORT},rdbuffer=131072,allow_other 0 0;\\" /etc/fstab" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "      sed -i -e \\"s;^hdfs#.*;hadoop-fuse-dfs# /mnt/hadoop fuse server=\${HADOOP_NAMENODE},port=\${HADOOP_NAMEPORT},rdbuffer=131072,allow_other 0 0;\\" /etc/fstab" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "   else" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
-				self.addOutput(self.host, 'echo "      echo \\"hdfs# /mnt/hadoop fuse server=\${HADOOP_NAMENODE},port=\${HADOOP_NAMEPORT},rdbuffer=131072,allow_other 0 0\\" &gt;&gt; /etc/fstab" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "      if grep -q \'^hadoop-fuse-dfs#\' /etc/fstab ; then" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "         sed -i -e \\"s;^hadoop-fuse-dfs#.*;hadoop-fuse-dfs# /mnt/hadoop fuse server=\${HADOOP_NAMENODE},port=\${HADOOP_NAMEPORT},rdbuffer=131072,allow_other 0 0;\\" /etc/fstab" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "      else" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "         echo \\"hadoop-fuse-dfs# /mnt/hadoop fuse server=\${HADOOP_NAMENODE},port=\${HADOOP_NAMEPORT},rdbuffer=131072,allow_other 0 0\\" &gt;&gt; /etc/fstab" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "      fi" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "   fi" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "fi" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
@@ -232,3 +250,4 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '')
 
 		self.endOutput(padChar='')
+

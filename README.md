@@ -5,65 +5,15 @@ Download and Compile Roll
 -------------------------
 
 ```shell
-git clone https://github.com/jeramirez/osg-roll.git
+git clone -b 3.2.x https://github.com/jeramirez/osg-roll.git
 cd osg-roll
-#optional#cd src/osg
-#optional#./downloadOSG.py http://repo.grid.iu.edu/osg/3.1/el6/release/x86_64
-#optional#cd ../..
+cd src/osg
+./downloadOSG.py http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64
+cd ../..
 make roll
 ```
 
-RHEL/SL/Centos 6: forge dependencies needed for OSG packages
------------------------------------------------------------
-
-List of forge packages needed by OSG packages (in tab) shipped with this roll when compiling:
-
-```shel
-rrdtool
-   perl-rrdtool
-   python-rrdtool
-      glideinwms-factory
-      glideinwms-libs
-      glideinwms-vofrontend-standalone
-      glideinwms-factory
-      glideinwms-libs
-      glideinwms-vofrontend-standalone
-```
-
 RHEL/SL/Centos 6: epel dependencies needed for OSG packages
------------------------------------------------------------
-
-List of epel packages needed by OSG packages (in tab) shipped with this roll when compiling:
-
-```shel
-bouncycastle
-fetch-crl
-gridftp-ifce
-gsoap
-iperf
-jakarta-commons-cli
-is-interface
-srm-ifce
-```
-
-RHEL/SL/Centos 5: forge dependencies needed for OSG packages
------------------------------------------------------------
-
-List of forge packages needed by OSG packages (in tab) shipped with this roll:
-
-```shel
-rrdtool
-   perl-rrdtool
-   python-rrdtool
-      glideinwms-factory
-      glideinwms-libs
-      glideinwms-vofrontend-standalone
-      glideinwms-factory
-      glideinwms-libs
-      glideinwms-vofrontend-standalone
-```
-
-RHEL/SL/Centos 5: epel dependencies needed for OSG packages
 -----------------------------------------------------------
 
 List of epel packages needed by OSG packages (in tab) shipped with this roll:
@@ -111,7 +61,7 @@ jakarta-commons-io
 iperf
    bwctl-client
    bwctl-server
-fetch-crl3/fetch-crl
+fetch-crl/fetch-crl3
    cms-xrootd
    dcache-gratia-probe
    gratia-reporting-web
@@ -124,4 +74,43 @@ fetch-crl3/fetch-crl
    osg-gridftp-xrootd
    osg-se-bestman
    osg-se-bestman-xrootd
+gridsite-libs
+   glite-data-util-c
+   glite-fts-client
+gfal2
+   osg-wn-client
+gfal2-core
+   gfal2-plugin-xrootd-0.3
+gfal2-plugin-gridftp
+   osg-wn-client
+gfal2-plugin-srm
+   osg-wn-client
+gfal2-transfer
+   gfal2-plugin-xrootd-0.3
+gfal2-util
+   osg-wn-client
+python-argparse
+   gfal2-util
+   osg-wn-client
+canl-c
+   gridsite-libs
+pugixml
+   gfal2-plugin-srm
+```
+
+RHEL/SL/Centos 6: forge dependencies needed for OSG packages
+-----------------------------------------------------------
+
+List of forge packages needed by OSG packages (in tab) shipped with this roll when compiling:
+
+```shel
+rrdtool
+   perl-rrdtool
+   python-rrdtool
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
 ```

@@ -135,8 +135,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dict['CVMFS_HTTP_PROXY']='"http://login-0-0:3128"'
 		self.dictlines2['B001_LINE']='CMS_LOCAL_SITE'
 		self.dict['CMS_LOCAL_SITE']="T3_US_PuertoRico"
-		self.dictlines3['C001_LINE']='CVMFS_SERVER_URL'
-		self.dict['CVMFS_SERVER_URL']='"http://cvmfs.fnal.gov:8000/opt/@org@;http://cvmfs.racf.bnl.gov:8000/opt/@org@;http://cvmfs-stratum-one.cern.ch:8000/opt/@org@;http://cernvmfs.gridpp.rl.ac.uk:8000/opt/@org@"'
+#		self.dictlines3['C001_LINE']='CVMFS_SERVER_URL'
+#		self.dict['CVMFS_SERVER_URL']='"http://cvmfs.fnal.gov:8000/opt/@org@;http://cvmfs.racf.bnl.gov:8000/opt/@org@;http://cvmfs-stratum-one.cern.ch:8000/opt/@org@;http://cernvmfs.gridpp.rl.ac.uk:8000/opt/@org@"'
 
 	def fillFromRollDefault(self):
 		self.dict['CVMFS_REPOSITORIES'] = "cms.cern.ch"
@@ -167,6 +167,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				(self.db.getHostAttr(self.host, 'OSG_CMS_LOCAL_SITE'))
 
 		if self.db.getHostAttr(self.host,'OSG_CVMFS_SERVER_URL') > 0:
+			self.dictlines3['C001_LINE']='CVMFS_SERVER_URL'
 			self.dict['CVMFS_SERVER_URL'] = '%s' % \
 				(self.db.getHostAttr(self.host, 'OSG_CVMFS_SERVER_URL'))
 

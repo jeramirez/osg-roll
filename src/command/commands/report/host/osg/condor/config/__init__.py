@@ -283,7 +283,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dict['NEGOTIATOR_INTERVAL']         = '120'
 		self.dict['LOCK']                        = '/tmp/condor-lock.$(HOSTNAME)'
 		self.dict['RELEASE_DIR']                 = '/usr'
-		self.dict['LOCAL_DIR']                   = '/var/lib/condor'
+		self.dict['LOCAL_DIR']                   = '/var'
 		self.dict['EMAIL_DOMAIN']                = '$(FULL_HOSTNAME)'
 		self.dict['RELEASE_DIR']                 = self.releaseDir
 		self.dict['MAIL']                        = self.find_executable('mail')
@@ -305,12 +305,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.dict['HOSTALLOW_WRITE'] = allowHosts
 
 	
-		self.localDir = self.dict['LOCAL_DIR']
-		# if self.node == 'frontend':
-		#	self.dict['COLLECTOR_NAME'] = 'Collector at %s' % self.host
-
-		#self.setDedicated(dict)
-
 	def Config(self):
 		""" configuration driver """
 		self.setDefaults()
