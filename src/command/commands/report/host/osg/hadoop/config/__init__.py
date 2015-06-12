@@ -189,7 +189,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dictcomment['HADOOP_UMASK']="# Default umask mode within hadoop"
 		self.dict['HADOOP_UMASK']='002'
 		self.dictlines['A026_LINE']='HADOOP_UPDATE_FSTAB'
-		self.dictcomment['HADOOP_UPDATE_FSTAB']="# Set this to '1' to automatically update fstab with an entry for \n# the hadoop fuse mount on /mnt/hadoop.  If you prefer to add this manually,\n# then you will need to add the following to fstab, replacing 'namenode.host'\n# with the fqdn of your namenode.\n# hdfs# /mnt/hadoop fuse server=namenode.host,port=9000,rdbuffer=131072,allow_other 0 0"
+		self.dictcomment['HADOOP_UPDATE_FSTAB']="# Set this to '1' to automatically update fstab with an entry for \n# the hadoop fuse mount on /mnt/hadoop.  If you prefer to add this manually,\n# then you will need to add the following to fstab, replacing 'namenode.host'\n# with the fqdn of your namenode.\n# hadoop-fuse-dfs# /mnt/hadoop fuse server=namenode.host,port=9000,rdbuffer=131072,allow_other 0 0"
 		self.dict['HADOOP_UPDATE_FSTAB']='0'
 
 
