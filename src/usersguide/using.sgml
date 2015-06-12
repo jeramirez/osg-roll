@@ -30,6 +30,12 @@ $ su - root
 #rocks add host attr ce-0-0 OSG_CE_gip_ClusterName1 value="MyClusterName"
 #rocks add host attr ce-0-0 OSG_CE_gip_SubCluster2 value="MyClusterID2"
 #rocks add host attr ce-0-0 OSG_CE_gip_ClusterName2 value="MyClusterName2"
+## more gip associated to having storage (assuming one SE)
+#rocks add host attr ce-0-0 OSG_CE_gip_NmultiSE value=1
+#rocks add host attr ce-0-0 OSG_CE_gip_SE1 value="MySE-ID"
+#rocks add host attr ce-0-0 OSG_CE_gip_SE_OIM_Name1 value="your SE resource OIM registered"
+#rocks add host attr ce-0-0 OSG_CE_gip_SEversion1 value="2.2.3.0-21"
+#rocks add host attr ce-0-0 OSG_CE_gip_SEpath1 value="/mnt/hadoop/user/VONAME"
 ## Attrs used to fill siteinfo
 #rocks add host attr ce-0-0 OSG_CE_siteinfo_sponsor value="uscms"
 #rocks add host attr ce-0-0 OSG_CE_siteinfo_contact value="Your Admin Name"
