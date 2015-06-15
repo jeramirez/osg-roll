@@ -1,4 +1,4 @@
-# $Id: httpkey.py,v 1.0 2013/08/31 00:53:22 eduardo Exp $
+# $Id: rsvkey.py,v 1.0 2013/08/31 00:53:22 eduardo Exp $
 
 import rocks.commands
 
@@ -11,7 +11,8 @@ class plugin(rocks.commands.sec_attr_plugin):
 
 	def filter(self, value):
 		certpath='/etc/grid-security/rsv'
-		keyfile=certpath + '/rsvkey.pem'
+		keyfile =certpath + '/rsvkey.pem'
+		rsv     = 0
 		#open temporary file and write value there
 		tf, tfname= tempfile.mkstemp()
 		os.write(tf, value)
@@ -21,7 +22,9 @@ class plugin(rocks.commands.sec_attr_plugin):
 		if not os.path.exists(certpath):
 			os.makedirs(certpath, 755)
 		if os.path.exists(keyfile):
+			rsv=os.stat(certfile).st_uid
 			shutil.move(keyfile, keyfile + '_' + tfname[8:])
 		# Move temporary file to keyfile
 		shutil.move(tfname, keyfile)
 		os.chmod(keyfile, 0400)
+		os.chown(keyfile, rsv, -1)

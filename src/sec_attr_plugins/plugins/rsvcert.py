@@ -12,6 +12,7 @@ class plugin(rocks.commands.sec_attr_plugin):
 	def filter(self, value):
 		certpath='/etc/grid-security/rsv'
 		certfile=certpath + '/rsvcert.pem'
+		rsv     = 0 #default root
 		#open temporary file and write value there
 		tf, tfname= tempfile.mkstemp()
 		os.write(tf, value)
@@ -21,7 +22,9 @@ class plugin(rocks.commands.sec_attr_plugin):
 		if not os.path.exists(certpath):
 			os.makedirs(certpath, 755)
 		if os.path.exists(certfile):
+			rsv=os.stat(certfile).st_uid
 			shutil.move(certfile, certfile + '_' + tfname[8:])
 		# Move temporary file to certfile
 		shutil.move(tfname, certfile)
 		os.chmod(certfile, 0444)
+		os.chown(certfile, rsv, -1)
