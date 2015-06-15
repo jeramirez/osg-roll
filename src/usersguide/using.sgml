@@ -228,25 +228,27 @@ $ su - root
 #shoot-node ce-0-0
 
 #
-# post install
+# post install 
+# (fetch-crl, osg-configure are run in rocks sync command)
 #
-#rocks run host ce-0-0 command='/root/install_rsv_cert.sh'
-#rocks run host ce-0-0 command='fetch-crl'
 #rocks run host ce-0-0 command='service condor start'
-#rocks run host ce-0-0 command='configure-osg -v'
-#rocks run host ce-0-0 command='configure-osg -c'
+#rocks sync host osg CE ce-0-0
 
-#services for gatekeeper
+#services for gatekeeper(GRAM)
 #rocks run host ce-0-0 command='service globus-gatekeeper start'
+#services for gatekeeper(HTCONDOR-CE)
+#rocks run host ce-0-0 command='service condor-ce start'
 #services for gridftp
 #rocks run host ce-0-0 command='service globus-gridftp-server start'
 #services for rsv
 #rocks run host ce-0-0 command='service condor-cron start'
 #rocks run host ce-0-0 command='service rsv start'
-#rocks run host ce-0-0 command='service http start'
+#rocks run host ce-0-0 command='service httpd start'
 
+#set services on boot
 #rocks run host ce-0-0 command='chkconfig condor on'
 #rocks run host ce-0-0 command='chkconfig globus-gatekeeper on'
+#rocks run host ce-0-0 command='chkconfig condor-ce on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-cron on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-boot on'
 #rocks run host ce-0-0 command='chkconfig globus-gridftp-server on'
