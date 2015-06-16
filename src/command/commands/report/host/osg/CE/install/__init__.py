@@ -93,6 +93,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 					self.addOutput(self.host, '[ "`grep -c %s/app /etc/exports`" != "0" ]||echo "%s/app %s(rw,async,no_root_squash) %s/%s(rw,async)" &gt;&gt; /etc/exports ' % (osg_export,osg_export,ksphost,kspn,kspm) )
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch /var/tmp/globus-port-state.log')
+				self.addOutput(self.host, 'chmod 666 /var/tmp/globus-port-state.log')
 				self.addOutput(self.host, '')
 
 		self.endOutput(padChar='')
