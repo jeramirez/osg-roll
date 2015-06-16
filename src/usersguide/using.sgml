@@ -581,6 +581,29 @@ yum update bestman-server
 
 
 <!-- ***************************************************************** -->
+<section id="Backup-GUMS" xreflabel="How to backup GUMS database">
+<title>How to Backup GUMS DB packages</title>
+<para>
+GUMS server can be backed up by cloning gums.config and dumping GUMS table as follow.
+
+</para>
+
+<screen>
+#login to your GUMS server
+#assuming OSG_GUMSBackupDir attr set to '/home/myusers/mygumsbackup'
+$ su - root
+
+#cp -p /etc/gums/gums.config /home/myusers/mygumsbackup/gums.config_rpm
+#mysqldump GUMS_1_3 > /home/myusers/mygumsbackup/gums_1_3.sql_rpm
+</screen>
+
+<para>
+For recovery after installing gums server run script /root/ConfigureGumsUpgradeFromRPM.sh 
+as shown in section <xref linkend="Install-GUMS_ONLY"/>
+</para>
+</section>
+
+<!-- ***************************************************************** -->
 <section id="condor-password-security" xreflabel="Condor Pool Password Security">
 <title>Using a pool password to secure Condor Communications</title>
 <para>
