@@ -111,18 +111,18 @@ echo "searching certs in $DIRNAME"
 [ ! -d /etc/grid-security/rsv ]&amp;&amp; mkdir /etc/grid-security/rsv
 if [ ! -f /etc/grid-security/rsv/rsvcert.pem ]; then
   cp -p $DIRNAME/rsvcert.pem /etc/grid-security/rsv/.
-  chown rsv:root /etc/grid-security/rsv/rsvcert.pem
-  chmod 444 /etc/grid-security/rsv/rsvcert.pem
 else
   echo "-- rsvcert.pem already installed no need to install it."
 fi
+chown rsv:root /etc/grid-security/rsv/rsvcert.pem
+chmod 444 /etc/grid-security/rsv/rsvcert.pem
 if [ ! -f /etc/grid-security/rsv/rsvkey.pem ]; then
   cp -p $DIRNAME/rsvkey.pem /etc/grid-security/rsv/.
-  chown rsv:root /etc/grid-security/rsv/rsvkey.pem
-  chmod 400 /etc/grid-security/rsv/rsvkey.pem
 else
    echo "-- rsvkey.pem already installed no need to install it."
 fi
+chown rsv:root /etc/grid-security/rsv/rsvkey.pem
+chmod 400 /etc/grid-security/rsv/rsvkey.pem
 [ -d /etc/grid-security/http ]||mkdir /etc/grid-security/http
 if [ ! -f /etc/grid-security/http/httpcert.pem ]; then
   if [ -f /etc/grid-security/hostcert.pem ]; then
