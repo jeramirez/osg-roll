@@ -85,6 +85,8 @@ cp -p /etc/osg/config.d/40-siteinfo.ini /etc/osg/config.d/40-siteinfo.ini.templa
 /opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-GLOBUS-TCP-PORT-RANGE network=public service="&OSG_GlobusPortRange;" protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
 /opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-GLOBUS-UDP-PORT-RANGE network=public service="&OSG_GlobusPortRange;" protocol="udp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
 /opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-GRAM-TCP-PORT network=public service=2119 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-HTCONDOR-CE-TCP-PORT network=public service=9619 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-HTCONDOR-CE-TCP-SHARE-PORT network=public service=9620 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
 #/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-GRAM-WS-TCP-PORT network=public service=9443 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"
 /opt/rocks/bin/rocks report host firewall &hostname;
 </eval>
