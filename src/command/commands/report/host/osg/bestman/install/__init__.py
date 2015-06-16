@@ -41,9 +41,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 			osg_gums   = self.db.getHostAttr(host,'OSG_GumsServer')
 			if osg_se > 0 and osg_se == 'true':
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_bestmangid; bestman')
-				self.addOutput(self.host, '/usr/sbin/useradd -u &OSG_bestmanuid; -g &OSG_bestmangid; -c "Bestman 2 Server user" -s /bin/nologin -d /etc/bestman2 bestman')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_bestmanuid; -g &OSG_bestmangid; -c "Bestman 2 Server user" -s /bin/nologin -d /etc/bestman2 bestman')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_gratiagid; gratia')
-				self.addOutput(self.host, '/usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia')
 				self.addOutput(self.host, 'touch /var/log/se-install.log')
 				self.addOutput(self.host, 'yum install osg-ca-certs  &gt;&gt; /var/log/se-install.log 2&gt;&amp;1')
 				self.addOutput(self.host, 'yum install bestman2-server &gt;&gt; /var/log/se-install.log 2&gt;&amp;1')
