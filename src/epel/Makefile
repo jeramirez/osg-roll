@@ -67,7 +67,7 @@ endif
 
 rpm pkg::
 	./download.$(VERSION.MAJOR)
-	for i in $(CURDIR)/x86_64/* ; do \
+	for i in $(CURDIR)/$(VERSION.MAJOR)/x86_64/* ; do \
 		if [ ! -d $(REDHAT.RPMS)/x86_64 ] ; then \
 			mkdir $(REDHAT.RPMS)/x86_64 ; \
 		fi ; \
@@ -75,7 +75,7 @@ rpm pkg::
 			cp -p $$i $(REDHAT.RPMS)/x86_64 ; \
 		fi ; \
 	done
-	for i in $(CURDIR)/noarch/* ; do \
+	for i in $(CURDIR)/$(VERSION.MAJOR)/noarch/* ; do \
 		if [ ! -d $(REDHAT.RPMS)/noarch ] ; then \
 			mkdir $(REDHAT.RPMS)/noarch ; \
 		fi ; \
