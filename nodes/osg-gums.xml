@@ -262,7 +262,17 @@ echo "it is recomended to run /usr/bin/mysql_secure_installation"
 # to guarantee that sec_attrs has been transfered (ie. hostcert)
 
 touch /root/cert-install.log
+echo "running  /root/install_cert_gums.sh" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
 /root/install_cert_gums.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+
+if [ '&OSG_GUMSRunScript;' == 'FreshInstall' ]; then
+   echo "running  /root/ConfigureGumsFreshInstall.sh" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+   /root/ConfigureGumsFreshInstall.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+fi
+if [ '&OSG_GUMSRunScript;' == 'UpgradeFromRPM' ]; then
+   echo "running  /root/ConfigureGumsUpgradeFromRPM.sh" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+   /root/ConfigureGumsUpgradeFromRPM.sh &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+fi
 
 echo "rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-gums-server" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
 rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-gums-server

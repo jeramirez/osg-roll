@@ -420,7 +420,7 @@ $ su - root
 </screen>
 </section>
 
-<section id="Install-GUMS" xreflabel="Example Install gums server + squid + cvmfs">
+<section id="Install-GUMS" xreflabel="Example Install GUMS server + SQUID + CVMFS">
 <title>Example Install gums server + squid + cvmfs</title>
 <para>
 gums + squid + cvmfs can be installed as follow.
@@ -442,12 +442,16 @@ $ su - root
 #
 #
 ###sample of customizing/changing attribute
+# gums attrs
 #rocks set host attr gums-0-0 OSG_GUMSBackupDir value=/home/myusers/mygumsbackups
+#rocks set host attr gums-0-0 OSG_GUMSRunScript value=UpgradeFromRPM
+# squid frontier attrs
 #rocks set host attr gums-0-0 OSG_SquidCacheDir value=/scratch/squid
 #rocks set host attr gums-0-0 OSG_SquidCacheDirSize value=30000
+# cvmfs attrs
 #rocks set host attr gums-0-0 OSG_CMS_LOCAL_SITE value=T3_US_MySite
 #rocks set host attr gums-0-0 OSG_CVMFS_CACHE_BASE value=/scratch/cvmfs
-#rocks set host attr gums-0-0 OSG_CVMFS_HTTP_PROXY value="http://mysquid-0-0:3128"
+#rocks set host attr gums-0-0 OSG_CVMFS_HTTP_PROXY value="http://gums-0-0:3128"
 ###setting service certs 
 ###preferred method
 #  rocks add host sec_attr gums-0-0 attr=hostcert value="/path/to/cert/hostcert.pem" crypted=true
@@ -467,7 +471,6 @@ $ su - root
 #
 #for services gums
 #https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallGums
-#rocks run host gums-0-0 command='/root/ConfigureGumsUpgradeFromRPM.sh'
 #rocks run host gums-0-0 command='fetch-crl'
 #rocks run host gums-0-0 command='service fetch-crl-boot start'
 #rocks run host gums-0-0 command='service fetch-crl-cron start'
@@ -485,7 +488,6 @@ $ su - root
 #
 #services cvmfs
 #https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallCvmfs
-#rocks 5.5/6.0 (maybe 5.6/6.1)#rocks run host gums-0-0 command='usermod -G fuse cvmfs'
 #rocks run host gums-0-0 command='service autofs restart'
 
 </screen>
@@ -599,7 +601,10 @@ $ su - root
 
 <para>
 For recovery after installing gums server run script /root/ConfigureGumsUpgradeFromRPM.sh 
-as shown in section <xref linkend="Install-GUMS_ONLY"/>
+as shown in <xref linkend="Install-GUMS_ONLY"> or 
+follow automatization by setting attr 'OSG_GUMSRunScript' as shown in
+<xref linkend="Install-GUMS">.
+ 
 </para>
 </section>
 
