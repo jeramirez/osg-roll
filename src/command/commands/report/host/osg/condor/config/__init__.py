@@ -156,8 +156,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dict['JAVA']                = None
 		self.dict['KILL']                = 'False'
 		self.dict['LOCK']                = '/tmp/condor-lock.$(HOSTNAME)'
+		self.dict['LOCAL_DIR']           = '/var'
 		self.dict['MAIL']                = None
-		self.dict['NEGOTIATOR_INTERVAL'] = '120'
+		self.dict['NEGOTIATOR_INTERVAL'] = '60'
 		self.dict['NETWORK_INTERFACE']   = None 
 		self.dict['PREEMPT']             = 'False'
 		self.dict['RANK']                = None
@@ -280,10 +281,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		""" create a local config file """
 		self.dict['CONDOR_DEVELOPERS']           = 'NONE'
 		self.dict['CONDOR_DEVELOPERS_COLLECTOR'] = 'NONE'
-		self.dict['NEGOTIATOR_INTERVAL']         = '120'
 		self.dict['LOCK']                        = '/tmp/condor-lock.$(HOSTNAME)'
-		self.dict['RELEASE_DIR']                 = '/usr'
-		self.dict['LOCAL_DIR']                   = '/var'
 		self.dict['EMAIL_DOMAIN']                = '$(FULL_HOSTNAME)'
 		self.dict['RELEASE_DIR']                 = self.releaseDir
 		self.dict['MAIL']                        = self.find_executable('mail')
