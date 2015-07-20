@@ -103,6 +103,13 @@ class Command(rocks.commands.sync.host.command):
 				else:
 					cmd += ';'
 				cmd +=' /opt/rocks/bin/rocks add firewall host=%s rulename=A20-HTCONDOR-CE-TCP-PORT network=public service=9619 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"' % host
+
+				if istest:
+					cmd += ';echo'
+				else:
+					cmd += ';'
+				cmd +=' /opt/rocks/bin/rocks add firewall host=%s rulename=A20-HTCONDOR-CE-TCP-SHARE-PORT network=public service=9620 protocol="tcp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW"' % host
+
 				if istest:
 					cmd += ';echo'
 				else:
