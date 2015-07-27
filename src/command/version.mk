@@ -1,3 +1,3 @@
 ROLL = osg
 NAME = rocks-osg-command
-RELEASE = 6
+RELEASE = 7
