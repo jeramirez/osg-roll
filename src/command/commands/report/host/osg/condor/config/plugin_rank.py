@@ -14,7 +14,7 @@ class Plugin(rocks.commands.Plugin):
 		#    is a python dictionary 
 		host, kvstore = argv 
 
-		rank = self.db.getHostAttr(host, 'OSG_CONDOR_RANK')
+		rank = self.db.getHostAttr(host, 'OSG_Condor_RANK')
 
 		#default setting (to executable nodes)
 		if "STARTD" in kvstore['DAEMON_LIST']:
