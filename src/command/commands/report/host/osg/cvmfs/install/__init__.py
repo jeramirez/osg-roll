@@ -91,8 +91,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.host = host
 			self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_fusegid; fuse')
 			self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_cvmfsgid; cvmfs')
-			self.addOutput(self.host, '/usr/sbin/useradd -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs')
-			self.addOutput(self.host, 'yum install cvmfs')
+			self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs')
+			self.addOutput(self.host, 'yum install osg-oasis')
 
 		self.endOutput(padChar='')
 

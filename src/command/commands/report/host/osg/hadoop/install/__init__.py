@@ -68,6 +68,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.host = host
 			loginstall  = '/var/log/hadoop-install.log'
 			hostexclude = '/etc/hadoop/conf/hosts_exclude'
+			hadoopenvsh = '/etc/hadoop/conf/hadoop-env.sh.template'
 			hdfssitexml = '/etc/hadoop/conf/hdfs-site.xml.template'
 			coresitexml = '/etc/hadoop/conf/core-site.xml.template'
 			maprsitexml = '/etc/hadoop/conf/mapred-site.xml.template'
@@ -107,6 +108,21 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, 'chkconfig hadoop-hdfs-secondarynamenode off')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
+#				template for hadoop-env.sh
+				self.addOutput(self.host, 'hadoopenvshcreate=0')
+				self.addOutput(self.host, '[ -f %s ]||echo "Creating %s" &gt;&gt; %s 2&gt;&amp;1' % (hadoopenvsh,hadoopenvsh,loginstall) )
+				self.addOutput(self.host, '[ -f %s ]||hadoopenvshcreate=1' % hadoopenvsh)
+				self.addOutput(self.host, 'echo "   hadoopenvshcreate=$hadoopenvshcreate" &gt;&gt; %s 2&gt;&amp;1' % (loginstall) )
+				self.addOutput(self.host, 'if [ "x$hadoopenvshcreate" == "x1" ]; then')
+				self.addOutput(self.host, '   echo "passed if hadoopenvshcreate is 1" &gt;&gt; %s 2&gt;&amp;1' % (loginstall) )
+				self.addOutput(self.host, '   touch %s' % hadoopenvsh )
+				self.addOutput(self.host, '   echo "# The maximum amount of heap to use, in MB. Default is 1000." &gt;&gt; %s' % hadoopenvsh )
+				self.addOutput(self.host, '   echo "export HADOOP_HEAPSIZE=@HADOOP_NAMENODE_HEAP@" &gt;&gt; %s' % hadoopenvsh )
+				self.addOutput(self.host, '')
+				self.addOutput(self.host, 'else')
+				self.addOutput(self.host, '   echo "NOT created hadoopenvshcreate is 0" &gt;&gt; %s 2&gt;&amp;1' % (loginstall) )
+				self.addOutput(self.host, 'fi')
+				self.addOutput(self.host, '')
 #				template for hdfs-site.xml
 				self.addOutput(self.host, 'hdfssitexmlcreate=0')
 				self.addOutput(self.host, '[ -f %s ]||echo "Creating %s" &gt;&gt; %s 2&gt;&amp;1' % (hdfssitexml,hdfssitexml,loginstall) )
@@ -202,6 +218,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, 'echo "     /etc/hadoop/conf/hadoop-metrics.properties" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "fi" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "sed -e "s#@HADOOP_NAMENODE_HEAP@#\${HADOOP_NAMENODE_HEAP}#" \\\\" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
+				self.addOutput(self.host, 'echo "&lt; /etc/hadoop/conf/hadoop-env.sh.template > /etc/hadoop/conf/hadoop-env.sh" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "sed -e "s#@HADOOP_CONF_DIR@#\${HADOOP_CONF_DIR}#" \\\\" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )
 				self.addOutput(self.host, 'echo "\t-e \\"s#@HADOOP_NAMENODE@#\${HADOOP_NAMENODE}#\\" \\\\" &gt;&gt; %s 2&gt;&amp;1' % (hadoopconfg) )

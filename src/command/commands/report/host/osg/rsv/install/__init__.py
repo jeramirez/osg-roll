@@ -53,6 +53,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, 'yum install mod_ssl  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
+				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/30-rsv.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/30-rsv.ini /etc/osg/config.d/30-rsv.ini.template')
 				self.addOutput(self.host, '[ ! -f /etc/httpd/conf/httpd.conf.template ]&amp;&amp;cp -p /etc/httpd/conf/httpd.conf /etc/httpd/conf/httpd.conf.template')
 				self.addOutput(self.host, '[ ! -f /etc/httpd/conf.d/ssl.conf.template ]&amp;&amp;cp -p /etc/httpd/conf.d/ssl.conf /etc/httpd/conf.d/ssl.conf.template')
 				self.addOutput(self.host, '')

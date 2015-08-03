@@ -81,6 +81,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 					self.addOutput(self.host, '[ -d /etc/grid-security/certificates ]||ln -s %s/ce/globus/share/certificates /etc/grid-security/certificates' % osg_export )
 					self.addOutput(self.host, '# create if needed %s/app/etc' % osg_export )
 					self.addOutput(self.host, '[ -d %s/app/etc ]||mkdir -p %s/app/etc' % (osg_export,osg_export) )
+					self.addOutput(self.host, '# create if needed %s/app/cmssoft' % osg_export )
+					self.addOutput(self.host, '[ -d %s/app/cmssoft ]||mkdir -p %s/app/cmssoft' % (osg_export,osg_export) )
+					self.addOutput(self.host, '# create if needed %s/app/cmssoft/cms' % osg_export )
+					self.addOutput(self.host, '[ -e %s/app/cmssoft/cms ]||ln -s /cvmfs/cms.cern.ch %s/app/cmssoft/cms' % (osg_export,osg_export) )
 					self.addOutput(self.host, 'chmod 1777 %s/app' % osg_export )
 					self.addOutput(self.host, 'chmod 1777 %s/app/etc' % osg_export )
 					self.addOutput(self.host, '# if needed add %s/ce to /etc/exports' % osg_export )
@@ -89,6 +93,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 					self.addOutput(self.host, '[ "`grep -c %s/app /etc/exports`" != "0" ]||echo "%s/app %s(rw,async,no_root_squash) %s/%s(rw,async)" &gt;&gt; /etc/exports ' % (osg_export,osg_export,ksphost,kspn,kspm) )
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch /var/tmp/globus-port-state.log')
+				self.addOutput(self.host, 'chmod 666 /var/tmp/globus-port-state.log')
 				self.addOutput(self.host, '')
 
 		self.endOutput(padChar='')

@@ -1,7 +1,7 @@
 #create dirs if not exist
-[ -d x86_64 ] || mkdir x86_64
-[ -d noarch ] || mkdir noarch
-[ -d debug ] || mkdir debug
+[ -d 6/x86_64 ] || mkdir -p 6/x86_64
+[ -d 6/noarch ] || mkdir -p 6/noarch
+[ -d 6/debug ] || mkdir -p 6/debug
 #internet 2 mirror
 #rsync://rsync.gtlib.gatech.edu/fedora-epel
 #x86_64
@@ -49,7 +49,7 @@
 #pugixml-devel-*.el6.i686.rpm
 #pugixml-devel-*.el6.x86_64.rpm
 rsync -av \
-rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/{\
+rsync://dl.fedoraproject.org/fedora-epel/6/x86_64/{\
 jakarta-commons-cli{-javadoc-,-}*,\
 gsoap{-devel-,-}*,\
 is-interface{-devel-,-}*,\
@@ -61,7 +61,7 @@ gfal2-*,\
 canl-c-*,\
 pugixml-*\
 }.el6.{x86_64,i686}.rpm \
-x86_64/.
+6/x86_64/.
  
 #debug
 #bouncycastle-debuginfo-1.45-6.el5.x86_64.rpm
@@ -70,14 +70,14 @@ x86_64/.
 #gsoap-debuginfo-*.el6.x86_64.rpm
 #iperf-debuginfo-*.el6.x86_64.rpm
 rsync -av \
-rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/debug/{\
+rsync://dl.fedoraproject.org/fedora-epel/6/x86_64/debug/{\
 jakarta-commons-cli-debuginfo-*,\
 gsoap-debuginfo-*,\
 iperf-debuginfo-*,\
 srm-ifce-debuginfo-*,\
 gridftp-ifce-debuginfo-*\
 }.el6.x86_64.rpm \
-debug/.
+6/debug/.
 
 #noarch
 #jakarta-commons-io-javadoc-1.4-3.el5.noarch.rpm
@@ -93,10 +93,10 @@ debug/.
 #gfal2-util-*.el6.noarch.rpm
 #python-argparse-*.el6.noarch.rpm
 rsync -av \
-rsync://download-i2.fedoraproject.org/fedora-epel/6/x86_64/{\
+rsync://dl.fedoraproject.org/fedora-epel/6/x86_64/{\
 bouncycastle{-javadoc-,-}*,\
 fetch-crl-*,\
 gfal2-util-*,\
 python-argparse-*\
 }.el6.noarch.rpm \
-noarch/.
+6/noarch/.

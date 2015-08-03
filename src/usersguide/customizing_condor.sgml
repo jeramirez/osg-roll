@@ -125,6 +125,38 @@ Default: yes
 </entry>
 </row>
 
+<row>
+<entry>
+OSG_Condor_Multicore
+</entry>
+<entry>
+Configure condor slots as partitionable slots, suitable for multicore jobs. 
+It requires restart condor daemon (See /opt/rocks/lib/python2.6/site-packages/rocks/commands/report/host/osg/condor/config/plugin_dynamic_provisioning.py)
+Default: no (accept yes/true to enable it).
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_Condor_RANK
+</entry>
+<entry>
+Configure condor rank on nodes (set RANK in condor_config), suitable for heterogeneous cluster. 
+ (See /opt/rocks/lib/python2.6/site-packages/rocks/commands/report/host/osg/condor/config/plugin_rank.py)
+Default: no (uses 0 for executables if not defined.)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_NEGOTIATOR_INTERVAL
+</entry>
+<entry>
+Reconfigure negotiator interval. (See /opt/rocks/lib/python2.6/site-packages/rocks/commands/report/host/osg/condor/config/plugin_osg_negotiator_interval.py)
+Default: no default, but use 60 (seconds) if not defined.
+</entry>
+</row>
+
      </tbody>
   </tgroup>
 </table>

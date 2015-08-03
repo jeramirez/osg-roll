@@ -1,0 +1,102 @@
+<!-- *****************************  rsv attributes      **************************************** -->
+<section id="customizing-rsv-attrs-osg" xreflabel="Customizing OSG rsv attrs">
+<title>Customizing RSV attrs</title>
+
+<para>
+Attributes used to configure rsv.
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll RSV Customization</title>
+<tgroup cols='2' align='left' colsep='1' rowsep='1'>
+<thead>
+<row>
+  <entry align="center">Attibute Name</entry>
+  <entry align="center">Description</entry>
+</row>
+</thead>
+<tbody>
+
+<row>
+<entry>
+OSG_rsvuid
+</entry>
+<entry>
+Configure uid value for rsv user. Default: 5452
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_rsvgid
+</entry>
+<entry>
+Configure gid value for rsv group. Default: 5452
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_cndrcronuid
+</entry>
+<entry>
+Configure uid value for condor cron user "cndrcron". Default: 466
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_cndrcrongid
+</entry>
+<entry>
+Configure gid value for condor cron group "cndrcron". Default: 467
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_RSV_Port
+</entry>
+<entry>
+Configure RSV Web port. Default: 80
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_RSV_SPort
+</entry>
+<entry>
+Configure RSV Secure Web port. Default: 443
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_RSVGFTPList
+</entry>
+<entry>
+Configure in RSV list of gridftp servers (comma separated). No default. If not defined, try content of rocks attr OSG_GFTPServer. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_RSVSRMTestDir
+</entry>
+<entry>
+Configure RSV srm_dir in case there is a SRM Server to probe. This should be the directory used to probe. No default.
+</entry>
+</row>
+
+
+
+</tbody>
+</tgroup>
+</table>
+
+</para>
+
+</section>
+

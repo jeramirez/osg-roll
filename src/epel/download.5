@@ -1,8 +1,8 @@
 #!/bin/bash
 #create dirs if not exist
-[ -d x86_64 ] || mkdir x86_64
-[ -d noarch ] || mkdir noarch
-[ -d debug ] || mkdir debug
+[ -d 5/x86_64 ] || mkdir -p 5/x86_64
+[ -d 5/noarch ] || mkdir -p 5/noarch
+[ -d 5/debug ] || mkdir -5 5/debug
 #internet 2 mirror
 #rsync://rsync.gtlib.gatech.edu/fedora-epel
 #x86_64
@@ -26,23 +26,23 @@
 #srm-ifce-1.19.0-1.el5.x86_64.rpm
 #gridftp-ifce-2.3.1-1.el5.x86_64.rpm
 rsync -av \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/\
 jakarta-commons-cli{-javadoc-,-}1.0-6jpp_10.el5.x86_64.rpm \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/\
 bouncycastle{-javadoc-,-}1.45-6.el5.x86_64.rpm \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/\
 mysql-connector-java-5.1.12-2.el5.x86_64.rpm \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/\
 gsoap{-devel-,-}2.7.13-5.el5.{x86_64,i386}.rpm \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/\
 is-interface{-devel-,-}*.el5.{x86_64,i386}.rpm \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/\
 iperf-2.0.5-1.el5.x86_64.rpm \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/{\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/{\
 python-ssl-1.15-3.el5.x86_64.rpm\
 ,srm-ifce-*.el5.{x86_64,i386}.rpm\
 ,gridftp-ifce-*.el5.{x86_64,i386}.rpm\
-} x86_64/.
+} 5/x86_64/.
  
 #debug
 #jakarta-commons-cli-debuginfo-1.0-6jpp_10.el5.x86_64.rpm
@@ -52,7 +52,7 @@ python-ssl-1.15-3.el5.x86_64.rpm\
 #srm-ifce-debuginfo-1.19.0-1.el5.x86_64.rpm
 #gridftp-ifce-debuginfo-2.3.1-1.el5.x86_64.rpm
 rsync -av \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/debug/{\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/debug/{\
 jakarta-commons-cli-debuginfo-1.0-6jpp_10,\
 bouncycastle-debuginfo-1.45-6,\
 gsoap-debuginfo-2.7.13-5,\
@@ -60,7 +60,7 @@ iperf-debuginfo-2.0.5-1\
 ,srm-ifce-debuginfo-*\
 ,gridftp-ifce-debuginfo-*\
 }.el5.x86_64.rpm \
-debug/.
+5/debug/.
 
 #noarch
 #perl-XML-DOM-1.44-2.el5.noarch.rpm
@@ -71,11 +71,11 @@ debug/.
 #new version fetch-crl3-3.0.11-1
 #fetch-crl-2.8.5-1.el5.noarch.rpm
 rsync -av \
-rsync://download-i2.fedoraproject.org/fedora-epel/5/x86_64/{\
+rsync://dl.fedoraproject.org/fedora-epel/5/x86_64/{\
 perl-XML-DOM-1.*,\
 perl-XML-RegExp-*,\
 jakarta-commons-io-*,\
 fetch-crl3-*,\
 fetch-crl-*\
 }.el5.noarch.rpm \
-noarch/.
+5/noarch/.

@@ -36,6 +36,15 @@ Configure the admin DN for gums used in the configuration scripts. Default: /DC=
 </entry>
 </row>
 
+<row>
+<entry>
+OSG_GUMSRunScript
+</entry>
+<entry>
+Attribute to automatically run configuration script after install. Two possible values are 'FreshInstall' and 'UpgradeFromRPM'. NO Default (no run by default).
+</entry>
+</row>
+
 
      </tbody>
   </tgroup>
