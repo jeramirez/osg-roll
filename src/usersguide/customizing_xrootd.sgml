@@ -25,7 +25,7 @@ OSG_XROOTD_LOCAL_REDIRECTOR
 <entry>
 Configure your local redirector for xrootd. If not running local redirector leave default (
 This is a direct subcription to regional redirector). It requires request to be whitelisted. 
-Default: cmsxrootd.fnal.gov+
+Default: cms-xrd-transit.cern.ch+
 </entry>
 </row>
 
