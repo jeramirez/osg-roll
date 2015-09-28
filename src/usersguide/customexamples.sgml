@@ -273,6 +273,65 @@ OSG twiki page</ulink>.
 </section>
 
 <!-- ***************************************************************** -->
+<section id="reconfiguring-WN" xreflabel="Reconfiguring WN">
+<title>Reconfiguring WN OSG Client</title>
+<para>
+A initial configuration of Worker nodes is done during the kickstart install, the resulting
+configuration dir/files are /etc/grid-security/certificates and /etc/lcmaps.db. This configuration is based on available 
+information at install. To reconfigure a Worker/Interactive node after changes on any attribute that build those files
+requires rebuild the configuration by running the rocks command.
+<screen>
+# rocks sync host osg wnclient &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+This will re-make link of  
+/etc/grid-security/certificates, and rewrite
+/etc/lcmaps.db and 
+/etc/fetch-crl.d/osg-roll.conf
+</para>
+
+<note>
+<para>
+To view the script of changes for the files before making changes, use
+<computeroutput>rocks report host osg wnclient config &lt;hostname&gt;</computeroutput>
+</para>
+</note>
+
+<note>
+<para>
+To generate the script,  login on a Worker node and run
+<computeroutput>rocks report host osg wnclient config &lt;hostname&gt; | rocks report script | bash </computeroutput>
+the output script will be writen in <computeroutput>/root/wnclientConfigurator</computeroutput>
+</para>
+</note>
+
+<para>
+In case OSG Client was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_Client to true on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_Client value=true
+# rocks sync host osg wnclient install &lt;hostname&gt;
+</screen>
+</para>
+
+<para>
+To find information about Client configuration 
+please see the OSG documentation at OSG twiki page for <ulink
+url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallWNClient">
+wnclient</ulink>
+and for
+<ulink url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallGlexec">
+glexec</ulink>. 
+Also for the 'pilot' option in OSG_wn_LcmapsCertType see more at <ulink
+url="https://twiki.opensciencegrid.org/bin/view/Documentation/Release3/GlexecPilotCert">
+this OSG twiki page</ulink>
+</para>
+
+</section>
+
+<!-- ***************************************************************** -->
 <section id="reconfiguring-xrootd" xreflabel="Reconfiguring Xrootd">
 <title>Reconfiguring xrootd</title>
 <para>
