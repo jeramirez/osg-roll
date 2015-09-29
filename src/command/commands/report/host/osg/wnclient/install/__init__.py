@@ -51,12 +51,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.host = host
 			loginstall = '/var/log/wnclient-install.log'
 			osg_client = self.db.getHostAttr(host,'OSG_Client')
-			startGID   = self.db.getHostAttr(host,'OSG_StartGIDGlexecGroup')
-			nGID       = self.db.getHostAttr(host,'OSG_numberGIDsGlexec')
+			startGID   = self.db.getHostAttr(host,'OSG_wn_StartGIDGlexecGroup')
+			nGID       = self.db.getHostAttr(host,'OSG_wn_numberGIDsGlexec')
 
-			if startGID <= 0:
+			if not startGID > 0:
 				startGID = '65000'
-			if nGID <= 0:
+			if not nGID > 0:
 				nGID = '50'
 			if osg_client > 0 and osg_client == 'true':
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_glexecgid; glexec')

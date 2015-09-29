@@ -55,6 +55,26 @@ Default: proxy (if attr not defined)/ cert( if attr defined but non proxy nor pi
 </entry>
 </row>
 
+<row>
+<entry>
+OSG_wn_StartGIDGlexecGroup
+</entry>
+<entry>
+Starting gid value in a list of glexec group 
+Default: 65000 (if not defined).
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_wn_numberGIDsGlexec
+</entry>
+<entry>
+Number elements in list of glexec group 
+Default: 50 (if not defined).
+</entry>
+</row>
+
      </tbody>
   </tgroup>
 </table>
