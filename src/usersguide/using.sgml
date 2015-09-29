@@ -212,6 +212,7 @@ $ su - root
 #rocks add host attr ce-0-0 OSG_RSV value=true
 #rocks add host attr ce-0-0 OSG_RSV_Port value="8000"
 #rocks add host attr ce-0-0 OSG_RSV_SPort value="8443"
+#rocks add host attr ce-0-0 OSG_RSVSRMTestDir value="/tmp"
 #
 ###Set hostcert/hostkey httpcert/httpkey rsvcert/rsvkey
 #
