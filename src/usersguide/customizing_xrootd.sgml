@@ -41,6 +41,17 @@ Default: none
 
 <row>
 <entry>
+OSG_XRDServer
+</entry>
+<entry>
+Configure xrootd server public name used on any particular Appliance or Host or xrootd server installation.
+Used to match info in /boot/install_cert_xrootd.sh as condition before try installing grid-certs.
+Default: None
+</entry>
+</row>
+
+<row>
+<entry>
 OSG_CMS_LOCAL_SITE
 </entry>
 <entry>
