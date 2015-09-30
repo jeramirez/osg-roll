@@ -153,7 +153,7 @@ echo "running  /root/XrootdConfigurator" &gt;&gt; /root/cert-install.log 2&gt;&a
 /root/XrootdConfigurator 
 
 CMSUSERCERT=&OSG_CMS_USERCERT;
-CMSUSERKEY=&OSG_CMS_USERCERT;
+CMSUSERKEY=&OSG_CMS_USERKEY;
 CMSSITE=&OSG_CMS_LOCAL_SITE;
 
 if [ ! -f "$CMSUSERCERT" ]||[ ! -f "$CMSUSERKEY" ]||[ "x$CMSSITE" == "x" ]; then
