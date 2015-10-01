@@ -57,6 +57,16 @@ Default: proxy (if attr not defined)/ cert( if attr defined but non proxy nor pi
 
 <row>
 <entry>
+OSG_wn_CVMFSlink
+</entry>
+<entry>
+Set link to CVMFS for /etc/grid-security/certificates.
+Default:/cvmfs/oasis.opensciencegrid.org/mis/certificates (if attr not defined).
+</entry>
+</row>
+
+<row>
+<entry>
 OSG_wn_StartGIDGlexecGroup
 </entry>
 <entry>
