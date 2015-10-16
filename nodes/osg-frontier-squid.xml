@@ -41,7 +41,7 @@ yum install frontier-squid  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
 
  <!-- customize firewall rules for frontier-squid-server  -->
 <eval mode="xml">
-/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-SQUID-UDP-PORT network=public service=3401 protocol="udp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW --source 128.142.0.0/16 and 188.185.0.0/17"
+/opt/rocks/bin/rocks add firewall host=&hostname; rulename=A20-SQUID-UDP-PORT network=public service=3401 protocol="udp" action="ACCEPT" chain="INPUT" flags="-m state --state NEW --source 128.142.0.0/16,188.185.0.0/17"
 /opt/rocks/bin/rocks report host firewall &hostname;
 </eval>
 
