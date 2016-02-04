@@ -1,0 +1,93 @@
+<!-- *****************************  OSG Client attributes      **************************************** -->
+<section id="customizing-wnclient-attrs-osg" xreflabel="Customizing WN OSG Client attrs">
+<title>Customizing WN OSG Client attrs</title>
+
+
+<para>
+Attributes used to configure Worker/Interactive nodes (after install of osg-wn-client-glexec).
+</para>
+
+<para>
+
+<table frame='all'><title>Attributes Used in OSG Roll WN/Interactive Customization</title>
+  <tgroup cols='2' align='left' colsep='1' rowsep='1'>
+     <thead>
+        <row>
+           <entry align="center">Attibute Name</entry>
+           <entry align="center">Description</entry>
+        </row>
+     </thead>
+     <tbody>
+
+<row>
+<entry>
+OSG_Client
+</entry>
+<entry>
+Triggers (Enable/Disable) OSG Client installation on any particular Appliance or Host. Install includes hadoop and glexec.
+Default: true (on compute appliance)
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_wn_Cacert
+</entry>
+<entry>
+Attribute to set the type of cacert dir to use. Posible values are: 
+<computeroutput>own</computeroutput>,
+<computeroutput>linkCVMFS</computeroutput> and
+<computeroutput>linkCE</computeroutput>.
+Default: linkCE
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_wn_LcmapsCertType
+</entry>
+<entry>
+Set type of certificate to be used in configuring /etc/lcmaps.db. Posible values are: 
+<computeroutput>proxy</computeroutput>,
+<computeroutput>pilot</computeroutput> and
+<computeroutput>cert</computeroutput>.
+Default: proxy (if attr not defined)/ cert( if attr defined but non proxy nor pilot).
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_wn_CVMFSlink
+</entry>
+<entry>
+Set link to CVMFS for /etc/grid-security/certificates.
+Default:/cvmfs/oasis.opensciencegrid.org/mis/certificates (if attr not defined).
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_wn_StartGIDGlexecGroup
+</entry>
+<entry>
+Starting gid value in a list of glexec group 
+Default: 65000 (if not defined).
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_wn_numberGIDsGlexec
+</entry>
+<entry>
+Number elements in list of glexec group 
+Default: 50 (if not defined).
+</entry>
+</row>
+
+     </tbody>
+  </tgroup>
+</table>
+
+</para>
+</section>

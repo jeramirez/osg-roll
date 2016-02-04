@@ -20,7 +20,7 @@ class plugin(rocks.commands.sec_attr_plugin):
 		# Backup previous version if exist
 		import shutil
 		if not os.path.exists(certpath):
-			os.makedirs(certpath, 755)
+			os.makedirs(certpath, 0755)
 		if os.path.exists(keyfile):
 			rsv=os.stat(certfile).st_uid
 			shutil.move(keyfile, keyfile + '_' + tfname[8:])

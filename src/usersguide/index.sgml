@@ -9,6 +9,7 @@
 	<!ENTITY customizing_common SYSTEM "customizing_commongrid.sgml">
 	<!ENTITY customizing_ce SYSTEM "customizing_ce.sgml">
 	<!ENTITY customizing_se SYSTEM "customizing_se.sgml">
+	<!ENTITY customizing_wn SYSTEM "customizing_wn.sgml">
 	<!ENTITY customizing_gums SYSTEM "customizing_gums.sgml">
 	<!ENTITY customizing_cvmfs SYSTEM "customizing_cvmfs.sgml">
 	<!ENTITY customizing_squid SYSTEM "customizing_squid.sgml">

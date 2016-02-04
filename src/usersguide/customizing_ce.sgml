@@ -1,5 +1,5 @@
 <!-- *****************************  ce attributes      **************************************** -->
-<section id="customizing-ce-attrs-osg" xreflabel="Customizing OSG ce attrs">
+<section id="customizing-ce-attrs-osg" xreflabel="Customizing OSG CE attrs">
 <title>Customizing CE (Gatekeeper) attrs</title>
 
 
@@ -89,7 +89,7 @@ If not set, uses cluster attribute "Info_ClusterName"
 OSG_CE_gip_ClusterName1
 </entry>
 <entry>
-Subcluster name, used to fill cluster 'name'
+Subcluster name, used to fill cluster 'name' parameter.
 If not set, uses cluster attribute "Info_ClusterName"_CE_1
 </entry>
 </row>
@@ -99,7 +99,7 @@ If not set, uses cluster attribute "Info_ClusterName"_CE_1
 OSG_CE_gip_NumberOfNodes1
 </entry>
 <entry>
-Subcluster number of nodes, used to fill cluster 'node_count'
+Subcluster number of nodes, used to fill cluster 'node_count' parameter.
 If not set, uses number of compute nodes (at least 1). 
 </entry>
 </row>
@@ -109,7 +109,7 @@ If not set, uses number of compute nodes (at least 1).
 OSG_CE_gip_mb_of_Ram1
 </entry>
 <entry>
-Subcluster RAM info, used to fill cluster 'ram_mb'
+Subcluster RAM info, used to fill cluster 'ram_mb' parameter.
 If not set, uses RAM from CE. 
 </entry>
 </row>
@@ -119,7 +119,7 @@ If not set, uses RAM from CE.
 OSG_CE_gip_cpu_model1
 </entry>
 <entry>
-Subcluster cpu model, used to fill cluster 'cpu_model'
+Subcluster cpu model, used to fill cluster 'cpu_model' parameter.
 If not set, uses cpu model from CE. 
 </entry>
 </row>
@@ -129,7 +129,7 @@ If not set, uses cpu model from CE.
 OSG_CE_gip_cpu_vendor1
 </entry>
 <entry>
-Subcluster cpu vendor, used to fill cluster 'cpu_vendor'
+Subcluster cpu vendor, used to fill cluster 'cpu_vendor' parameter.
 If not set, uses cpu vendor from CE. 
 </entry>
 </row>
@@ -139,7 +139,7 @@ If not set, uses cpu vendor from CE.
 OSG_CE_gip_cpu_speed1
 </entry>
 <entry>
-Subcluster cpu speed, used to fill cluster 'cpu_speed_mhz'
+Subcluster cpu speed, used to fill cluster 'cpu_speed_mhz' parameter.
 If not set, uses cpu speed from CE. 
 </entry>
 </row>
@@ -149,7 +149,7 @@ If not set, uses cpu speed from CE.
 OSG_CE_gip_arch1
 </entry>
 <entry>
-Subcluster arch, used to fill cluster 'cpu_platform'
+Subcluster arch, used to fill cluster 'cpu_platform' parameter.
 If not set, uses arch from roll base. 
 </entry>
 </row>
@@ -159,7 +159,7 @@ If not set, uses arch from roll base.
 OSG_CE_gip_CpusPerNode1
 </entry>
 <entry>
-Subcluster number of cpus per node, used to fill cluster 'cpus_per_node'
+Subcluster number of cpus per node, used to fill cluster 'cpus_per_node' parameter.
 If not set, uses number of cpus from CE. 
 </entry>
 </row>
@@ -169,7 +169,7 @@ If not set, uses number of cpus from CE.
 OSG_CE_gip_CoresPerNode1
 </entry>
 <entry>
-Subcluster number of cores per node, used to fill cluster 'cores_per_node'
+Subcluster number of cores per node, used to fill cluster 'cores_per_node' parameter.
 If not set, uses number of cores from CE. 
 </entry>
 </row>
@@ -179,7 +179,7 @@ If not set, uses number of cores from CE.
 OSG_CE_gip_inbound1
 </entry>
 <entry>
-Subcluster inbound network, used to fill cluster 'inbound_network'
+Subcluster inbound network, used to fill cluster 'inbound_network' parameter.
 If not set, uses FALSE. 
 </entry>
 </row>
@@ -189,8 +189,29 @@ If not set, uses FALSE.
 OSG_CE_gip_outbound1
 </entry>
 <entry>
-Subcluster outbound network, used to fill cluster 'outbound_network'
+Subcluster outbound network, used to fill cluster 'outbound_network' parameter.
 If not set, uses TRUE. 
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_allowed_vos1
+</entry>
+<entry>
+Subcluster allowed VOs, used to fill cluster 'allowed_vos' parameter.
+If not set, leave it blank (i.e. accept all VOs). In a second cluster (OSG_CE_gip_allowed_vos2) 
+or more, if not set uses 'osg, cms' as default.  
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_CE_gip_max_wall_time1
+</entry>
+<entry>
+Subcluster max wall time, used to fill cluster 'max_wall_time' parameter.
+If not set, uses 1440. (Corresponding to 24 hour in minutes). 
 </entry>
 </row>
 

@@ -35,6 +35,9 @@ For more information see <xref linkend="customizing-triggers-osg">.
 <!-- *****************************  se attributes      **************************************** -->
 &customizing_se;
 
+<!-- *****************************  wn/in attributes      **************************************** -->
+&customizing_wn;
+
 <!-- *****************************  gums attributes      ************************************** -->
 &customizing_gums;
 

@@ -71,7 +71,7 @@ install::
 	(                                                               \
 		$(INSTALL) -m 0755 *.java $(ROOT)/$(PKGROOT) ;            \
 		$(INSTALL) -m 0755 *.jar $(ROOT)/$(PKGROOT) ;            \
-		$(INSTALL) -m 0755 *servers.txt $(ROOT)/$(PKGROOT) ;            \
+		$(INSTALL) -m 0755 *servers.txt.template $(ROOT)/$(PKGROOT) ;            \
 		$(INSTALL) -m 0755 README.* $(ROOT)/$(PKGROOT) ;            \
 	)
 

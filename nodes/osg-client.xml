@@ -15,6 +15,8 @@
 	$Log: osg-client.xml,v $
 	Revision 0.0  2012/10/05 05:48:53  eduardo
 	Initial Revision
+	Revision 0.1  2015/09/22 05:48:53  eduardo
+	Using rocks commands
 	
 </changelog>
 
@@ -24,6 +26,13 @@
 
 
 <post>
+<eval mode="xml">
+/opt/rocks/bin/rocks report host osg wnclient install  &hostname;
+</eval>
+<!-- The following customization is superseded by the new rocks command
+     "rocks report host osg wnclient install  &hostname;"
+     This code is keep for future reference or site tweaks
+
 ### Create the glexec User
 #glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
 ### Create the gratia User
@@ -53,8 +62,7 @@ swapuser=`getent passwd &OSG_gratiauid; | cut -d: -f1`
 [ ! -z "$swapuser" ]&amp;&amp;[ "x$swapuser" != "xgratia" ]&amp;&amp;/usr/sbin/usermod -o -u $swapuid $swapuser
 /usr/sbin/usermod -u &OSG_gratiauid; &OSG_gratiagid; gratia
 
-
-<file name="/tmp/CreateGlexecGroups" perms="0755">
+#file name="/tmp/CreateGlexecGroups" perms="0755"#
 #!/usr/bin/perl
 
 use strict;
@@ -76,10 +84,11 @@ for my $index ($start...$end) {
   $gid++;
 }
 exit;
-</file>
+#/file#
 
 /tmp/CreateGlexecGroups
 rm -f /tmp/CreateGlexecGroups
+   End comment -->
 
 </post>
 

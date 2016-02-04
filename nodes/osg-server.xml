@@ -32,7 +32,7 @@ OSGgums="rocks-gums.&Kickstart_PublicDNSDomain;"
 OSGCE="rocks-ce.&Kickstart_PublicDNSDomain;"
 OSGSE="rocks-se.&Kickstart_PublicDNSDomain;"
 OSGGFTP="rocks-ce.&Kickstart_PublicDNSDomain;"
-OSGXRDLOCALREDIRECTOR="cmsxrootd.fnal.gov+"
+OSGXRDLOCALREDIRECTOR="cms-xrd-transit.cern.ch+"
 ### Set Default Private names
 OSGCEPrivate="login-0-0"
 #if roll was installed at kickstart OSGCEPrivate should exist need for auto.osg

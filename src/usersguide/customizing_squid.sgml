@@ -49,6 +49,16 @@ Default: none
 </entry>
 </row>
 
+<row>
+<entry>
+OSG_SQUID_OPEN_NETWORK
+</entry>
+<entry>
+Set network allowed in firewall for monitoring purposes (udp port 3401) in firewall rule A20-SQUID-UDP-PORT. If not set will use '128.142.0.0/16,188.184.128.0/17,188.185.128.0/17'. 
+Default: none
+</entry>
+</row>
+
 
 
 </tbody>

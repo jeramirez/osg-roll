@@ -59,6 +59,8 @@ class Plugin(rocks.commands.Plugin):
 			OSG_CoresPerNode= 'OSG_CE_gip_CoresPerNode' + str(iclus)
 			OSG_inbound     = 'OSG_CE_gip_inbound' + str(iclus)
 			OSG_outbound    = 'OSG_CE_gip_outbound' + str(iclus)
+			OSG_allowed_vos = 'OSG_CE_gip_allowed_vos' + str(iclus)
+			OSG_maxwalltime = 'OSG_CE_gip_max_wall_time' + str(iclus)
 
 			OSG_ClusterName[OSG_cluster]      = self.db.getHostAttr(host,OSG_cluster)
 			OSG_ClusterName[OSG_name]         = self.db.getHostAttr(host,OSG_name)
@@ -72,6 +74,8 @@ class Plugin(rocks.commands.Plugin):
 			OSG_ClusterName[OSG_CoresPerNode] = self.db.getHostAttr(host,OSG_CoresPerNode)
 			OSG_ClusterName[OSG_inbound]      = self.db.getHostAttr(host,OSG_inbound)
 			OSG_ClusterName[OSG_outbound]     = self.db.getHostAttr(host,OSG_outbound)
+			OSG_ClusterName[OSG_allowed_vos]  = self.db.getHostAttr(host,OSG_allowed_vos)
+			OSG_ClusterName[OSG_maxwalltime]  = self.db.getHostAttr(host,OSG_maxwalltime)
 
 			if OSG_ClusterName[OSG_cluster] > 0:
 				addOutput(host, 'echo "[Subcluster %s]" &gt;&gt; %s' %  (OSG_ClusterName[OSG_cluster],configFile))
@@ -162,6 +166,25 @@ class Plugin(rocks.commands.Plugin):
 				if iclus == 1:
 					addOutput(host, '#      using outbound_network = TRUE' )
 					addOutput(host, 'echo "outbound_network = TRUE" &gt;&gt; %s' % (configFile))
+
+			if OSG_ClusterName[OSG_allowed_vos] > 0:
+				addOutput(host, 'echo "allowed_vos = %s" &gt;&gt; %s' % (OSG_ClusterName[OSG_allowed_vos],configFile))
+			else:
+				addOutput(host, '#attr %s not defined for CE server' % (OSG_allowed_vos))
+				if iclus == 1:
+					addOutput(host, '#      leaving allowed_vos in blank (All vos allowed)' )
+					addOutput(host, 'echo "allowed_vos =" &gt;&gt; %s' % (configFile))
+				else:
+					addOutput(host, '#      using allowed_vos = osg, cms' )
+					addOutput(host, 'echo "allowed_vos = osg, cms" &gt;&gt; %s' % (configFile))
+
+			if OSG_ClusterName[OSG_maxwalltime] > 0:
+				addOutput(host, 'echo "max_wall_time = %s" &gt;&gt; %s' % (OSG_ClusterName[OSG_maxwalltime],configFile))
+			else:
+				addOutput(host, '#attr %s not defined for CE server' % (OSG_maxwalltime))
+				addOutput(host, '#      using max_wall_time = 1440 (24 hours = 24*60 minutes)' )
+				addOutput(host, 'echo "max_wall_time = 1440" &gt;&gt; %s' % (configFile))
+
 			addOutput(host, 'echo " " &gt;&gt; %s' % (configFile))
 
 		if OSG_NmultiSE > 0:

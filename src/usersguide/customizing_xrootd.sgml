@@ -25,7 +25,7 @@ OSG_XROOTD_LOCAL_REDIRECTOR
 <entry>
 Configure your local redirector for xrootd. If not running local redirector leave default (
 This is a direct subcription to regional redirector). It requires request to be whitelisted. 
-Default: cmsxrootd.fnal.gov+
+Default: cms-xrd-transit.cern.ch+
 </entry>
 </row>
 
@@ -36,6 +36,17 @@ OSG_XROOTD_REGIONAL_REDIRECTOR
 <entry>
 Configure a local redirector for xrootd. This method requires to set here your subscription to your regional redirector. 
 Default: none
+</entry>
+</row>
+
+<row>
+<entry>
+OSG_XRDServer
+</entry>
+<entry>
+Configure xrootd server public name used on any particular Appliance or Host or xrootd server installation.
+Used to match info in /boot/install_cert_xrootd.sh as condition before try installing grid-certs.
+Default: None
 </entry>
 </row>
 
