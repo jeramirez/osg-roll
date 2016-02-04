@@ -245,6 +245,8 @@ $ su - root
 #rocks run host ce-0-0 command='service condor-cron start'
 #rocks run host ce-0-0 command='service rsv start'
 #rocks run host ce-0-0 command='service httpd start'
+#service for updating certs
+#rocks run host ce-0-0 command='service osg-ca-certs-updater-cron start'
 
 #set services on boot
 #rocks run host ce-0-0 command='chkconfig condor on'
@@ -252,6 +254,7 @@ $ su - root
 #rocks run host ce-0-0 command='chkconfig condor-ce on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-cron on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-boot on'
+#rocks run host ce-0-0 command='chkconfig osg-ca-certs-updater-cron on'
 #rocks run host ce-0-0 command='chkconfig globus-gridftp-server on'
 #rocks run host ce-0-0 command='chkconfig condor-cron on'
 #rocks run host ce-0-0 command='chkconfig rsv on'

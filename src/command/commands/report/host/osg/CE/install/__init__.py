@@ -52,6 +52,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_squiduid; -g &OSG_squidgid; -c "squid management user" -s /sbin/nologin -d /etc/squid squid')
 				self.addOutput(self.host, 'touch /var/log/ce-install.log')
 				self.addOutput(self.host, 'yum install osg-ca-certs  &gt;&gt; /var/log/ce-install.log 2&gt;&amp;1')
+				self.addOutput(self.host, 'yum install osg-ca-certs-updater  &gt;&gt; /var/log/ce-install.log 2&gt;&amp;1')
 				self.addOutput(self.host, 'yum install osg-ce-%s &gt;&gt; /var/log/ce-install.log 2&gt;&amp;1' % (osg_ce))
 				self.addOutput(self.host, 'yum install globus-gram-job-manager-managedfork  &gt;&gt; /var/log/ce-install.log 2&gt;&amp;1')
 				self.addOutput(self.host, '')
@@ -65,6 +66,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/30-gip.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/30-gip.ini /etc/osg/config.d/30-gip.ini.template')
 				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/40-network.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/40-network.ini /etc/osg/config.d/40-network.ini.template')
 				self.addOutput(self.host, '[ ! -f /etc/osg/config.d/40-siteinfo.ini.template ]&amp;&amp;cp -p /etc/osg/config.d/40-siteinfo.ini /etc/osg/config.d/40-siteinfo.ini.template')
+				self.addOutput(self.host, '[ ! -f /root/osg-ca-certs-updater.template ]&amp;&amp;cp -p /etc/cron.d/osg-ca-certs-updater /root/osg-ca-certs-updater.template')
+				self.addOutput(self.host, 'sed -i -e "s#osg-ca-certs-updater -a#osg-ca-certs-updater --enablerepo=osg -a#" /etc/cron.d/osg-ca-certs-updater' )
 				self.addOutput(self.host, '')
 				if osg_gums > 0:
 					self.addOutput(self.host, '#Set Gums Client')
