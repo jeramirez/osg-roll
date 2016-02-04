@@ -32,7 +32,7 @@ class Command:
 	<example cmd='downloadOSG.py http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64 >
 	Will download all the packages found under the URL
 	http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64 and will create
-	dirs 5/x86_64 5/debug 5/noarch
+	dirs 6/x86_64 6/debug 6/noarch 6/i386
 	</example>
 	"""
 
@@ -125,6 +125,8 @@ class Command:
 				osgdir=getrocksversion[0:1]+'/debug'
 			if 'noarch.rpm' in rpmfile:
 				osgdir=getrocksversion[0:1]+'/noarch'
+			if 'i386.rpm' in rpmfile:
+				osgdir=getrocksversion[0:1]+'/i386'
 			self.copyFile(osgdir,file)
 
 		self.clean()
