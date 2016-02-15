@@ -41,14 +41,15 @@ class Command(rocks.commands.HostArgumentProcessor,
 			osg_gums   = self.db.getHostAttr(host,'OSG_GumsServer')
 			if osg_xrd > 0 and osg_xrd == 'true':
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_xrootdgid; xrootd')
-				self.addOutput(self.host, '/usr/sbin/useradd -u &OSG_xrootduid; -g &OSG_xrootdgid; -c "XRootD runtime user" -s /bin/nologin -d /var/spool/xrootd xrootd')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_xrootduid; -g &OSG_xrootdgid; -c "XRootD runtime user" -s /bin/nologin -d /var/spool/xrootd xrootd')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_gratiagid; gratia')
-				self.addOutput(self.host, '/usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia')
 				self.addOutput(self.host, 'touch /var/log/xrootd-install.log')
 				self.addOutput(self.host, 'yum install osg-ca-certs  &gt;&gt; /var/log/xrootd-install.log 2&gt;&amp;1')
 				self.addOutput(self.host, 'yum install cms-xrootd-hdfs &gt;&gt; /var/log/xrootd-install.log 2&gt;&amp;1')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
+				self.addOutput(self.host, '[ ! -f /etc/xrootd/xrootd-clustered.cfg.original &amp;&amp; -f /etc/xrootd/xrootd-clustered.cfg ]&amp;&amp;mv /etc/xrootd/xrootd-clustered.cfg /etc/xrootd/xrootd-clustered.cfg.original')
 				self.addOutput(self.host, '[ ! -f /etc/xrootd/xrootd-clustered.cfg.template ]&amp;&amp;cp -p /etc/xrootd/xrootd.sample.hdfs.cfg /etc/xrootd/xrootd-clustered.cfg.template')
 				self.addOutput(self.host, '')
 				if osg_gums > 0:

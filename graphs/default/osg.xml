@@ -52,6 +52,7 @@
 	-->
 	<order head="osg-hadoop-pre">
 		<tail>osg-hadoop</tail>
+		<tail>osg-xrootd-server</tail>
 	</order>
 
 	<!-- make sure yum conf is set -->
