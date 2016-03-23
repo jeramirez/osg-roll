@@ -5,10 +5,10 @@ Download and Compile Roll
 -------------------------
 
 ```shell
-git clone -b 3.2.x https://github.com/jeramirez/osg-roll.git
+git clone -b 3.3.x https://github.com/jeramirez/osg-roll.git
 cd osg-roll
 cd src/osg
-./downloadOSG.py http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64
+./downloadOSG.py http://repo.grid.iu.edu/osg/3.3/el6/release/x86_64
 cd ../..
 make roll
 ```
