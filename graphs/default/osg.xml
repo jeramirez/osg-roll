@@ -83,14 +83,12 @@
 
 	<!-- make sure frontier squid is installed before osg-ce  -->
 	<order head="osg-frontier-squid">
-		<tail>osg-ce-condor</tail>
-		<tail>osg-ce-sge</tail>
+		<tail>osg-ce-server</tail>
 	</order>
 
 	<!-- make sure condor is installed before osg-ce  -->
 	<order head="osg-condor">
-		<tail>osg-ce-condor</tail>
-		<tail>osg-ce-sge</tail>
+		<tail>osg-ce-server</tail>
 	</order>
 
 	<!-- add edges here -->
@@ -104,8 +102,7 @@
 	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="osg-hadoop" to="osg-hadoop-gridftp" arch="i386,x86_64" cond="OSG_GFTP_HDFS"/>
 	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
-	<edge from="client" to="osg-ce-condor" arch="i386,x86_64" cond="OSG_CE=='condor'"/>
-	<edge from="client" to="osg-ce-sge" arch="i386,x86_64" cond="OSG_CE=='sge'"/>
+	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="client" to="osg-rsv" arch="i386,x86_64" cond="OSG_RSV"/>
 	<edge from="client" to="osg-gums" arch="i386,x86_64" cond="OSG_GUMS"/>
 	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="OSG_SQUID"/>

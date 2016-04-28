@@ -571,16 +571,20 @@ OSG can be updated creating a local mirror as follow.
 <screen>
 $ su - root
 #cd /export/rocks/install
-#rocks create mirror http://repo.grid.iu.edu/3.0/el5/osg-release/x86_64 rollname=osg-updates version=5.5.1
-##this creates an iso file osg-updates-5.5.1-0.x86_64.disk1.iso
+#rocks create mirror http://repo.grid.iu.edu/osg/3.3/el6/release/x86_64 \
+rollname=osg-updates version=3.3.11
+##this creates an iso file osg-updates-3.3.11-0.x86_64.disk1.iso
 
+##remove older update versions (if any)
 #rocks remove roll osg-updates
-#rocks add roll osg-updates-5.5.1-0.x86_64.disk1.iso
+
+#rocks add roll osg-updates-3.3.11-0.x86_64.disk1.iso
 #rocks enable roll osg-updates
 #rocks create distro
 
-#in SE for example
-yum update bestman-server
+##in SE for example
+#yum clean metadata
+#yum update bestman2-server
 
 </screen>
 </section>

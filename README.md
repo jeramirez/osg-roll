@@ -9,6 +9,7 @@ git clone -b 3.3.x https://github.com/jeramirez/osg-roll.git
 cd osg-roll
 cd src/osg
 ./downloadOSG.py http://repo.grid.iu.edu/osg/3.3/el6/release/x86_64
+./downloadOSG.py http://repo.grid.iu.edu/osg/3.3/el6/contrib/x86_64
 cd ../..
 make roll
 ```
@@ -41,18 +42,10 @@ gsoap
    CGSI-gSOAP-devel
    condor
    condor-cream-gahp
-   dpm-copy-server-mysql
-   dpm-copy-server-postgres
-   dpm-srm-server-mysql
-   dpm-srm-server-postgres
-   gfal
    glite-ce-cream-cli
    glite-ce-cream-client-api-c
    glite-ce-cream-client-devel
    glite-data-delegation-api-c
-   glite-fts-client
-   lfc
-   lfc-dli
    voms-server
    xacml
 is-interface
@@ -96,4 +89,10 @@ canl-c
    gridsite-libs
 pugixml
    gfal2-plugin-srm
+lcg-util
+gfal
+dcap-libs
+dpm-libs
+lcgdm-libs
+lfc-libs
 ```

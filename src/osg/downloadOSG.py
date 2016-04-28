@@ -26,12 +26,12 @@ class Command:
 	<arg type='string' name='path'> 
 	The network location of the repository of packages.
 	default path is a local mirror of OSG repository for el6
-	http://localhost/install/repo.grid.iu.edu/osg/3.2/el6/release/x86_64
+	http://localhost/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64
 	</arg>
 
-	<example cmd='downloadOSG.py http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64 >
+	<example cmd='downloadOSG.py http://repo.grid.iu.edu/osg/3.3/el6/release/x86_64 >
 	Will download all the packages found under the URL
-	http://repo.grid.iu.edu/osg/3.2/el6/release/x86_64 and will create
+	http://repo.grid.iu.edu/osg/3.3/el6/release/x86_64 and will create
 	dirs 6/x86_64 6/debug 6/noarch 6/i386
 	</example>
 	"""
@@ -134,8 +134,7 @@ class Command:
 
 #check if arguments are empty, set a default
 if len(sys.argv) == 1:
-#        args = [ 'http://localhost/install/repo.grid.iu.edu/3.0/el5/osg-release'] 
-        args = [ 'http://localhost/install/repo.grid.iu.edu/osg/3.2/el6/release/x86_64'] 
+        args = [ 'http://localhost/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64'] 
 else:
         args = sys.argv[1:]
 
