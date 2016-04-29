@@ -25,7 +25,7 @@ OSG_SquidCacheMem
 <entry>
 Set squid cache memory. If not set rocks command will set to '512 MB'. 
 Rpm install default is '128 MB'.
-Default: node
+Default: none
 </entry>
 </row>
 

@@ -55,7 +55,7 @@ Default: None
 OSG_CMS_LOCAL_SITE
 </entry>
 <entry>
-Configure CMS_LOCAL_SITE for xrootd. Default: "T3_US_PuertoRico"
+Configure CMS_LOCAL_SITE for xrootd. Default: "T3_US_OSG"
 </entry>
 </row>
 

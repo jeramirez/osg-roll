@@ -21,7 +21,7 @@
 
 </changelog>
 
-	<package>rocks-osg-command</package>
+	<package>rocks-command-osg</package>
 	<package>rocks-secattr-plugins-osg</package>
 	<package>roll-osg-usersguide</package>
 <post>
@@ -200,7 +200,7 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_CVMFS_CACHE_BASE value="/var/cache/cvmfs"
 /opt/rocks/bin/rocks add attr OSG_CVMFS_QUOTA_LIMIT value=10000
 /opt/rocks/bin/rocks add attr OSG_CVMFS_HTTP_PROXY value="http://login-0-2:3128"
-/opt/rocks/bin/rocks add attr OSG_CMS_LOCAL_SITE value=T3_US_PuertoRico
+/opt/rocks/bin/rocks add attr OSG_CMS_LOCAL_SITE value=T3_US_OSG
 </post>
 
 <!-- squid and cvmfs config related post install -->

@@ -59,7 +59,7 @@ Configure CVMFS_HTTP_PROXY for cvmfs. Default: "http://login-0-2:3128"
 OSG_CMS_LOCAL_SITE
 </entry>
 <entry>
-Configure CMS_LOCAL_SITE for cvmfs. Default: "T3_US_PuertoRico"
+Configure CMS_LOCAL_SITE for cvmfs. Default: "T3_US_OSG"
 </entry>
 </row>
 

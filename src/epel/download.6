@@ -8,8 +8,18 @@
 #------
 #mysql-connector-java-5.1.12-2.el5.x86_64.rpm
 #mysql-connector-java-*,\ #not in sl6
+#fts-client-*.el6.x86_64.rpm
+#fts-libs-*.el6.x86_64.rpm
+#lcg-util-*.el6.x86_64.rpm
+#gfal-1*.el6.x86_64.rpm
+#dcap-libs-*.el6.x86_64.rpm
+#dpm-libs-*.el6.x86_64.rpm
+#lcgdm-libs-*.el6.x86_64.rpm
+#lfc-libs-*.el6.x86_64.rpm
 #jakarta-commons-cli-javadoc-*.el6.x86_64.rpm
 #jakarta-commons-cli-*.el6.x86_64.rpm
+#CGSI-gSOAP-*.el6.x86_64.rpm
+#CGSI-gSOAP-devel-*.el6.x86_64.rpm
 #gsoap-*.el6.x86_64.rpm
 #gsoap-*.el6.i686.rpm
 #gsoap-devel-*.el6.x86_64.rpm
@@ -50,7 +60,16 @@
 #pugixml-devel-*.el6.x86_64.rpm
 rsync -av \
 rsync://dl.fedoraproject.org/fedora-epel/6/x86_64/{\
+fts-client-*,\
+fts-libs-*,\
+lcg-util-*,\
+gfal-1*,\
+dcap-libs-*,\
+dpm-libs-*,\
+lcgdm-libs-*,\
+lfc-libs-*,\
 jakarta-commons-cli{-javadoc-,-}*,\
+CGSI-gSOAP{-devel-,-}*,\
 gsoap{-devel-,-}*,\
 is-interface{-devel-,-}*,\
 iperf-*,\

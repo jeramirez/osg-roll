@@ -166,8 +166,22 @@ will build the correct configuration.
 <para>
 A primitive configuratation of CE is done during the install, the resulting
 configuration files are located in /etc/osg/config.d and is based on available 
-information at install. To reconfigure a CE node changes on the ini files located
-in /etc/osg/config.d  is needed followed by running the command osg-configure -c.
+information at install.
+</para>
+<note>
+<para>
+In case CE was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_CE to a given scheduler (in this example "condor") on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_CE value=condor
+# rocks sync host osg CE install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure a CE node changes
+(see table <xref linkend="customizing-ce-attrs-osg">)
+on the ini files located in /etc/osg/config.d  is needed followed by running the command osg-configure -c.
 This part is automatized by running the command
 <screen>
 # rocks sync host osg CE &lt;hostname&gt;
@@ -203,15 +217,6 @@ the output script will be writen in <computeroutput>/root/CE_ini_filesConfigurat
 </note>
 
 <para>
-In case CE was not installed at kickstart, it is possible to install in a node or appliance after kickstart
-by setting OSG_CE to a given scheduler (in this example "condor") on a host or appliance and then syncing as shown below
-<screen>
-# rocks set host attr &lt;hostname&gt; OSG_CE value=condor
-# rocks sync host osg CE install &lt;hostname&gt;
-</screen>
-</para>
-
-<para>
 To find information about CE configuration 
 please see the OSG documentation at <ulink
 url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallComputeElement#7_Configuration_Instructions">
@@ -226,8 +231,22 @@ OSG twiki page</ulink>.
 <para>
 A initial configuration of Bestman server is done during the kickstart install, the resulting
 configuration files are /etc/bestman2/conf/bestman2.rc and /etc/sysconfig/bestman2. This configuration is based on available 
-information at install. To reconfigure a bestman node after changes on any attribute that build those files
-requires rebuild the configuration by running the rocks command.
+information at install.
+</para>
+<note>
+<para>
+In case Bestman was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_SE to true on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_SE value=true
+# rocks sync host osg bestman install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure a bestman node after changes on any attribute that build 
+(see table <xref linkend="customizing-se-attrs-osg">)
+those files requires rebuild the configuration by running the rocks command.
 <screen>
 # rocks sync host osg bestman &lt;hostname&gt;
 </screen>
@@ -255,15 +274,6 @@ the output script will be writen in <computeroutput>/root/BestmanConfigurator</c
 </note>
 
 <para>
-In case Bestman was not installed at kickstart, it is possible to install in a node or appliance after kickstart
-by setting OSG_SE to true on a host or appliance and then syncing as shown below
-<screen>
-# rocks set host attr &lt;hostname&gt; OSG_SE value=true
-# rocks sync host osg bestman install &lt;hostname&gt;
-</screen>
-</para>
-
-<para>
 To find information about bestman configuration 
 please see the OSG documentation at <ulink
 url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallOSGBestmanSE#4_1_Installing_BeStMan2">
@@ -278,8 +288,23 @@ OSG twiki page</ulink>.
 <para>
 A initial configuration of Worker nodes is done during the kickstart install, the resulting
 configuration dir/files are /etc/grid-security/certificates and /etc/lcmaps.db. This configuration is based on available 
-information at install. To reconfigure a Worker/Interactive node after changes on any attribute that build those files
-requires rebuild the configuration by running the rocks command.
+information at install.
+</para>
+<note>
+<para>
+In case OSG Client was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_Client to true on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_Client value=true
+# rocks sync host osg wnclient install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure a Worker/Interactive node after changes on any attribute 
+that build
+(see table <xref linkend="customizing-wnclient-attrs-osg">)
+those files requires rebuild the configuration by running the rocks command.
 <screen>
 # rocks sync host osg wnclient &lt;hostname&gt;
 </screen>
@@ -308,15 +333,6 @@ the output script will be writen in <computeroutput>/root/wnclientConfigurator</
 </note>
 
 <para>
-In case OSG Client was not installed at kickstart, it is possible to install in a node or appliance after kickstart
-by setting OSG_Client to true on a host or appliance and then syncing as shown below
-<screen>
-# rocks set host attr &lt;hostname&gt; OSG_Client value=true
-# rocks sync host osg wnclient install &lt;hostname&gt;
-</screen>
-</para>
-
-<para>
 To find information about Client configuration 
 please see the OSG documentation at OSG twiki page for <ulink
 url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallWNClient">
@@ -337,7 +353,22 @@ this OSG twiki page</ulink>
 <para>
 A initial configuration of xrootd server is done during the kickstart install, the resulting
 configuration file is /etc/xrootd/xrootd-clustered.cfg. This configuration is based on available 
-information at install. To reconfigure a xrootd node after changes on any attribute that build 
+information at install. 
+</para>
+<note>
+<para>
+In case Xrootd was not installed at kickstart, it is possible to install in a node or appliance after kickstart
+by setting OSG_XRD to true on a host or appliance and then syncing as shown below
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_XRD value=true
+# rocks sync host osg xrootd install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure a xrootd node after changes on any attribute 
+that build 
+(see table <xref linkend="customizing-xrootd-attrs-osg">)
 the .cfg file requires rebuild the configuration by running the rocks command.
 <screen>
 # rocks sync host osg xrootd &lt;hostname&gt;
@@ -365,15 +396,6 @@ the output script will be writen in <computeroutput>/root/XrootdConfigurator</co
 </note>
 
 <para>
-In case Xrootd was not installed at kickstart, it is possible to install in a node or appliance after kickstart
-by setting OSG_XRD to true on a host or appliance and then syncing as shown below
-<screen>
-# rocks set host attr &lt;hostname&gt; OSG_XRD value=true
-# rocks sync host osg xrootd install &lt;hostname&gt;
-</screen>
-</para>
-
-<para>
 To find information about xrootd configuration 
 please see the OSG documentation at <ulink
 url="https://twiki.grid.iu.edu/bin/view/Documentation/Release3/InstallXrootd#Modify_etc_xrootd_xrootd_cluster">
@@ -384,11 +406,26 @@ OSG twiki page</ulink>.
 
 <!-- ***************************************************************** -->
 <section id="reconfiguring-condor" xreflabel="Reconfiguring Condor">
-<title>Reconfiguring Condor after Installation </title>
+<title>Reconfiguring Condor</title>
 <para>
-The configuration of Condor is done during the install, the resulting 
-configuration files are located in /etc/condor/config.d/. To reconfigure Condor 
-on a node,  make appropriate attribute using the commands above  and then run
+The configuration of Condor is done during the kickstart install, the resulting 
+configuration files are located in /etc/condor/config.d/.
+</para>
+<note>
+<para>
+In case condor was not installed at kickstart, it is possible to install it 
+in a node or appliance after kickstart by setting OSG_Condor_Client 
+(or OSG_CE='condor') on a host or appliance followed by syncing as shown below:
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_Condor_Client value=true
+# rocks sync host osg condor install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure Condor on a node,  make appropriate attribute changes 
+(see table <xref linkend="customizing-condor-attrs-osg">)
+using the commands above and then run
 <screen>
 # rocks sync host osg condor &lt;hostname&gt;
 </screen>
@@ -418,11 +455,27 @@ manuals</ulink> or <ulink url="condor-Manual"> locally </ulink>.
 
 <!-- ***************************************************************** -->
 <section id="reconfiguring-hadoop" xreflabel="Reconfiguring Hadoop">
-<title>Reconfiguring Hadoop after Installation </title>
+<title>Reconfiguring Hadoop</title>
 <para>
-The configuration of Hadoop is done during the install, the resulting 
-configuration file is /etc/sysconfig/hadoop. To reconfigure Hadoop 
-on a node,  make appropriate attribute using the commands above  and then run
+The configuration of Hadoop is done during the OS install, the resulting 
+configuration file is /etc/sysconfig/hadoop.
+</para>
+<note>
+<para>
+In case hadoop was not installed at kickstart, it is possible to install it 
+in a node or appliance after kickstart by setting OSG_HADOOP (or OSG_Client or
+OSG_SE or OSG_GFTP_HDFS or OSG_CE='condor') on a host 
+or appliance followed by syncing as shown below:
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_HADOOP value=true
+# rocks sync host osg hadoop install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure Hadoop on a node,  make appropriate attribute changes
+(see table <xref linkend="customizing-hadoop-attrs-osg">)
+using the rocks commands above and then run
 <screen>
 # rocks sync host osg hadoop &lt;hostname&gt;
 </screen>
@@ -444,11 +497,26 @@ To view the contents of the /etc/sysconfig/hadoop before making changes, use
 
 <!-- ***************************************************************** -->
 <section id="customize-squid" xreflabel="Customize Squid">
-<title>Reconfiguring Frontier Squid after Installation </title>
+<title>Reconfiguring Frontier Squid </title>
 <para>
-The default customization of Squid is done during the install, the resulting 
-configuration file is /etc/squid/customize.sh. To reconfigure squid 
-on a node,  make appropriate attribute using the commands above  and then run
+The default customization of Squid is done during the OS install, the resulting 
+configuration file is /etc/squid/customize.sh. 
+</para>
+<note>
+<para>
+In case squid was not installed at kickstart, it is possible to install it 
+in a node or appliance after kickstart by setting OSG_SQUID on a host 
+or appliance followed by syncing as shown below:
+<screen>
+# rocks set host attr &lt;hostname&gt; OSG_SQUID value=true
+# rocks sync host osg squid install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure squid on a node, make appropriate attribute changes
+(see table <xref linkend="customizing-squid-attrs-osg">)
+using the commands above and then run
 <screen>
 # rocks sync host osg squid &lt;hostname&gt;
 </screen>
@@ -465,7 +533,6 @@ To view the contents of the /etc/squid/customize.sh before making changes, use
 </para>
 </note>
 
-
 </section>
 
 <!-- ***************************************************************** -->
@@ -477,17 +544,23 @@ The default customization of CVMFS is done at the OS install, the resulting conf
 /etc/cvmfs/config.d/cms.cern.ch.local,
 /etc/cvmfs/domain.d/cern.ch.local and
 /etc/fuse.conf
-To reconfigure cvmfs on a node, make appropriate attribute using the commands above and then run
-<screen>
-# rocks sync host osg cvmfs &lt;hostname&gt;
-</screen>
 </para>
+<note>
 <para>
 In case cvmfs was not installed at kickstart, it is possible to install in a node or appliance after kickstart
 by setting OSG_CVMFS on a host or appliance and then syncing as shown below
 <screen>
 # rocks set host attr &lt;hostname&gt; OSG_CVMFS value=true
 # rocks sync host osg cvmfs install &lt;hostname&gt;
+</screen>
+</para>
+</note>
+<para>
+To reconfigure cvmfs on a node, make appropriate attribute changes
+(see table <xref linkend="customizing-cvmfs-attrs-osg">)
+using the commands above and then run
+<screen>
+# rocks sync host osg cvmfs &lt;hostname&gt;
 </screen>
 </para>
 
@@ -520,15 +593,8 @@ The default customization of RSV is done at the OS install, if OSG_RSV was set t
 /etc/httpd/conf/httpd.conf and
 /etc/httpd/conf.d/ssl.conf
 The secure configuration will use certs located at /etc/grid-security/http/httpcerts2.pem (with key httpkey2.pem) with ownership apache.
-To reconfigure rsv on a node, make appropriate attribute changes using the commands above and then run
-<screen>
-# rocks sync host osg rsv &lt;hostname&gt;
-</screen>
 </para>
-<para>
-This will rewrite the script <computeroutput>/root/rsv_iniConfigurator</computeroutput> and run it,
-then will run "osg-configure -c" to set rsv.
-</para>
+<note>
 <para>
 In case rsv was not installed at kickstart, it is possible to install in a node or appliance after kickstart
 by setting OSG_RSV on a host or appliance and then syncing as shown below
@@ -539,6 +605,19 @@ by setting OSG_RSV on a host or appliance and then syncing as shown below
 # ssh &lt;hostname&gt; "cp -p /etc/grid-security/http/httpkey.pem /etc/grid-security/http/httpkey2.pem"
 # ssh &lt;hostname&gt; "chown apache. /etc/grid-security/http/http*2.pem"
 </screen>
+</para>
+</note>
+<para>
+To reconfigure rsv on a node, make appropriate attribute changes 
+(see table <xref linkend="customizing-rsv-attrs-osg">)
+using the commands above and then run
+<screen>
+# rocks sync host osg rsv &lt;hostname&gt;
+</screen>
+</para>
+<para>
+This will rewrite the script <computeroutput>/root/rsv_iniConfigurator</computeroutput> and run it,
+then will run "osg-configure -c" to set rsv.
 </para>
 
 <note>
