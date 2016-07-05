@@ -23,7 +23,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 	Output the OSG xrootd Local Configuration Script 
 	Uses Rocks Attributes: OSG_XRD,
 	OSG_XROOTD_LOCAL_REDIRECTOR, OSG_XROOTD_REGIONAL_REDIRECTOR,
-	OSG_CMS_LOCAL_SITE
+	OSG_CMS_LOCAL_SITE, OSG_XROOTD_STORAGE_XML
 
 	<arg type='string' name='host'>
 	One host name.
@@ -51,6 +51,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		OSG_Manager        = self.db.getHostAttr(self.host,'OSG_XROOTD_LOCAL_REDIRECTOR')
 		OSG_MetaManager    = self.db.getHostAttr(self.host,'OSG_XROOTD_REGIONAL_REDIRECTOR')
 		OSG_Site           = self.db.getHostAttr(self.host,'OSG_CMS_LOCAL_SITE')
+		OSG_Storagexml     = self.db.getHostAttr(self.host,'OSG_XROOTD_STORAGE_XML')
 
 		self.addOutput(self.host, '#begin config %s' % (configFile))
 		self.addOutput(self.host, '/bin/cp -f /etc/xrootd/xrootd-clustered.cfg.template %s' % (configFile))
@@ -67,6 +68,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.addOutput(self.host, 'sed -i -e "s@-crl:3@-crl:3 -authzfun:libXrdLcmaps.so -authzfunparms:--osg,--lcmapscfg,/etc/xrootd/lcmaps.cfg,--loglevel,0|useglobals -gmapopt:10 -gmapto:0@" %s' % (configFile) )
 		self.addOutput(self.host, 'sed -i -e "s@#oss.namelib@oss.namelib@" %s' % (configFile) )
 		self.addOutput(self.host, 'sed -i -e "s@/usr/bin/XrdOlbMonPerf@/usr/share/xrootd/utils/XrdOlbMonPerf@" %s' % (configFile) )
+		if OSG_Storagexml >0:
+			self.addOutput(self.host, 'sed -i -e "s@/etc/xrootd/storage.xml@%s@" %s' % (OSG_Storagexml,configFile) )
 		self.addOutput(self.host, 'echo "all.sitename %s" &gt;&gt; %s' % (OSG_Site,configFile) )
 		self.addOutput(self.host, '#end config %s' % (configFile))
 		self.addOutput(self.host, '')
