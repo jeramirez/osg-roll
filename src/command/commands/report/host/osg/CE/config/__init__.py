@@ -69,8 +69,16 @@ class Command(rocks.commands.HostArgumentProcessor,
 	Defaults to: /etc/osg/config.d/20-condor.ini
 	</param>
 
+	<param type='string' name='ConfigPBS'>
+	Defaults to: /etc/osg/config.d/20-pbs.ini
+	</param>
+
 	<param type='string' name='ConfigSGE'>
 	Defaults to: /etc/osg/config.d/20-sge.ini
+	</param>
+
+	<param type='string' name='ConfigSlurm'>
+	Defaults to: /etc/osg/config.d/20-slurm.ini
 	</param>
 
 	<param type='string' name='ConfigGip'>
@@ -115,7 +123,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 				('ConfigGateway','/etc/osg/config.d/10-gateway.ini'),
 				('ConfigStorage','/etc/osg/config.d/10-storage.ini'),
 				('ConfigManagedFork','/etc/osg/config.d/15-managedfork.ini'),
+				('ConfigPBS','/etc/osg/config.d/20-pbs.ini'), 
 				('ConfigSGE','/etc/osg/config.d/20-sge.ini'), 
+				('ConfigSlurm','/etc/osg/config.d/20-slurm.ini'), 
 				('ConfigCondor','/etc/osg/config.d/20-condor.ini'), 
 				('ConfigGip','/etc/osg/config.d/30-gip.ini'),
 				('ConfigNetwork','/etc/osg/config.d/40-network.ini'),
