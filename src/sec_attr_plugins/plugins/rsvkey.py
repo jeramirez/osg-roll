@@ -22,7 +22,7 @@ class plugin(rocks.commands.sec_attr_plugin):
 		if not os.path.exists(certpath):
 			os.makedirs(certpath, 0755)
 		if os.path.exists(keyfile):
-			rsv=os.stat(certfile).st_uid
+			rsv=os.stat(keyfile).st_uid
 			shutil.move(keyfile, keyfile + '_' + tfname[8:])
 		# Move temporary file to keyfile
 		shutil.move(tfname, keyfile)
