@@ -1,2 +1,2 @@
 NAME = rocks-secattr-plugins-osg
-RELEASE = 4
+RELEASE = 5
