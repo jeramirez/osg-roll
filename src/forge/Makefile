@@ -79,4 +79,5 @@ rpm pkg:: download
 
 clean::
 download::
-	cd $(CURDIR)/$(VERSION.MAJOR);. $(CURDIR)/$(VERSION.MAJOR)/files.$(VERSION.MAJOR)
+	[ -d $(CURDIR)/$(VERSION.MAJOR) ] || mkdir -p $(CURDIR)/$(VERSION.MAJOR);
+	cd $(CURDIR)/$(VERSION.MAJOR);. $(CURDIR)/files.$(VERSION.MAJOR)
