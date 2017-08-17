@@ -39,8 +39,8 @@
 /usr/sbin/useradd -u 27 -g 27 -c "MySQL Server" -s /bin/bash -d /usr/lib/mysql mysql
 
  <!-- install osg-gums from local mirror-->
-yum install osg-gums  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
-/var/lib/trustmanager-tomcat/configure.sh &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+yum install osg-gums  &gt;&gt; /var/log/gums-install.log 2&gt;&amp;1
+/var/lib/trustmanager-tomcat/configure.sh &gt;&gt; /var/log/gums-install.log 2&gt;&amp;1
 
  <!-- customize firewall rules for gums-server  -->
 <eval mode="xml">
