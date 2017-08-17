@@ -90,5 +90,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '[ ! -d /etc/grid-security/certificates.osg-ca-certs ]&amp;&amp;mv /etc/grid-security/certificates /etc/grid-security/certificates.osg-ca-certs')
 				self.addOutput(self.host, '[ ! -f /etc/lcmaps.db.template ]&amp;&amp;cp -p /etc/lcmaps.db /etc/lcmaps.db.template')
 				self.addOutput(self.host, '')
+				self.addOutput(self.host, '#Create links for voms-mapfile and grid-mapfile')
+				self.addOutput(self.host, '#        should be needed but useful for tests')
+				self.addOutput(self.host, '[ ! -f /etc/grid-security/voms-mapfile ]&amp;&amp;ln -s &OSG_CE_Mount_ShareDir;/ce/grid-security/voms-mapfile /etc/grid-security/.')
+				self.addOutput(self.host, '[ ! -f /etc/grid-security/grid-mapfile ]&amp;&amp;ln -s &OSG_CE_Mount_ShareDir;/ce/grid-security/grid-mapfile /etc/grid-security/.')
+				self.addOutput(self.host, '')
 
 		self.endOutput(padChar='')
