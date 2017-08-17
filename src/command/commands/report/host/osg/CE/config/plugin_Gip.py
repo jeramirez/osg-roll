@@ -171,12 +171,8 @@ class Plugin(rocks.commands.Plugin):
 				addOutput(host, 'echo "allowed_vos = %s" &gt;&gt; %s' % (OSG_ClusterName[OSG_allowed_vos],configFile))
 			else:
 				addOutput(host, '#attr %s not defined for CE server' % (OSG_allowed_vos))
-				if iclus == 1:
-					addOutput(host, '#      leaving allowed_vos in blank (All vos allowed)' )
-					addOutput(host, 'echo "allowed_vos =" &gt;&gt; %s' % (configFile))
-				else:
-					addOutput(host, '#      using allowed_vos = osg, cms' )
-					addOutput(host, 'echo "allowed_vos = osg, cms" &gt;&gt; %s' % (configFile))
+				addOutput(host, '#      using allowed_vos = osg, cms' )
+				addOutput(host, 'echo "allowed_vos = osg, cms" &gt;&gt; %s' % (configFile))
 
 			if OSG_ClusterName[OSG_maxwalltime] > 0:
 				addOutput(host, 'echo "max_wall_time = %s" &gt;&gt; %s' % (OSG_ClusterName[OSG_maxwalltime],configFile))
