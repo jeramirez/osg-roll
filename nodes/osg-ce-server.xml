@@ -22,9 +22,6 @@
 <package>libxml2.&arch;</package>
 <package>yum-priorities</package>
 <package>yum-cron</package>
-<package>lcmaps</package>
-<package>lcas-lcmaps-gt4-interface</package>
-<package>vo-client</package>
 <package>perl-libwww-perl</package>
 <package>perl-URI</package>
 <package>hostproxy</package>
@@ -78,6 +75,25 @@ cp -p /etc/osg/config.d/30-gip.ini /etc/osg/config.d/30-gip.ini.template
 cp -p /etc/osg/config.d/40-network.ini /etc/osg/config.d/40-network.ini.template
 cp -p /etc/osg/config.d/01-squid.ini /etc/osg/config.d/01-squid.ini.template
 cp -p /etc/osg/config.d/40-siteinfo.ini /etc/osg/config.d/40-siteinfo.ini.template
+
+# create if needed /scratch/ce/globus/share
+#[ -d &OSG_CE_Export_LocalDir;/ce/globus/share ]||mkdir -p &OSG_CE_Export_LocalDir;/ce/globus/share
+#rm -rf &OSG_CE_Export_LocalDir;/ce/globus/share/certificates
+#mv /etc/grid-security/certificates &OSG_CE_Export_LocalDir;/ce/globus/share/.
+#ln -s &OSG_CE_Export_LocalDir;/ce/globus/share/certificates /etc/grid-security/certificates
+# create if needed /scratch/app/etc
+#[ -d &OSG_CE_Export_LocalDir;/app/etc ]||mkdir -p &OSG_CE_Export_LocalDir;/app/etc
+#chmod 1777 &OSG_CE_Export_LocalDir;/app
+#chmod 1777 &OSG_CE_Export_LocalDir;/app/etc
+#touch /var/tmp/globus-port-state.log
+#fetch-crl 2
+#sed -i -e "s@CRLDIR=/etc/grid-security/certificates@CRLDIR=&OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl.conf
+#fetch-crl 3
+#if [ &rocks_version_major; -lt 6 ]; then
+#FETCHCRLV=3
+#fi
+#sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = &OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl${FETCHCRLV}.conf
+
 -->
 
  <!-- customize firewall rules for gatekeeper-server  -->
@@ -131,28 +147,6 @@ sed -i -e "s@port_state_file = UNAVAILABLE@port_state_file = /var/tmp/globus-por
 /opt/rocks/bin/rocks report host attr attr=OSG_Client | grep true | sed s/:\ true/.local/g
 </eval>
 </file>
-
-<file name="/etc/exports" mode="append">
-&OSG_CE_Export_LocalDir;/ce &Kickstart_PrivateKickstartHost;(rw,async,no_root_squash) &Kickstart_PrivateNetwork;/&Kickstart_PrivateNetmask;(rw,async)
-&OSG_CE_Export_LocalDir;/app &Kickstart_PrivateKickstartHost;(rw,async,no_root_squash) &Kickstart_PrivateNetwork;/&Kickstart_PrivateNetmask;(rw,async)
-</file>
-# create if needed /scratch/ce/globus/share
-[ -d &OSG_CE_Export_LocalDir;/ce/globus/share ]||mkdir -p &OSG_CE_Export_LocalDir;/ce/globus/share
-rm -rf &OSG_CE_Export_LocalDir;/ce/globus/share/certificates
-mv /etc/grid-security/certificates &OSG_CE_Export_LocalDir;/ce/globus/share/.
-ln -s &OSG_CE_Export_LocalDir;/ce/globus/share/certificates /etc/grid-security/certificates
-# create if needed /scratch/app/etc
-[ -d &OSG_CE_Export_LocalDir;/app/etc ]||mkdir -p &OSG_CE_Export_LocalDir;/app/etc
-chmod 1777 &OSG_CE_Export_LocalDir;/app
-chmod 1777 &OSG_CE_Export_LocalDir;/app/etc
-touch /var/tmp/globus-port-state.log
-#fetch-crl 2
-#sed -i -e "s@CRLDIR=/etc/grid-security/certificates@CRLDIR=&OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl.conf
-#fetch-crl 3
-if [ &rocks_version_major; -lt 6 ]; then
-FETCHCRLV=3
-fi
-sed -i -e "s@infodir = /etc/grid-security/certificates@infodir = &OSG_CE_Export_LocalDir;/ce/globus/share/certificates@" /etc/fetch-crl${FETCHCRLV}.conf
 
 
 

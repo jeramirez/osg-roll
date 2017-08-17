@@ -49,6 +49,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 	Default is no.
 	</param>
 
+	<param type='string' name='ConfigLcmaps'>
+	Defaults to: /etc/lcmaps.db
+	</param>
+
 	<param type='string' name='ConfigSquid'>
 	Defaults to: /etc/osg/config.d/01-squid.ini
 	</param>
@@ -118,6 +122,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 		ParmKeys   = [
 				('test','n'),
 				('ConfigFile','/root/CE_ini_filesConfigurator'),
+				('ConfigLcmaps','/etc/lcmaps.db'),
+				('ConfigFetchCrl','/etc/fetch-crl.d/osg_roll.conf'),
 				('ConfigSquid','/etc/osg/config.d/01-squid.ini'),
 				('ConfigMisc','/etc/osg/config.d/10-misc.ini'),
 				('ConfigGateway','/etc/osg/config.d/10-gateway.ini'),

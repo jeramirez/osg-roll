@@ -18,9 +18,12 @@ class Plugin(rocks.commands.Plugin):
 
 		addOutput(host, '#begin config %s' % (configFile))
 		addOutput(host, '/bin/cp -f /etc/osg/config.d/10-misc.ini.template %s' % (configFile))
-		addOutput(host, 'sed -i -e "s@glexec_location = UNAVAILABLE@glexec_location = /usr/sbin/glexec@" %s' % (configFile))
+		addOutput(host, 'sed -i -e "s@edit_lcmaps_db = True@edit_lcmaps_db = False@" %s' % (configFile))
 		if OSG_GumsServer > 0:
+			addOutput(host, 'sed -i -e "s@glexec_location = UNAVAILABLE@glexec_location = /usr/sbin/glexec@" %s' % (configFile))
 			addOutput(host, 'sed -i -e "s@gums_host = DEFAULT@gums_host = %s@" %s' % (OSG_GumsServer,configFile))
+		else:
+			addOutput(host, 'sed -i -e "s@authorization_method = DEFAULT@authorization_method = vomsmap@" %s' % (configFile))
 		addOutput(host, '#end config %s' % (configFile))
 		addOutput(host, '')
 
