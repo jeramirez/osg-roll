@@ -32,8 +32,8 @@ class Plugin(rocks.commands.Plugin):
 				OSG_HTCONDORCE = 'True'
 				OSG_GRAM       = 'False'
 		else:
-			#default to both if not attr is set
-			OSG_GRAM       = 'True'
+			#default to condor-ce if not attr is set
+			OSG_GRAM       = 'False'
 			OSG_HTCONDORCE = 'True'
 
 		addOutput(host, '#begin config %s' % (configFile))
