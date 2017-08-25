@@ -1,124 +1,48 @@
+#/bin/bash 
+
 #create dirs if not exist
 [ -d 6/x86_64 ] || mkdir -p 6/x86_64
 [ -d 6/noarch ] || mkdir -p 6/noarch
 [ -d 6/debug ] || mkdir -p 6/debug
-#internet 2 mirror
-#rsync://rsync.gtlib.gatech.edu/fedora-epel
+#
 #x86_64
 #------
-#mysql-connector-java-5.1.12-2.el5.x86_64.rpm
-#mysql-connector-java-*,\ #not in sl6
-#fts-client-*.el6.x86_64.rpm
-#fts-libs-*.el6.x86_64.rpm
-#lcg-util-*.el6.x86_64.rpm
-#gfal-1*.el6.x86_64.rpm
-#dcap-libs-*.el6.x86_64.rpm
-#dpm-libs-*.el6.x86_64.rpm
-#lcgdm-libs-*.el6.x86_64.rpm
-#lfc-libs-*.el6.x86_64.rpm
-#jakarta-commons-cli-javadoc-*.el6.x86_64.rpm
-#jakarta-commons-cli-*.el6.x86_64.rpm
-#CGSI-gSOAP-*.el6.x86_64.rpm
-#CGSI-gSOAP-devel-*.el6.x86_64.rpm
-#gsoap-*.el6.x86_64.rpm
-#gsoap-*.el6.i686.rpm
-#gsoap-devel-*.el6.x86_64.rpm
-#gsoap-devel-*.el6.i686.rpm
-#is-interface-*.el6.i686.rpm
-#is-interface-*.el6.x86_64.rpm
-#is-interface-devel-*.el6.i686.rpm
-#is-interface-devel-*.el6.x86_64.rpm
-#iperf-*.el6.x86_64.rpm
-#srm-ifce-*.el6.x86_64.rpm
-#gridftp-ifce-*el6.x86_64.rpm
-#gridsite-libs-*.el6.x86_64.rpm
-#gridsite-libs-*.el6.i386.rpm
-#gfal2-*.el6.x86_64.rpm
-#gfal2-all-*.el6.x86_64.rpm
-#gfal2-core-*.el6.i686.rpm
-#gfal2-core-*.el6.x86_64.rpm
-#gfal2-devel-*.el6.i686.rpm
-#gfal2-devel-*.el6.x86_64.rpm
-#gfal2-plugin-dcap-*.el6.x86_64.rpm
-#gfal2-plugin-http-*.el6.x86_64.rpm
-#gfal2-plugin-lfc-*.el6.x86_64.rpm
-#gfal2-plugin-rfio-*.el6.x86_64.rpm
-#gfal2-plugin-xrootd-0.2*.el6.x86_64.rpm
-#gfal2-plugin-gridftp-*.el6.x86_64.rpm
-#gfal2-plugin-srm-*.el6.x86_64.rpm
-#gfal2-python-*.el6.x86_64.rpm
-#gfal2-transfer-*.el6.i686.rpm
-#gfal2-transfer-*.el6.x86_64.rpm
-#canl-c-*.el6.x86_64.rpm
-#canl-c-*.el6.i686.rpm
-#canl-c-devel-*.el6.i686.rpm
-#canl-c-devel-*.el6.x86_64.rpm
-#canl-c-examples-*.el6.x86_64.rpm
-#pugixml-*.el6.i686.rpm
-#pugixml-*.el6.x86_64.rpm
-#pugixml-devel-*.el6.i686.rpm
-#pugixml-devel-*.el6.x86_64.rpm
-rsync -av \
-rsync://dl.fedoraproject.org/fedora-epel/6/x86_64/{\
-fts-client-*,\
-fts-libs-*,\
-lcg-util-*,\
-gfal-1*,\
-dcap-libs-*,\
-dpm-libs-*,\
-lcgdm-libs-*,\
-lfc-libs-*,\
-jakarta-commons-cli{-javadoc-,-}*,\
-CGSI-gSOAP{-devel-,-}*,\
-gsoap{-devel-,-}*,\
-is-interface{-devel-,-}*,\
-iperf-*,\
-srm-ifce-*,\
-gridftp-ifce-*,\
-gridsite-libs-*,\
-gfal2-*,\
-canl-c-*,\
-pugixml-*,\
-boost148-*,\
-libdirq-*,\
-protobuf-*,\
-udt-*\
-}.el6.{x86_64,i686}.rpm \
-6/x86_64/.
- 
-#debug
-#bouncycastle-debuginfo-1.45-6.el5.x86_64.rpm
-#bouncycastle-debuginfo-*,\ # not is sl6
-#jakarta-commons-cli-debuginfo-*.el6.x86_64.rpm
-#gsoap-debuginfo-*.el6.x86_64.rpm
-#iperf-debuginfo-*.el6.x86_64.rpm
-rsync -av \
-rsync://dl.fedoraproject.org/fedora-epel/6/x86_64/debug/{\
-jakarta-commons-cli-debuginfo-*,\
-gsoap-debuginfo-*,\
-iperf-debuginfo-*,\
-srm-ifce-debuginfo-*,\
-gridftp-ifce-debuginfo-*\
-}.el6.x86_64.rpm \
-6/debug/.
-
-#noarch
-#jakarta-commons-io-javadoc-1.4-3.el5.noarch.rpm
-#jakarta-commons-io-1.4-3.el5.noarch.rpm
-#jakarta-commons-io-*,\ # not is sl6
-#perl-XML-DOM-1.44-2.el5.noarch.rpm
-#perl-XML-DOM-1.*,\ # not is sl6
-#perl-XML-RegExp-0.03-2.el5.noarch.rpm
-#perl-XML-RegExp-*,\ # not in sl6
-#bouncycastle-*.el6.noarch.rpm
-#bouncycastle-javadoc-*.el6.noarch.rpm
-#fetch-crl-*.el6.noarch.rpm
-#gfal2-util-*.el6.noarch.rpm
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ fts-client-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ fts-libs-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ lcg-util-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ gfal-1*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ dcap-libs-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ dpm-libs-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ lcgdm-libs-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ lfc-libs-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ jakarta-commons-cli{-javadoc-,-}*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ CGSI-gSOAP{-devel-,-}*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ gsoap{-devel-,-}*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ is-interface{-devel-,-}*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ iperf-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ srm-ifce-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ gridftp-ifce-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ gridsite-libs-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ gfal2-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ canl-c-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ pugixml-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ boost148-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ libdirq-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ protobuf-*
+yumdownloader --enablerepo=epel --destdir=6/x86_64/ udt-*
 #
-rsync -av \
-rsync://dl.fedoraproject.org/fedora-epel/6/x86_64/{\
-bouncycastle{-javadoc-,-}*,\
-fetch-crl-*,\
-gfal2-util-*\
-}.el6.noarch.rpm \
-6/noarch/.
+#debug
+#------
+yumdownloader --enablerepo=epel-debuginfo --destdir=6/debug/ jakarta-commons-cli-debuginfo-*
+yumdownloader --enablerepo=epel-debuginfo --destdir=6/debug/ gsoap-debuginfo-*
+yumdownloader --enablerepo=epel-debuginfo --destdir=6/debug/ iperf-debuginfo-*
+yumdownloader --enablerepo=epel-debuginfo --destdir=6/debug/ srm-ifce-debuginfo-*
+yumdownloader --enablerepo=epel-debuginfo --destdir=6/debug/ gridftp-ifce-debuginfo-*
+#
+#noarch
+#------
+yumdownloader --enablerepo=epel --destdir=6/noarch/ bouncycastle{-javadoc-,-}*
+yumdownloader --enablerepo=epel --destdir=6/noarch/ fetch-crl-*
+yumdownloader --enablerepo=epel --destdir=6/noarch/ gfal2-util-*
+yumdownloader --enablerepo=epel --destdir=6/noarch/ gfal2-util-*
+
