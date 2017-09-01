@@ -51,6 +51,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.host = host
 			loginstall = '/var/log/wnclient-install.log'
 			osg_client = self.db.getHostAttr(host,'OSG_Client')
+			shareddir  = self.db.getHostAttr(host,'OSG_CE_Mount_ShareDir')
 			startGID   = self.db.getHostAttr(host,'OSG_wn_StartGIDGlexecGroup')
 			nGID       = self.db.getHostAttr(host,'OSG_wn_numberGIDsGlexec')
 
@@ -83,6 +84,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 					gid += 1
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch %s' % loginstall )
+				self.addOutput(self.host, 'yum install compat-readline5  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install perl-ExtUtils-Embed  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install zsh  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, 'yum install osg-ca-certs  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, 'yum install osg-wn-client-glexec  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, '')
@@ -90,10 +94,11 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '[ ! -d /etc/grid-security/certificates.osg-ca-certs ]&amp;&amp;mv /etc/grid-security/certificates /etc/grid-security/certificates.osg-ca-certs')
 				self.addOutput(self.host, '[ ! -f /etc/lcmaps.db.template ]&amp;&amp;cp -p /etc/lcmaps.db /etc/lcmaps.db.template')
 				self.addOutput(self.host, '')
-				self.addOutput(self.host, '#Create links for voms-mapfile and grid-mapfile')
-				self.addOutput(self.host, '#        should be needed but useful for tests')
-				self.addOutput(self.host, '[ ! -f /etc/grid-security/voms-mapfile ]&amp;&amp;ln -s &OSG_CE_Mount_ShareDir;/ce/grid-security/voms-mapfile /etc/grid-security/.')
-				self.addOutput(self.host, '[ ! -f /etc/grid-security/grid-mapfile ]&amp;&amp;ln -s &OSG_CE_Mount_ShareDir;/ce/grid-security/grid-mapfile /etc/grid-security/.')
-				self.addOutput(self.host, '')
+				if shareddir > 0:
+					self.addOutput(self.host, '#Create links for voms-mapfile and grid-mapfile')
+					self.addOutput(self.host, '#        should not be needed but useful for tests')
+					self.addOutput(self.host, '[ ! -f /etc/grid-security/voms-mapfile ]&amp;&amp;ln -s %s/ce/grid-security/voms-mapfile /etc/grid-security/.' % shareddir)
+					self.addOutput(self.host, '[ ! -f /etc/grid-security/grid-mapfile ]&amp;&amp;ln -s %s/ce/grid-security/grid-mapfile /etc/grid-security/.' % shareddir)
+					self.addOutput(self.host, '')
 
 		self.endOutput(padChar='')
