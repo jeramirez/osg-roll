@@ -109,14 +109,14 @@ live install + config option below.
 # post install
 #
 
-#  start gatekeeper
-#rocks run host ce-0-0 command='service globus-gatekeeper start'
+#  start condor-ce
+#rocks run host ce-0-0 command='service condor-ce start'
 #  start fetch-crl cron
 #rocks run host ce-0-0 command='service fetch-crl-cron start'
 
 #  set services to run on reboot
 #rocks run host ce-0-0 command='chkconfig condor on'
-#rocks run host ce-0-0 command='chkconfig globus-gatekeeper on'
+#rocks run host ce-0-0 command='chkconfig condor-ce on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-cron on'
 #rocks run host ce-0-0 command='chkconfig fetch-crl-boot on'
 
