@@ -12,6 +12,7 @@ class Plugin(rocks.commands.Plugin):
 
 		certype            = self.db.getHostAttr(host,'OSG_wn_LcmapsCertType')
 		gums               = self.db.getHostAttr(host,'OSG_GumsServer')
+		client             = self.db.getHostAttr(host,'OSG_Client')
 
 		addOutput(host, '#begin config %s' % (Lcmaps))
 #		make sure there is a template!
@@ -32,9 +33,10 @@ class Plugin(rocks.commands.Plugin):
 					addOutput(host, 'echo ##attr OSG_wn_LcmapsCertType=%s [not proxy nor pilot], defaulting to "cert"' % (certype))
 			#if undefined attr OSG_wn_LcmapsCertType defaulting to proxy
 			else:
-				addOutput(host, 'echo ##attr OSG_wn_LcmapsCertType not defined for WN, defaulting to "proxy"')
-				addOutput(host, 'sed -i -e "s#hostcert.pem#hostproxy.pem#" %s' % (Lcmaps))
-				addOutput(host, 'sed -i -e "s#hostkey.pem#hostproxykey.pem#" %s' % (Lcmaps))
+				if client>0:
+					addOutput(host, 'echo ##attr OSG_wn_LcmapsCertType not defined for WN, defaulting to "proxy"')
+					addOutput(host, 'sed -i -e "s#hostcert.pem#hostproxy.pem#" %s' % (Lcmaps))
+					addOutput(host, 'sed -i -e "s#hostkey.pem#hostproxykey.pem#" %s' % (Lcmaps))
 
 			addOutput(host, 'sed -i -e "s/#glexectracking = \\\"lcmaps_glexec_tracking.mod\\\"/glexectracking = \\\"lcmaps_glexec_tracking.mod\\\"/" %s' % (Lcmaps))
 			addOutput(host, 'sed -i -e "s@#         \\\"-exec /usr/sbin/glexec_monitor\\\"@         \\\"-exec /usr/sbin/glexec_monitor\\\"@" %s' % (Lcmaps))
