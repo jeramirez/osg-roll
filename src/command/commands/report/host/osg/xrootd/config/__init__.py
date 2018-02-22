@@ -65,7 +65,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.addOutput(self.host, 'sed -i -e "s@xrd.report xrootd.unl.edu:3333 every 300s all@xrd.report     xrootd.t2.ucsd.edu:9931 every 60s all sync@" %s' % (configFile) )
 		self.addOutput(self.host, 'sed -i -e "s@xrootd.monitor all flush 5s mbuff 1k window 1s dest files io info user xrootd.unl.edu:3334 dest files io info stage user brian-test.unl.edu:9930@xrootd.monitor all auth flush io 60s ident 5m mbuff 8k rbuff 4k rnums 3 window 10s dest files io info user redir xrootd.t2.ucsd.edu:9930@" %s' % (configFile) )
 		self.addOutput(self.host, 'sed -i -e "s@^fi@#fi@" %s' % (configFile) )
-		self.addOutput(self.host, 'sed -i -e "s@-crl:3@-crl:3 -authzfun:libXrdLcmaps.so -authzfunparms:--osg,--lcmapscfg,/etc/xrootd/lcmaps.cfg,--loglevel,0|useglobals -gmapopt:10 -gmapto:0@" %s' % (configFile) )
+		self.addOutput(self.host, 'sed -i -e "s@-crl:3@-crl:3 -authzfun:libXrdLcmaps.so -authzfunparms:--osg,--lcmapscfg,/etc/xrootd/lcmaps.cfg,--loglevel,0 -gmapopt:10 -gmapto:0@" %s' % (configFile) )
 		self.addOutput(self.host, 'sed -i -e "s@#oss.namelib@oss.namelib@" %s' % (configFile) )
 		self.addOutput(self.host, 'sed -i -e "s@/usr/bin/XrdOlbMonPerf@/usr/share/xrootd/utils/XrdOlbMonPerf@" %s' % (configFile) )
 		if OSG_Storagexml >0:
@@ -74,12 +74,51 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.addOutput(self.host, '#end config %s' % (configFile))
 		self.addOutput(self.host, '')
 
-	def run(self, params, args):
+	def writeConfigLcmaps(self, configFile):
+		osg_gums   = self.db.getHostAttr(self.host,'OSG_GumsServer')
 
-		test, ConfigFile, ConfigXrootd = self.fillParams([
+		self.addOutput(self.host, '#begin config %s' % (configFile))
+		self.addOutput(self.host, '/bin/cp -f /etc/xrootd/lcmaps.cfg.template %s' % (configFile))
+		if osg_gums>0:
+			self.addOutput(self.host, '#Set Gums')
+			self.addOutput(self.host, 'sed -i -e "s#yourgums.yourdomain#%s#" %s' % (osg_gums,configFile) )
+		else:
+			self.addOutput(self.host, '#Set vomsmap')
+			self.addOutput(self.host, 'sed -i -e "s@xrootd_policy:@#xrootd_policy:@" %s' % (configFile) )
+			self.addOutput(self.host, 'sed -i -e "s@verifyproxy -&gt; scasclient@#verifyproxy -&gt; scasclient@" %s' % (configFile) )
+			self.addOutput(self.host, 'sed -i -e "s@scasclient -&gt; good | bad@#scasclient -&gt; good | bad@" %s' % (configFile) )
+			self.addOutput(self.host, 'echo "gridmapfile = \\\"lcmaps_localaccount.mod\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "              \\\"-gridmap /etc/grid-security/grid-mapfile\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "banfile = \\\"lcmaps_ban_dn.mod\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "          \\\"-banmapfile /etc/grid-security/ban-mapfile\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "banvomsfile = \\\"lcmaps_ban_fqan.mod\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "              \\\"-banmapfile /etc/grid-security/ban-voms-mapfile\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "vomsmapfile = \\\"lcmaps_voms_localaccount.mod\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "              \\\"-gridmap /etc/grid-security/voms-mapfile\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "defaultmapfile = \\\"lcmaps_voms_localaccount2.mod\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "                 \\\"-gridmap /usr/share/osg/voms-mapfile-default\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "verifyproxynokey = \\\"lcmaps_verify_proxy2.mod\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "          \\\"--discard_private_key_absence\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "          \\\" -certdir /etc/grid-security/certificates\\\"" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "xrootd_policy:" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "verifyproxynokey -&gt; banfile" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "banfile -&gt; banvomsfile | bad" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "banvomsfile -&gt; gridmapfile | bad" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "gridmapfile -&gt; good | vomsmapfile" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "vomsmapfile -&gt; good | defaultmapfile" &gt;&gt; %s' % (configFile) )
+			self.addOutput(self.host, 'echo "defaultmapfile -&gt; good | bad" &gt;&gt; %s' % (configFile) )
+		self.addOutput(self.host, '#end config %s' % (configFile))
+		self.addOutput(self.host, '')
+
+	def run(self, params, args):
+		test, ConfigFile, ConfigXrootd, ConfigLcmaps = self.fillParams([
 				('test','n'),
 				('ConfigFile','/root/XrootdConfigurator'),
-				('ConfigXrootd','/etc/xrootd/xrootd-clustered.cfg')
+				('ConfigXrootd','/etc/xrootd/xrootd-clustered.cfg'),
+				('ConfigLcmaps','/etc/xrootd/lcmaps.cfg')
 			])
 
 		istest = self.str2bool(test)
@@ -96,6 +135,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '#!/bin/bash')
 				self.addOutput(self.host, '')
 				self.writeConfigXrootd(ConfigXrootd)
+				self.writeConfigLcmaps(ConfigLcmaps)
 				self.addOutput(self.host, '</file>')
 
 		self.endOutput(padChar='')

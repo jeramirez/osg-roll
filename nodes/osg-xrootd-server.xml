@@ -24,9 +24,6 @@
 <package>libxml2.&arch;</package>
 <package>yum-priorities</package>
 <package>yum-cron</package>
-<package>lcmaps</package>
-<package>lcas-lcmaps-gt4-interface</package>
-<package>vo-client</package>
 <package>perl-libwww-perl</package>
 <package>perl-URI</package>
 
@@ -167,6 +164,7 @@ echo "running  /root/XrootdConfigurator" &gt;&gt; /root/cert-install.log 2&gt;&a
 CMSUSERCERT=&OSG_CMS_USERCERT;
 CMSUSERKEY=&OSG_CMS_USERKEY;
 CMSSITE=&OSG_CMS_LOCAL_SITE;
+XRDSTART=&OSG_XRD_Start;
 
 if [ ! -f "$CMSUSERCERT" ]||[ ! -f "$CMSUSERKEY" ]||[ "x$CMSSITE" == "x" ]; then
   if [ ! -f "$CMSUSERCERT" ]; then 
@@ -197,6 +195,34 @@ else
   echo "--Downloading /etc/xrootd/storage.xml with command ..." &gt;&gt; /root/cert-install.log 2&gt;&amp;1
   echo "curl -s -S --cert ${CMSUSERCERT} --key ${CMSUSERKEY} --capath /etc/grid-security/certificates -X GET \"https://cmsweb.cern.ch/gitweb/?p=siteconf/.git;a=blob_plain;f=${CMSSITE}/PhEDEx/storage.xml;hb=HEAD\" -o /etc/xrootd/storage.xml" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
   curl -s -S --cert ${CMSUSERCERT} --key ${CMSUSERKEY} --capath /etc/grid-security/certificates -X GET "https://cmsweb.cern.ch/gitweb/?p=siteconf/.git;a=blob_plain;f=${CMSSITE}/PhEDEx/storage.xml;hb=HEAD" -o /etc/xrootd/storage.xml &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+fi
+
+echo "" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+if [ "x$XRDSTART" == "x" ]; then 
+  echo "-- rocks attr OSG_XRD_Start does not exist" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  echo "   --on frontend try: rocks set host attr &hostname; OSG_XRD_Start value=True" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  echo "                     --to start xrootd automatically after reinstall" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  echo "                     --if you are happy with your configuration just do:" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  echo "                       --chkconfig xrootd on (to set start xrootd after reboot)" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  echo "                       --chkconfig cms on (to set start cmsd after reboot)" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  echo "                       --service xrootd start (to start xrootd)" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  echo "                       --service cmsd start (to start cmsd)" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+else
+  echo "-- rocks attr OSG_XRD_Start is set to '$XRDSTART'" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  if [ "x$XRDSTART" == "xTrue" ]||[ "x$XRDSTART" == "xtrue" ]; then
+    chkconfig xrootd on
+    chkconfig cmsd on
+    service xrootd start
+    service cmsd start
+  else
+    echo "-- don't understand rocks attr OSG_XRD_Start value" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+    echo "   --accepted values to start xrootd automatically are True or true" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+    echo "   --if you are happy with your configuration just do:" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+    echo "       --chkconfig xrootd on" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+    echo "       --chkconfig cms on" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+    echo "       --service xrootd start" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+    echo "       --service cmsd start" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
+  fi
 fi
 
 echo "rm -rf /etc/rc.d/rocksconfig.d/post-98-osg-xrd-server" &gt;&gt; /root/cert-install.log 2&gt;&amp;1
