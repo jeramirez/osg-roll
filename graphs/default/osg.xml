@@ -1,4 +1,4 @@
-<?xml version="1.0" standalone="no"?>
+<?xml version="1.1" standalone="no"?>
 
 <graph>
 
@@ -15,6 +15,8 @@
 
 	<changelog>
 	$Log  osg.xml,v $
+        Revision 1.1  2016/11/16 05:48:53  eduardo
+        adding CE Bosco
         Revision 0.0  2012/10/05 05:48:53  eduardo
         starting point
 	</changelog>
@@ -92,8 +94,8 @@
 	</order>
 
 	<!-- add edges here -->
-	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
-	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor')"/>
+	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
+	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-client" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="client" to="osg-hadoop-pre" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="client" to="osg-bestman-server" arch="i386,x86_64" cond="OSG_SE"/>
@@ -102,7 +104,7 @@
 	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="osg-hadoop" to="osg-hadoop-gridftp" arch="i386,x86_64" cond="OSG_GFTP_HDFS"/>
 	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
-	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge')"/>
+	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-rsv" arch="i386,x86_64" cond="OSG_RSV"/>
 	<edge from="client" to="osg-gums" arch="i386,x86_64" cond="OSG_GUMS"/>
 	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="OSG_SQUID"/>
