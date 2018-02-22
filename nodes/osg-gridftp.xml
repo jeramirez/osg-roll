@@ -37,8 +37,8 @@
 /usr/sbin/useradd -r -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
 
  <!-- install osg-gridftp from local mirror-->
-touch /root/yum-install.log
-yum install osg-gridftp  &gt;&gt; /root/yum-install.log 2&gt;&amp;1
+touch /root/gftp-install.log
+yum install osg-gridftp  &gt;&gt; /root/gftp-install.log 2&gt;&amp;1
 
  <!-- customize firewall rules for osg-gridftp-server  -->
 <eval mode="xml">
@@ -66,5 +66,4 @@ sed -i -e "s@# globus_mapping@globus_mapping@" /etc/grid-security/gsi-authz.conf
 
 </post>
 
-</kickstart> 
-
+</kickstart>

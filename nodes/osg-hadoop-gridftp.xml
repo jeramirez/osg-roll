@@ -34,7 +34,7 @@
 ### Create the Gratia User Just in case was not created  by osg-client
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
 /usr/sbin/groupadd -g &OSG_gratiagid; gratia
-/usr/sbin/useradd -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
+/usr/sbin/useradd -r -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia
 
  <!-- install osg-gridftp-hdfs from local mirror-->
 touch /root/hadoop-gftp-install.log
