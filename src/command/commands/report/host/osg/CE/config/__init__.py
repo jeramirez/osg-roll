@@ -69,6 +69,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 	Defaults to: /etc/osg/config.d/15-managedfork.ini
 	</param>
 
+	<param type='string' name='ConfigBosco'>
+	Defaults to: /etc/osg/config.d/20-bosco.ini
+	</param>
+
 	<param type='string' name='ConfigCondor'>
 	Defaults to: /etc/osg/config.d/20-condor.ini
 	</param>
@@ -132,6 +136,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				('ConfigPBS','/etc/osg/config.d/20-pbs.ini'), 
 				('ConfigSGE','/etc/osg/config.d/20-sge.ini'), 
 				('ConfigSlurm','/etc/osg/config.d/20-slurm.ini'), 
+				('ConfigBosco','/etc/osg/config.d/20-bosco.ini'), 
 				('ConfigCondor','/etc/osg/config.d/20-condor.ini'), 
 				('ConfigGip','/etc/osg/config.d/30-gip.ini'),
 				('ConfigNetwork','/etc/osg/config.d/40-network.ini'),

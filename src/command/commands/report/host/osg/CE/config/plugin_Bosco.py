@@ -31,7 +31,7 @@ class Plugin(rocks.commands.Plugin):
 			if endpoint > 0:
 				addOutput(host, 'sed -i -e "s/endpoint = UNAVAILABLE/endpoint = %s/" %s' % (endpoint,configFile))
 			if batch > 0:
-				if  batch == 'slurm'
+				if  batch == 'slurm':
 					addOutput(host, 'sed -i -e "s@batch = UNAVAILABLE@batch = pbs@" %s' % (configFile))
 				else:
 					addOutput(host, 'sed -i -e "s@batch = UNAVAILABLE@batch = %s@" %s' % (batch,configFile))
@@ -41,7 +41,7 @@ class Plugin(rocks.commands.Plugin):
 				addOutput(host, 'sed -i -e "s@ssh_key = UNAVAILABLE@ssh_key = /etc/osg/bosco.key@" %s' % (configFile))
 			addOutput(host, '#end config %s' % (configFile))
 			addOutput(host, '')
-			if batch == 'slurm'
+			if batch == 'slurm':
 				addOutput(host, '#begin overwrite routes for slurm %s' % (slurmboscoroutes))
 				addOutput(host, 'echo  %s' % (slurmboscoroutes))
 				addOutput(host, '#end overwrite routes for slurm %s' % (slurmboscoroutes))
