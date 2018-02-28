@@ -18,7 +18,10 @@ class Plugin(rocks.commands.Plugin):
 		addOutput(host, '/bin/touch -f %s' % (Fetchcrl))
 		addOutput(host, 'echo "infodir = /etc/grid-security/certificates.osg-ca-certs" &gt;&gt; %s' % (Fetchcrl))
 		if squid>0:
-			addOutput(host, 'echo "http_proxy = http://%s" &gt;&gt; %s' % (squid,Fetchcrl))
+			if ":" in squid:
+				addOutput(host, 'echo "http_proxy = http://%s" &gt;&gt; %s' % (squid,Fetchcrl))
+			else:
+				addOutput(host, 'echo "http_proxy = http://%s:3128" &gt;&gt; %s' % (squid,Fetchcrl))
 		elif proxy>0:
 			addOutput(host, 'echo "http_proxy = %s" &gt;&gt; %s' % (proxy,Fetchcrl))
 
