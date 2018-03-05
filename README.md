@@ -96,3 +96,20 @@ dpm-libs
 lcgdm-libs
 lfc-libs
 ```
+
+RHEL/SL/Centos 6: forge dependencies needed for OSG packages
+-----------------------------------------------------------
+
+List of forge packages needed by OSG packages (in tab) shipped with this roll when compiling:
+
+```shel
+rrdtool
+   perl-rrdtool
+   python-rrdtool
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
+      glideinwms-factory
+      glideinwms-libs
+      glideinwms-vofrontend-standalone
+```
