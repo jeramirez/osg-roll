@@ -3,7 +3,7 @@
 # @Copyright@
 #
 # $Log$
-# Revision 0.1  2018/02/19 05:48:54  eduardo
+# Revision 0.2  2018/11/06 05:48:54  eduardo
 # Initial Version
 #
 
@@ -33,13 +33,18 @@ class Command(rocks.commands.HostArgumentProcessor,
 	Defaults to: /root/lcmapsConfigurator
 	</param>
 
+	<param type='string' name='ConfigLcmaps'>
+	Defaults to: /etc/lcmaps.db
+	</param>
+
 	<param type="bool" name="test">
 	If want to test output set this parameter.
 	Default is no.
 	</param>
 
-	<param type='string' name='ConfigLcmaps'>
-	Defaults to: /etc/lcmaps.db
+	<param type="bool" name="embeded">
+	If want to embed output (strip off file tag) set this parameter.
+	Default is no.
 	</param>
 
 	<example cmd='report host osg lcmaps config compute-0-0 ConfigLcmaps="/etc/lcmaps.db.test"'>
@@ -52,6 +57,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		Configs    = {}
 		#input parameters keys and default values
 		ParmKeys   = [
+				('embeded','n'),
 				('test','n'),
 				('ConfigFile','/root/lcmapsConfigurator'),
 				('ConfigLcmaps','/etc/lcmaps.db')
@@ -63,7 +69,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		nparm=0
 		for ParmKey in ParmKeys:
 			name = ParmKey[0]
-			if name == 'test' or name == 'ConfigFile':
+			if name == 'test' or name == 'ConfigFile' or name == 'embeded':
 				Configs[name]=ParmValues[nparm]
 			else :
 				Configs[name[6:]]=ParmValues[nparm]
@@ -79,16 +85,19 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 		self.beginOutput()
 
+		isembeded = self.str2bool(Configs['embeded'])
 		for host in self.getHostnames(args):
 			if (self.db.getHostAttr(host,'OSG_Client') > 0) or \
 			(self.db.getHostAttr(host,'OSG_GRIDFTP') > 0) or \
 			(self.db.getHostAttr(host,'OSG_GFTP_HDFS') > 0) or \
 			(self.db.getHostAttr(host,'OSG_CE') > 0) or \
 			(self.db.getHostAttr(host,'OSG_SE') > 0):
+				if not isembeded:
 					self.addOutput(host, '<file name="%s" perms="755" >' % (Configs['ConfigFile']))
 					self.addOutput(host, '#!/bin/bash')
 					self.addOutput(host, '')
-					self.runPlugins((host,self.addOutput,Configs))
+				self.runPlugins((host,self.addOutput,Configs))
+				if not isembeded:
 					self.addOutput(host, '</file>')
 
 		self.endOutput(padChar='')
