@@ -65,10 +65,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 	Defaults to: /etc/osg/config.d/10-storage.ini
 	</param>
 
-	<param type='string' name='ConfigManagedFork'>
-	Defaults to: /etc/osg/config.d/15-managedfork.ini
-	</param>
-
 	<param type='string' name='ConfigBosco'>
 	Defaults to: /etc/osg/config.d/20-bosco.ini
 	</param>
@@ -132,14 +128,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 				('ConfigMisc','/etc/osg/config.d/10-misc.ini'),
 				('ConfigGateway','/etc/osg/config.d/10-gateway.ini'),
 				('ConfigStorage','/etc/osg/config.d/10-storage.ini'),
-				('ConfigManagedFork','/etc/osg/config.d/15-managedfork.ini'),
 				('ConfigPBS','/etc/osg/config.d/20-pbs.ini'), 
 				('ConfigSGE','/etc/osg/config.d/20-sge.ini'), 
 				('ConfigSlurm','/etc/osg/config.d/20-slurm.ini'), 
 				('ConfigBosco','/etc/osg/config.d/20-bosco.ini'), 
 				('ConfigCondor','/etc/osg/config.d/20-condor.ini'), 
 				('ConfigGip','/etc/osg/config.d/30-gip.ini'),
-				('ConfigNetwork','/etc/osg/config.d/40-network.ini'),
 				('ConfigSiteInfo','/etc/osg/config.d/40-siteinfo.ini')
 			]
 		#get running values

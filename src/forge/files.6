@@ -3,7 +3,10 @@
 #wget  http://apt.sw.be/redhat/el6/en/x86_64/rpmforge/RPMS/python-rrdtool-1.4.7-1.el5.rf.x86_64.rpm
 #wget  http://apt.sw.be/redhat/el6/en/x86_64/rpmforge/RPMS/perl-rrdtool-1.4.7-1.el5.rf.x86_64.rpm
 #wget  http://apt.sw.be/redhat/el6/en/x86_64/rpmforge/RPMS/rrdtool-1.4.7-1.el5.rf.x86_64.rpm
-rsync -av rsync://repoforge.eecs.wsu.edu/repoforge/redhat/el6/en/x86_64/extras/RPMS/python-rrdtool-1.4.7-1.el6.rfx.x86_64.rpm .
-rsync -av rsync://repoforge.eecs.wsu.edu/repoforge/redhat/el6/en/x86_64/extras/RPMS/perl-rrdtool-1.4.7-1.el6.rfx.x86_64.rpm .
-rsync -av rsync://repoforge.eecs.wsu.edu/repoforge/redhat/el6/en/x86_64/extras/RPMS/rrdtool-1.4.7-1.el6.rfx.x86_64.rpm .
+#rsync -av rsync://repoforge.eecs.wsu.edu/repoforge/redhat/el6/en/x86_64/extras/RPMS/python-rrdtool-1.4.7-1.el6.rfx.x86_64.rpm .
+#rsync -av rsync://repoforge.eecs.wsu.edu/repoforge/redhat/el6/en/x86_64/extras/RPMS/perl-rrdtool-1.4.7-1.el6.rfx.x86_64.rpm .
+#rsync -av rsync://repoforge.eecs.wsu.edu/repoforge/redhat/el6/en/x86_64/extras/RPMS/rrdtool-1.4.7-1.el6.rfx.x86_64.rpm .
+wget -nc https://rpmfind.net/linux/dag/redhat/el6/en/x86_64/extras/RPMS/python-rrdtool-1.4.7-1.el6.rfx.x86_64.rpm
+wget -nc https://rpmfind.net/linux/dag/redhat/el6/en/x86_64/extras/RPMS/perl-rrdtool-1.4.7-1.el6.rfx.x86_64.rpm
+wget -nc https://rpmfind.net/linux/dag/redhat/el6/en/x86_64/extras/RPMS/rrdtool-1.4.7-1.el6.rfx.x86_64.rpm
 touch download.done

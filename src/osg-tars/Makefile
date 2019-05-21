@@ -80,7 +80,6 @@ build::
 install::
 	mkdir -p $(ROOT)/$(PKGROOT)
 	(                                                               \
-		$(INSTALL) -m 0755 osg-client-$(VERSION)-$(RELEASE).el$(VERSION.MAJOR).x86_64.tar.gz $(ROOT)/$(PKGROOT) ;            \
 		$(INSTALL) -m 0755 osg-wn-client-$(VERSION)-$(RELEASE).el$(VERSION.MAJOR).x86_64.tar.gz* $(ROOT)/$(PKGROOT) ;            \
 	)
 

@@ -2,7 +2,7 @@
 # $Id: downloadOSG.py,v 0.0 2012/05/06 05:48:22 eduardo Exp $
 #
 # @Copyright@
-# 
+#
 # $Log: downloadOSG.py,v $
 # Revision 1.23  2012/05/06 05:48:22  eduardo
 # Initial Version
@@ -20,18 +20,18 @@ import rocks.file
 
 
 class Command:
-	"""	
+	"""
 	Download OSG packages from repository located at 'URL'.
 
-	<arg type='string' name='path'> 
+	<arg type='string' name='path'>
 	The network location of the repository of packages.
 	default path is a local mirror of OSG repository for el6
-	http://localhost/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64
+	http://localhost/install/repo.opensciencegrid.org/osg/3.4/el6/release/x86_64
 	</arg>
 
-	<example cmd='downloadOSG.py http://repo.grid.iu.edu/osg/3.3/el6/release/x86_64 >
+	<example cmd='downloadOSG.py http://repo.opensciencegrid.org/osg/3.4/el6/release/x86_64 >
 	Will download all the packages found under the URL
-	http://repo.grid.iu.edu/osg/3.3/el6/release/x86_64 and will create
+	http://repo.opensciencegrid.org/osg/3.4/el6/release/x86_64 and will create
 	dirs 6/x86_64 6/debug 6/noarch 6/i386
 	</example>
 	"""
@@ -39,7 +39,7 @@ class Command:
 	def abort(self, msg):
 		rocks.commands.Abort(msg, 0)
 		sys.exit(-1)
- 
+
 	def mirror(self, mirror_path):
 		cmd = 'wget -erobots=off --reject "anaconda*rpm" -m -nv -np %s' % (mirror_path)
 		os.system(cmd)
@@ -105,10 +105,10 @@ class Command:
 			print 'running args=%s' % args
 			self.abort('must supply one path')
 		mirror_path = args[0]
-		
+
 
 		self.clean()
-		
+
 		self.mirror(mirror_path)
 
 		list = []
@@ -134,7 +134,7 @@ class Command:
 
 #check if arguments are empty, set a default
 if len(sys.argv) == 1:
-        args = [ 'http://localhost/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64'] 
+        args = [ 'http://localhost/install/repo.opensciencegrid.org/osg/3.4/el6/release/x86_64'] 
 else:
         args = sys.argv[1:]
 

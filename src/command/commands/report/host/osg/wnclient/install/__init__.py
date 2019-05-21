@@ -88,7 +88,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, 'yum install perl-ExtUtils-Embed  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, 'yum install zsh  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, 'yum install osg-ca-certs  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
-				self.addOutput(self.host, 'yum install osg-wn-client-glexec  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum install osg-wn-client  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
 				self.addOutput(self.host, '[ ! -d /etc/grid-security/certificates.osg-ca-certs ]&amp;&amp;mv /etc/grid-security/certificates /etc/grid-security/certificates.osg-ca-certs')

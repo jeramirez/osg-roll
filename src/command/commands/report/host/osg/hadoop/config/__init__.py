@@ -191,6 +191,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dictlines['A026_LINE']='HADOOP_UPDATE_FSTAB'
 		self.dictcomment['HADOOP_UPDATE_FSTAB']="# Set this to '1' to automatically update fstab with an entry for \n# the hadoop fuse mount on /mnt/hadoop.  If you prefer to add this manually,\n# then you will need to add the following to fstab, replacing 'namenode.host'\n# with the fqdn of your namenode.\n# hadoop-fuse-dfs# /mnt/hadoop fuse server=namenode.host,port=9000,rdbuffer=131072,allow_other 0 0"
 		self.dict['HADOOP_UPDATE_FSTAB']='0'
+		self.dictlines['A027_LINE']='HADOOP_NAMENODE_NAME_DIR'
+		self.dictcomment['HADOOP_NAMENODE_NAME_DIR']="# Comma-separated list of directories that will be used for storing namenode\n# image.  At least one of these should be on nfs."
+		self.dict['HADOOP_NAMENODE_NAME_DIR']='@HADOOP_NAMENODE_NAME_DIR@'
 
 
 	def fillFromRollDefault(self):
@@ -204,6 +207,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dict['HADOOP_CHECKPOINT_PERIOD']= '600'
 		self.dict['HADOOP_UMASK']= '022'
 		self.dict['HADOOP_UPDATE_FSTAB']= '0'
+		self.dict['HADOOP_NAMENODE_NAME_DIR']= 'file:///hadoop/dfs/name,file:///home/hadoop'
 
 	def fillFromRocksAttributes(self):
 		if self.db.getHostAttr(self.host,'OSG_HadoopNameNode') > 0:
@@ -237,6 +241,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 		if self.db.getHostAttr(self.host,'OSG_HadoopCheckPointPeriod') > 0:
 			self.dict['HADOOP_CHECKPOINT_PERIOD']="%s" % \
 				(self.db.getHostAttr(self.host, 'OSG_HadoopCheckPointPeriod'))
+
+		if self.db.getHostAttr(self.host,'OSG_HadoopNamenodeNameDir') > 0:
+			self.dict['HADOOP_NAMENODE_NAME_DIR']="%s" % \
+				(self.db.getHostAttr(self.host, 'OSG_HadoopNamenodeNameDir'))
 
 		if self.db.getHostAttr(self.host,'OSG_HadoopUpdateFstab') > 0:
 			self.dict['HADOOP_UPDATE_FSTAB']= "%s" % \
