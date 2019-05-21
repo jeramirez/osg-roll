@@ -1,0 +1,65 @@
+#Steps to locally download osg rpms from a repository.
+#in this case we have a local repository server to speed up.
+#
+./downloadOSG.py 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/release/x86_64'
+./downloadOSG.py 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/contrib/x86_64'
+#wget http://ftp1.scientificlinux.org/linux/scientific/6/x86_64/os/Packages/python-argparse-1.2.1-2.1.el6.noarch.rpm
+#mv python-argparse-1.2.1-2.1.el6.noarch.rpm 6/noarch/.
+wget -nc -P 6/noarch 'http://cms-hn/install/cms-hn.hep.uprm.edu/install/scientific/6.5/x86_64/updates/security/python-argparse-1.2.1-2.1.el6.noarch.rpm'
+
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-mapreduce-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-libhdfs-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-zkfc-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-secondarynamenode-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-namenode-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-journalnode-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+##wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-fuse-selinux-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-fuse-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-datanode-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-hdfs-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-doc-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm
+#/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-conf-pseudo-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm
+#/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-0.20-mapreduce-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm
+#/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-yarn-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm
+#/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-httpfs-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-client-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+#/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-0.20-conf-pseudo-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/hadoop-libhdfs-2.0.0+1612-1.cdh4.7.1.p0.12.7.osg33.el6.x86_64.rpm'
+
+#wget -nc -P 6/noarch 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/zookeeper-3.4.3+15-1.cdh4.0.1.p0.4.osg33.el6.noarch.rpm'
+#wget -nc -P 6/noarch 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/bigtop-utils-0.6.0+248-1.cdh4.7.1.p0.13.1.osg33.el6.noarch.rpm'
+#wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/bigtop-jsvc-0.3.0-1.1.osg33.el6.x86_64.rpm'
+
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-se-hadoop-srm-3.3-3.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-se-hadoop-secondarynamenode-3.3-3.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-se-hadoop-namenode-3.3-3.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-se-hadoop-gridftp-3.3-3.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-se-hadoop-datanode-3.3-3.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-se-hadoop-client-3.3-3.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-se-hadoop-3.3-3.osg33.el6.x86_64.rpm
+
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/osg-gridftp-hdfs-3.3-4.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/gridftp-hdfs-0.5.4-25.5.osg33.el6.x86_64.rpm
+wget -nc -P 6/x86_64 http://cms-hn/install/repo.grid.iu.edu/osg/3.3/el6/release/x86_64/xrootd-hdfs-1.8.8-1.osg33.el6.x86_64.rpm
+
+#new osgup
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-mapreduce-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-libhdfs-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-hdfs-zkfc-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-hdfs-secondarynamenode-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-hdfs-namenode-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-hdfs-journalnode-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-hdfs-fuse-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-hdfs-datanode-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-hdfs-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-client-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/hadoop-2.6.0+cdh5.12.1+2540-1.cdh5.12.1.p0.3.8.osgup.el6.x86_64.rpm'
+
+
+wget -nc -P 6/noarch 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/zookeeper-3.4.5+cdh5.14.2+142-1.cdh5.14.2.p0.11.1.osgup.el6.x86_64.rpm'
+wget -nc -P 6/noarch 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/bigtop-utils-0.7.0+cdh5.13.0+0-1.cdh5.13.0.p0.34.1.osgup.el6.noarch.rpm'
+wget -nc -P 6/x86_64 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/bigtop-jsvc-0.3.0-1.2.osgup.el6.x86_64.rpm'
+
+wget -nc -P 6/noarch 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/avro-libs-1.7.6+cdh5.13.0+135-1.cdh5.13.0.p0.34.2.osgup.el6.noarch.rpm'
+wget -nc -P 6/noarch 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/upcoming/release/x86_64/avro-tools-1.7.6+cdh5.13.0+135-1.cdh5.13.0.p0.34.2.osgup.el6.noarch.rpm'
