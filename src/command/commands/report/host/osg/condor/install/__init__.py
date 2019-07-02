@@ -45,7 +45,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_condorgid; condor')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_condoruid; -g &OSG_condorgid; -c "Owner of Condor Daemons" -s /bin/nologin -d /var/lib/condor condor')
 				self.addOutput(self.host, 'touch /var/log/condor-install.log')
-				self.addOutput(self.host, 'yum install condor  &gt;&gt; /var/log/condor-install.log 2&gt;&amp;1')
+				self.addOutput(self.host, 'yum -y install condor  &gt;&gt; /var/log/condor-install.log 2&gt;&amp;1')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure ownership is fine')
 				self.addOutput(self.host, '/bin/chown -R condor:condor /var/log/condor')
