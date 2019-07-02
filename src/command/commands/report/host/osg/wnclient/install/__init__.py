@@ -54,6 +54,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 			shareddir  = self.db.getHostAttr(host,'OSG_CE_Mount_ShareDir')
 			startGID   = self.db.getHostAttr(host,'OSG_wn_StartGIDGlexecGroup')
 			nGID       = self.db.getHostAttr(host,'OSG_wn_numberGIDsGlexec')
+			rocks_ver  = self.db.getHostAttr(host,'rocks_version_major')
 
 			if not startGID > 0:
 				startGID = '65000'
@@ -64,7 +65,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.FixGid('&OSG_glexecgid;','glexec')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_gratiagid; gratia')
-				self.FixGid('&OSG_glexecgid;','gratia')
+				self.FixGid('&OSG_gratiagid;','gratia')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_glexecuid; -g &OSG_glexecgid; -c "gLExec user account" -s /sbin/nologin -d /etc/glexec glexec')
 				self.FixUid('&OSG_glexecuid;','glexec')
@@ -84,11 +85,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 					gid += 1
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch %s' % loginstall )
-				self.addOutput(self.host, 'yum install compat-readline5  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
-				self.addOutput(self.host, 'yum install perl-ExtUtils-Embed  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
-				self.addOutput(self.host, 'yum install zsh  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
-				self.addOutput(self.host, 'yum install osg-ca-certs  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
-				self.addOutput(self.host, 'yum install osg-wn-client  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				if rocks_ver == "6":
+					self.addOutput(self.host, 'yum -y install compat-readline5  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum -y install perl-ExtUtils-Embed  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum -y install zsh  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum -y install osg-ca-certs  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
+				self.addOutput(self.host, 'yum -y install osg-wn-client  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#Make sure config templates exists')
 				self.addOutput(self.host, '[ ! -d /etc/grid-security/certificates.osg-ca-certs ]&amp;&amp;mv /etc/grid-security/certificates /etc/grid-security/certificates.osg-ca-certs')
