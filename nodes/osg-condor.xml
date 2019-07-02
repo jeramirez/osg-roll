@@ -24,8 +24,8 @@
 	<package>yum-priorities</package>
 	<package>yum-cron</package>
 	<package>compat-libstdc++-33</package>
-	<package>automake16</package>
-	<package>automake16</package>
+	<package cond="rocks_version_major == 6">automake16</package>
+	<package cond="rocks_version_major == 7">automake</package>
 	<package>perl-DateManip</package>
 	<package>perl-XML-Simple</package>
 	<package>condor</package>

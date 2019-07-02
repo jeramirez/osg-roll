@@ -54,8 +54,11 @@ echo "JAVA_EXTRA_ARGUMENTS = -Xmx${localmem}m" &gt;&gt; /etc/condor/config.d/02_
 /bin/rm /tmp/poolpassword
 </post>
 
-<post cond="OSG_Condor_Start">
-chkconfig condor on
+<post cond="(rocks_version_major == 6 and OSG_Condor_StartDaemon)">
+/sbin/chkconfig condor on
+</post>
+<post cond="(rocks_version_major == 7 and OSG_Condor_StartDaemon)">
+systemctl enable condor
 </post>
 
 </kickstart> 
