@@ -88,11 +88,14 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.beginOutput()
 
                 for host in self.getHostnames(args):
-			self.host = host
-			self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_fusegid; fuse')
-			self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_cvmfsgid; cvmfs')
-			self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs')
-			self.addOutput(self.host, 'yum install osg-oasis')
+			self.host  = host
+			loginstall = '/var/log/cvmfs-install.log'
+			osg_cvmfs  = self.db.getHostAttr(host,'OSG_CVMFS')
+			if osg_cvmfs:
+				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_fusegid; fuse')
+				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_cvmfsgid; cvmfs')
+				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_cvmfsuid; -g &OSG_cvmfsgid; -c "CernVM-FS service account" -s /sbin/nologin -d /var/cache/cvmfs2 cvmfs')
+				self.addOutput(self.host, 'yum -y install osg-oasis  &gt;&gt; %s 2&gt;&amp;1' % loginstall)
 
 		self.endOutput(padChar='')
 

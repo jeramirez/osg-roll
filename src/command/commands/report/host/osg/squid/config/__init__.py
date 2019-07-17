@@ -196,9 +196,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 
                 for host in self.getHostnames(args):
 			self.host = host
-			self.fillFromRollDefault()
-			self.fillFromRocksAttributes()
-			self.writeConfigFile(self.dict, self.dictlines, self.ConfigFile)
+			osg_squid = self.db.getHostAttr(host,'OSG_SQUID')
+			is_ce     = self.db.getHostAttr(host,'OSG_CE') > 0
+			if osg_squid or is_ce:
+				self.fillFromRollDefault()
+				self.fillFromRocksAttributes()
+				self.writeConfigFile(self.dict, self.dictlines, self.ConfigFile)
 
 		self.endOutput(padChar='')
 
