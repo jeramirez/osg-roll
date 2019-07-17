@@ -27,7 +27,10 @@ class Plugin(rocks.commands.Plugin):
 		longitude = self.db.getHostAttr(host,'OSG_CE_siteinfo_longitude')
 		latitude  = self.db.getHostAttr(host,'OSG_CE_siteinfo_latitude')
 		latlong   = self.db.getHostAttr(host,'Info_ClusterLatlong')
-		latitude2,longitude2 = latlong.split(' ',1)
+		latitude2 = 0
+		longitude2= 0
+		if latlong is not None:
+			latitude2,longitude2 = latlong.split(' ',1)
 
 		addOutput(host, '#begin config %s' % (configFile))
 		addOutput(host, '/bin/cp -f /etc/osg/config.d/40-siteinfo.ini.template %s' % (configFile))
