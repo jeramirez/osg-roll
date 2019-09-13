@@ -45,7 +45,7 @@
 		<size>40</size>
 		<default>rocks-se.public.domain</default>
 		<value>&OSG_SEServer;</value>
-		<help>This is the default public name of bestman server</help>
+		<help>This is the default public name of xrootd server</help>
 	</variable>
 	<variable>
 		<label>OSG Private SE Server Name</label>
@@ -54,7 +54,7 @@
 		<size>20</size>
 		<default>login-0-1</default>
 		<value>&OSGSEPrivate;</value>
-		<help>This is the default private name of bestman server</help>
+		<help>This is the default private name of xrootd server</help>
 	</variable>
 	<variable>
 		<label>OSG Public GUMS Server Name</label>

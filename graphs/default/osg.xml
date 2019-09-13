@@ -8,6 +8,7 @@
 	</description>
 
 	<copyright>
+	Copyright (c) 2012 - 2019 J. E. Ramirez
 	Copyright (c) 2000 - 2012 The Regents of the University of California.
 	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
 	
@@ -59,11 +60,9 @@
 
 	<!-- make sure yum conf is set -->
 	<order head="yum">
-		<tail>osg-gums</tail>
 		<tail>osg-condor</tail>
 		<tail>osg-wnclient-glexec</tail>
 		<tail>osg-hadoop-pre</tail>
-		<tail>osg-bestman-server</tail>
 		<tail>osg-xrootd-server</tail>
 		<tail>osg-frontier-squid</tail>
 		<tail>osg-cvmfs</tail>
@@ -75,7 +74,6 @@
 	</order>
 
 	<order head="client">
-		<tail>osg-bestman-server</tail>
 		<tail>osg-xrootd-server</tail>
 	</order>
 
@@ -98,15 +96,13 @@
 	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-client" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="client" to="osg-hadoop-pre" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
-	<edge from="client" to="osg-bestman-server" arch="i386,x86_64" cond="OSG_SE"/>
-	<edge from="client" to="osg-xrootd-server" arch="i386,x86_64" cond="OSG_XRD"/>
+	<edge from="client" to="osg-xrootd-server" arch="i386,x86_64" cond="(OSG_XRD or OSG_SE)"/>
 	<edge from="osg-hadoop-pre" to="osg-hadoop" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="osg-hadoop" to="osg-hadoop-gridftp" arch="i386,x86_64" cond="OSG_GFTP_HDFS"/>
 	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
 	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-rsv" arch="i386,x86_64" cond="OSG_RSV"/>
-	<edge from="client" to="osg-gums" arch="i386,x86_64" cond="OSG_GUMS"/>
 	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="OSG_SQUID"/>
 	<edge from="client" to="osg-cvmfs" arch="i386,x86_64" cond="OSG_CVMFS"/>
 	<edge from="client" to="osg-ktune-conf" arch="i386,x86_64"/>
