@@ -378,58 +378,6 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-xrootd
 </file>
 
 
-<!-- glexec config related post install -->
-#for i in {0..49}; do if [ $i -lt 10 ]; then /usr/sbin/groupadd -g 6500$i glexec0$i; else /usr/sbin/groupadd -g 650$i glexec$i; fi; done
-<file name="/tmp/CreateGlexecGroups" perms="0755">
-#!/usr/bin/perl
-
-use strict;
-
-#
-# Definitions. Change for your site
-#
-my $start      = 0;
-my $end        = 49;
-my $startGID   = 65000;
-
-#
-# Generate the new group entries
-#
-my $gid = $startGID;
-for my $index ($start...$end) {
-  my $newAccount = sprintf("glexec%2.2d", $index);
-  system("/usr/sbin/groupadd -g ${gid} ${newAccount}");
-  $gid++;
-}
-exit;
-</file>
-
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-glexec" perms="0755">
-#!/bin/sh
-
-OSG_glexecgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_glexecgid`
-OSG_glexecuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_glexecuid`
-
-### Create the glexec User
-#glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
-
-#groups are completely exported! even in 5.5 (not filtered)
-/usr/sbin/groupadd -g ${OSG_glexecgid} glexec
-
-### This users are for backward compatibility (&lt; rocks5.5)
-if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/useradd -u ${OSG_glexecuid} -g ${OSG_glexecgid} -c "gLExec user account" -s /sbin/nologin glexec
-
-#end backward compatibility ( &lt;rocks 5.5)
-fi
-
-/tmp/CreateGlexecGroups
-rm -f /tmp/CreateGlexecGroups
-
-cp /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec /root/post-90-osg-server-glexec.script_runned
-rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec
-</file>
-
 <!-- rsv config related post install -->
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-rsv" perms="0755">
 #!/bin/sh

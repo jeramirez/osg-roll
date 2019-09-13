@@ -3,6 +3,8 @@
 # @Copyright@
 # 
 # $Log$
+# Revision 0.20  2019/06/04 05:48:54  eduardo
+#   remove creation of glexec user 
 # Revision 0.10  2012/10/26 05:48:54  eduardo
 # Creation
 #
@@ -52,23 +54,13 @@ class Command(rocks.commands.HostArgumentProcessor,
 			loginstall = '/var/log/wnclient-install.log'
 			osg_client = self.db.getHostAttr(host,'OSG_Client')
 			shareddir  = self.db.getHostAttr(host,'OSG_CE_Mount_ShareDir')
-			startGID   = self.db.getHostAttr(host,'OSG_wn_StartGIDGlexecGroup')
-			nGID       = self.db.getHostAttr(host,'OSG_wn_numberGIDsGlexec')
 			rocks_ver  = self.db.getHostAttr(host,'rocks_version_major')
 
-			if not startGID > 0:
-				startGID = '65000'
-			if not nGID > 0:
-				nGID = '50'
 			if osg_client > 0 and osg_client == 'true':
-				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_glexecgid; glexec')
-				self.FixGid('&OSG_glexecgid;','glexec')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_gratiagid; gratia')
 				self.FixGid('&OSG_gratiagid;','gratia')
 				self.addOutput(self.host, '')
-				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_glexecuid; -g &OSG_glexecgid; -c "gLExec user account" -s /sbin/nologin -d /etc/glexec glexec')
-				self.FixUid('&OSG_glexecuid;','glexec')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_gratiauid; -g &OSG_gratiagid; -c "gratia runtime user" -s /sbin/nologin -d /etc/gratia gratia')
 				self.FixUid('&OSG_gratiauid;','gratia')
@@ -78,11 +70,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.FixGid('&OSG_condorgid;','condor')
 				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_condoruid; -g &OSG_condorgid; -c "Condor Daemon Account" -s /bin/nologin -d /var/lib/condor condor')
 				self.FixUid('&OSG_condoruid;','condor')
-				self.addOutput(self.host, '')
-				gid = int(startGID)
-				for gindex in range(0,int(nGID)):
-					self.addOutput(self.host, '/usr/sbin/groupadd -g %s glexec%2.2d' % (gid,gindex))
-					gid += 1
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch %s' % loginstall )
 				if rocks_ver == "6":

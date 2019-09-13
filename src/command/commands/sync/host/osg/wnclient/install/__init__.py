@@ -35,7 +35,7 @@ class Command(rocks.commands.sync.host.command):
 
 
 	<example cmd='sync host osg wnclient install compute-0-0'>
-	add glexec, gratia, condor, users and install osg-wnclient-glexec
+	add gratia, condor, users and install osg-wnclient
         on host compute-0-0 if attr OSG_Client is set to true in this host.
 	</example>
 
