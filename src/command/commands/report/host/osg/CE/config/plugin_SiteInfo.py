@@ -14,6 +14,10 @@ class Plugin(rocks.commands.Plugin):
                 host, addOutput, configs = argv 
 		configFile               = configs['SiteInfo']
 
+		rocks_ver = self.db.getHostAttr(host,'rocks_version_major')
+		clulatlong= 'Info_ClusterLatlong'
+		if rocks_ver == "7":
+			clulatlong   = 'Info_ClusterLatLong'
 		CEserv    = self.db.getHostAttr(host,'OSG_CEServer')
 		group     = self.db.getHostAttr(host,'OSG_CE_siteinfo_group')
 		OIM_name  = self.db.getHostAttr(host,'OSG_CE_siteinfo_OIM_name')
@@ -26,7 +30,7 @@ class Plugin(rocks.commands.Plugin):
 		country   = self.db.getHostAttr(host,'OSG_CE_siteinfo_country')
 		longitude = self.db.getHostAttr(host,'OSG_CE_siteinfo_longitude')
 		latitude  = self.db.getHostAttr(host,'OSG_CE_siteinfo_latitude')
-		latlong   = self.db.getHostAttr(host,'Info_ClusterLatlong')
+		latlong   = self.db.getHostAttr(host,clulatlong)
 		latitude2 = 0
 		longitude2= 0
 		if latlong is not None:
@@ -101,7 +105,7 @@ class Plugin(rocks.commands.Plugin):
 			addOutput(host, 'sed -i -e "s@longitude = UNAVAILABLE@longitude = %s@" %s' % (longitude,configFile))
 		else:
 			addOutput(host, '#attr OSG_CE_siteinfo_longitude not defined for CE server')
-			addOutput(host, '#### USING attr "Info_ClusterLatlong" to retrive longitude in %s' % (configFile))
+			addOutput(host, '#### USING attr "%s" to retrive longitude in %s' % (clulatlong,configFile))
 			if longitude2 > 0:
 				lon2 = longitude2.replace('E','')
 				lon2 = lon2.replace('e','')
@@ -109,12 +113,12 @@ class Plugin(rocks.commands.Plugin):
 				lon2 = lon2.replace('W','-')
 				addOutput(host, 'sed -i -e "s@longitude = UNAVAILABLE@longitude = %s@" %s' % (lon2,configFile))
 			else:
-				addOutput(host, '####### attr "Info_ClusterLatlong" not defined!!!!')
+				addOutput(host, '####### attr "%s" not defined!!!!' % (clulatlong))
 		if latitude > 0:
 			addOutput(host, 'sed -i -e "s@latitude = UNAVAILABLE@latitude = %s@" %s' % (latitude,configFile))
 		else:
 			addOutput(host, '#attr OSG_CE_siteinfo_latitude not defined for CE server')
-			addOutput(host, '#### USING attr "Info_ClusterLatlong" to retrive latitude in %s' % (configFile))
+			addOutput(host, '#### USING attr "%s" to retrive latitude in %s' % (clulatlong,configFile))
 			if latitude2 > 0:
 				lat2 = latitude2.replace('N','')
 				lat2 = lat2.replace('n','')
@@ -122,7 +126,7 @@ class Plugin(rocks.commands.Plugin):
 				lat2 = lat2.replace('S','-')
 				addOutput(host, 'sed -i -e "s@latitude = UNAVAILABLE@latitude = %s@" %s' % (lat2,configFile))
 			else:
-				addOutput(host, '####### attr "Info_ClusterLatlong" not well defined!!!!')
+				addOutput(host, '####### attr "%s" not well defined!!!!' % (clulatlong))
 
 		addOutput(host, '#end config %s' % (configFile))
 		addOutput(host, '')
