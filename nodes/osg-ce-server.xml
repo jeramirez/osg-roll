@@ -24,7 +24,6 @@
 <package>yum-cron</package>
 <package>perl-libwww-perl</package>
 <package>perl-URI</package>
-<package>hostproxy</package>
 
 
 <post>
@@ -140,13 +139,6 @@ sed -i -e "s@port_range = UNAVAILABLE@port_range = &OSG_GlobusTcpPortRange;@" /e
 sed -i -e "s@port_state_file = UNAVAILABLE@port_state_file = /var/tmp/globus-port-state.log@" /etc/osg/config.d/40-network.ini
 
 -->
-
- <!-- configure hostproxy to serve certificates on worker nodes -->
-<file name="/opt/hostproxy/host_dist.nodes" mode="append" >
-<eval>
-/opt/rocks/bin/rocks report host attr attr=OSG_Client | grep true | sed s/:\ true/.local/g
-</eval>
-</file>
 
 
 
