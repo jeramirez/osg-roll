@@ -1,2 +1,3 @@
 NAME = rocks-secattr-plugins-osg
-RELEASE = 5
+RELEASE = 1
+RPM.FILES = /opt/rocks/var/plugins/sec_attr
