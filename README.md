@@ -8,13 +8,13 @@ Download and Compile Roll
 git clone https://github.com/jeramirez/osg-roll.git
 cd osg-roll
 cd src/osg
-./downloadOSG.py http://repo.opensciencegrid.org/osg/3.4/el6/release/x86_64
-./downloadOSG.py http://repo.opensciencegrid.org/osg/3.4/el6/contrib/x86_64
+./downloadOSG.py http://repo.opensciencegrid.org/osg/3.4/el7/release/x86_64
+./downloadOSG.py http://repo.opensciencegrid.org/osg/3.4/el7/contrib/x86_64
 cd ../..
 make roll
 ```
 
-RHEL/SL/Centos 6: epel dependencies needed for OSG packages
+RHEL/SL/Centos 7: epel dependencies needed for OSG packages
 -----------------------------------------------------------
 
 List of epel packages needed by OSG packages (in tab) shipped with this roll:
@@ -31,12 +31,10 @@ bouncycastle
 
 jakarta-commons-cli
    vomsjapi
-   gums
    voms-api-java
 python-ssl
    osg-pki-tools
 mysql-connector-java
-   gums
 gsoap
    CGSI-gSOAP-devel
    CGSI-gSOAP-devel
@@ -48,7 +46,6 @@ gsoap
    glite-data-delegation-api-c
    voms-server
    xacml
-is-interface
 perl-XML-DOM
 jakarta-commons-io
 iperf
@@ -59,14 +56,11 @@ fetch-crl/fetch-crl3
    dcache-gratia-probe
    gratia-reporting-web
    gratia-service
-   osg-gums
    osg-wn-client
    voms-admin-server
    osg-gridftp
    osg-gridftp-hdfs
    osg-gridftp-xrootd
-   osg-se-bestman
-   osg-se-bestman-xrootd
 gridsite-libs
    glite-data-util-c
    glite-fts-client
@@ -89,27 +83,12 @@ canl-c
    gridsite-libs
 pugixml
    gfal2-plugin-srm
-lcg-util
 gfal
 dcap-libs
 dpm-libs
 lcgdm-libs
 lfc-libs
+libmacaroons
+log4cpp
 ```
 
-RHEL/SL/Centos 6: forge dependencies needed for OSG packages
------------------------------------------------------------
-
-List of forge packages needed by OSG packages (in tab) shipped with this roll when compiling:
-
-```shel
-rrdtool
-   perl-rrdtool
-   python-rrdtool
-      glideinwms-factory
-      glideinwms-libs
-      glideinwms-vofrontend-standalone
-      glideinwms-factory
-      glideinwms-libs
-      glideinwms-vofrontend-standalone
-```
