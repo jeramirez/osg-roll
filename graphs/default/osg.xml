@@ -103,7 +103,7 @@
 	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
 	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-rsv" arch="i386,x86_64" cond="OSG_RSV"/>
-	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="OSG_SQUID"/>
+	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" /> <!-- cond = OSG_SQUID or OSG_CE gt 0 -->
 	<edge from="client" to="osg-cvmfs" arch="i386,x86_64" cond="OSG_CVMFS"/>
 	<edge from="client" to="osg-ktune-conf" arch="i386,x86_64"/>
 	<edge from="server" to="osg-ktune-conf" arch="i386,x86_64"/>
