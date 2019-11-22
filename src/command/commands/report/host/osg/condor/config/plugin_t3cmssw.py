@@ -39,7 +39,7 @@ class Plugin(rocks.commands.Plugin):
 					kvstore['WANT_SUSPEND']   = 'True'
 					kvstore['SUSPEND']        = '( $(MachineBusy) &amp;&amp; $(ActivityTimer) &gt; (2 * $(MINUTE)) )'
 					#continue job after a minute of Keyboard inactivity and Idle CPU
-					kvstore['CONTINUE']       = '$(CPUIdle) &amp;&amp; KeyboardIdle &gt; (1 * $(MINUTE)) )'
+					kvstore['CONTINUE']       = '( $(CPUIdle) &amp;&amp; KeyboardIdle &gt; (1 * $(MINUTE)) )'
 					#kill job after 20 minutes of activity detected
 					kvstore['KILL']           = '( $(MachineBusy) &amp;&amp; $(ActivityTimer) &gt; (20 * $(MINUTE)) )'
 
