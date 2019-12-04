@@ -38,7 +38,7 @@
 
  <!-- install osg-gridftp-hdfs from local mirror-->
 touch /root/hadoop-gftp-install.log
-yum install osg-gridftp-hdfs  &gt;&gt; /root/hadoop-gftp-install.log 2&gt;&amp;1
+yum -y install osg-gridftp-hdfs  &gt;&gt; /root/hadoop-gftp-install.log 2&gt;&amp;1
 
  <!-- customize firewall rules for osg-gridftp-server  -->
 <eval mode="xml">

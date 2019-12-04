@@ -36,15 +36,15 @@ OSGXRDLOCALREDIRECTOR="cms-xrd-transit.cern.ch+"
 ### Set Default Private names
 OSGCEPrivate="login-0-0"
 #if roll was installed at kickstart OSGCEPrivate should exist need for auto.osg
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGCEPrivate`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSGCEPrivate`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSGCEPrivate value=$OSGCEPrivate
 fi
 OSGSEPrivate="login-0-1"
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGSEPrivate`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSGSEPrivate`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSGSEPrivate value=$OSGSEPrivate
 fi
 OSGGUMSPrivate="login-0-2"
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSGGumsPrivate`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSGGumsPrivate`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSGGumsPrivate value=$OSGGUMSPrivate
 fi
 OSGGridftpPrivate="login-0-0"
@@ -72,17 +72,17 @@ OSGGUMSDNADMIN="/DC=org/DC=doegrids/OU=People/CN=Name M LastName 123456"
 
 ###Servers
 #if roll was installed at kickstart OSG_GumsServer should exist 
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_GumsServer`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSG_GumsServer`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSG_GumsServer value=$OSGgums
 fi
 #if roll was installed at kickstart OSG_CEServer should exist 
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_CEServer`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSG_CEServer`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSG_CEServer value=$OSGCE
 else
 OSGCE="&OSG_CEServer;"
 fi
 #if roll was installed at kickstart OSG_SEServer should exist 
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_SEServer`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSG_SEServer`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSG_SEServer value=$OSGSE
 else
 OSGSE="&OSG_SEServer;"
@@ -93,11 +93,11 @@ fi
 /opt/rocks/bin/rocks add attr OSG_XROOTD_LOCAL_REDIRECTOR value=$OSGXRDLOCALREDIRECTOR
 
 #if roll was installed at kickstart OSG_HadoopNameNode should exist 
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_HadoopNameNode`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSG_HadoopNameNode`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSG_HadoopNameNode value=$OSGhadoopNN
 fi
 #if roll was installed at kickstart OSG_HadoopSecondaryNode should exist
-if [ "x`/opt/rocks/bin/rocks report host attr frontend attr=OSG_HadoopSecondaryNode`" == "x" ]; then
+if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSG_HadoopSecondaryNode`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSG_HadoopSecondaryNode value=$OSGhadoopSN
 fi
 /opt/rocks/bin/rocks add attr OSG_HadoopDataDir value=$OSGhadoopDataDir
@@ -208,11 +208,11 @@ CMaster=&Kickstart_PublicHostname;
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-frontiersquid" perms="0755">
 #!/bin/sh
 
-OSG_squiduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_squiduid`
-OSG_squidgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_squidgid`
-OSG_cvmfsuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cvmfsuid`
-OSG_cvmfsgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cvmfsgid`
-OSG_fusegid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_fusegid`
+OSG_squiduid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_squiduid`
+OSG_squidgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_squidgid`
+OSG_cvmfsuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_cvmfsuid`
+OSG_cvmfsgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_cvmfsgid`
+OSG_fusegid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_fusegid`
 
 ### Create the squid user
 #squid:x:450:450:squid management user:/home/squid:/sbin/nologin
@@ -308,10 +308,10 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-hadoop
 ### Create the gratia User
 #gratia:x:464:464:gratia runtime user:/etc/gratia:/sbin/nologin
 
-OSG_tomcatgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_tomcatgid`
-OSG_tomcatuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_tomcatuid`
-OSG_gratiagid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_gratiagid`
-OSG_gratiauid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_gratiauid`
+OSG_tomcatgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_tomcatgid`
+OSG_tomcatuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_tomcatuid`
+OSG_gratiagid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_gratiagid`
+OSG_gratiauid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_gratiauid`
 
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_tomcatgid} tomcat
@@ -337,8 +337,8 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-gridce
 ### Create the Bestman User
 #bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
 
-OSG_bestmangid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_bestmangid`
-OSG_bestmanuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_bestmanuid`
+OSG_bestmangid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_bestmangid`
+OSG_bestmanuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_bestmanuid`
 
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_bestmangid} bestman
@@ -361,8 +361,8 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-bestman
 ### Create the xrootd User
 #xrootd:x:460:412:XRootD runtime user:/var/spool/xrootd:/sbin/nologin
 
-OSG_xrootdgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_xrootdgid`
-OSG_xrootduid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_xrootduid`
+OSG_xrootdgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_xrootdgid`
+OSG_xrootduid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_xrootduid`
 
 #groups are completely exported! even in 5.5 (not filtered)
 /usr/sbin/groupadd -g ${OSG_xrootdgid} xrootd
@@ -378,66 +378,14 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-xrootd
 </file>
 
 
-<!-- glexec config related post install -->
-#for i in {0..49}; do if [ $i -lt 10 ]; then /usr/sbin/groupadd -g 6500$i glexec0$i; else /usr/sbin/groupadd -g 650$i glexec$i; fi; done
-<file name="/tmp/CreateGlexecGroups" perms="0755">
-#!/usr/bin/perl
-
-use strict;
-
-#
-# Definitions. Change for your site
-#
-my $start      = 0;
-my $end        = 49;
-my $startGID   = 65000;
-
-#
-# Generate the new group entries
-#
-my $gid = $startGID;
-for my $index ($start...$end) {
-  my $newAccount = sprintf("glexec%2.2d", $index);
-  system("/usr/sbin/groupadd -g ${gid} ${newAccount}");
-  $gid++;
-}
-exit;
-</file>
-
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-glexec" perms="0755">
-#!/bin/sh
-
-OSG_glexecgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_glexecgid`
-OSG_glexecuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_glexecuid`
-
-### Create the glexec User
-#glexec:x:463:463:glexec pilot user:/home/glexec:/bin/bash
-
-#groups are completely exported! even in 5.5 (not filtered)
-/usr/sbin/groupadd -g ${OSG_glexecgid} glexec
-
-### This users are for backward compatibility (&lt; rocks5.5)
-if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/useradd -u ${OSG_glexecuid} -g ${OSG_glexecgid} -c "gLExec user account" -s /sbin/nologin glexec
-
-#end backward compatibility ( &lt;rocks 5.5)
-fi
-
-/tmp/CreateGlexecGroups
-rm -f /tmp/CreateGlexecGroups
-
-cp /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec /root/post-90-osg-server-glexec.script_runned
-rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-glexec
-</file>
-
 <!-- rsv config related post install -->
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-rsv" perms="0755">
 #!/bin/sh
 
-OSG_rsvgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_rsvgid`
-OSG_rsvuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_rsvuid`
-OSG_cndrcrongid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cndrcrongid`
-OSG_cndrcronuid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_cndrcronuid`
+OSG_rsvgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_rsvgid`
+OSG_rsvuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_rsvuid`
+OSG_cndrcrongid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_cndrcrongid`
+OSG_cndrcronuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_cndrcronuid`
 
 ### Create the rsv,cndrcron Users
 #rsv:x:5452:5452:RSV monitoring:/var/rsv:/bin/sh
@@ -481,9 +429,9 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-rsv
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-autofs" perms="0755">
 #!/bin/sh
 
-CEscratch=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_CE_Export_LocalDir`
-CEshare=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_CE_Mount_ShareDir`
-OSGCEPrivate=`/opt/rocks/bin/rocks report host attr frontend attr=OSGCEPrivate`
+CEscratch=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_CE_Export_LocalDir`
+CEshare=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_CE_Mount_ShareDir`
+OSGCEPrivate=`/opt/rocks/bin/rocks report host attr localhost attr=OSGCEPrivate`
 
 #if your ce is different from default you need to change $OSGCEPrivate to your current private ce here
 touch /etc/auto.osg
@@ -512,8 +460,8 @@ apache ALL=(ALL) NOPASSWD: /bin/cat /var/lib/condor/pool_password
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-condor" perms="0755">
 #!/bin/sh
 
-OSG_condorgid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_condorgid`
-OSG_condoruid=`/opt/rocks/bin/rocks report host attr frontend attr=OSG_condoruid`
+OSG_condorgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_condorgid`
+OSG_condoruid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_condoruid`
 /usr/sbin/groupmod -g ${OSG_condorgid} condor
 /usr/sbin/usermod -u ${OSG_condoruid} -g ${OSG_condorgid}  condor
 chown -R condor:condor /var/log/condor

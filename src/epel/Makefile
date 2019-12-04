@@ -62,7 +62,11 @@ ROCKS.OS.VERSION.MAJOR=$(shell lsb_release -rs | cut -d . -f 1)
 ifeq ($(strip $(ROCKS.OS.VERSION.MAJOR)), 5)
 VERSION.MAJOR = 5
 else
+ifeq ($(strip $(ROCKS.OS.VERSION.MAJOR)), 6)
 VERSION.MAJOR = 6
+else
+VERSION.MAJOR = 7
+endif
 endif
 
 rpm pkg::

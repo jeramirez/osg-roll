@@ -62,12 +62,17 @@ ROCKS.OS.VERSION.MAJOR=$(shell lsb_release -rs | cut -d . -f 1)
 ifeq ($(strip $(ROCKS.OS.VERSION.MAJOR)), 5)
 VERSION.MAJOR = 5
 else
+ifeq ($(strip $(ROCKS.OS.VERSION.MAJOR)), 6)
 VERSION.MAJOR = 6
+else
+VERSION.MAJOR = 7
+endif
 endif
 
 
 
 rpm pkg:: download
+	if [ "$(VERSION.MAJOR)" != "7" ] ; then \
 	for i in $(CURDIR)/$(VERSION.MAJOR)/*.rpm ; do \
 		if [ ! -d $(REDHAT.RPMS)/x86_64 ] ; then \
 			mkdir $(REDHAT.RPMS)/x86_64 ; \
@@ -75,7 +80,8 @@ rpm pkg:: download
 		if [ ! -f $(REDHAT.RPMS)/x86_64/$$i ] ; then \
 			cp -p $$i $(REDHAT.RPMS)/x86_64 ; \
 		fi ; \
-	done
+	done; \
+	fi
 
 clean::
 download::

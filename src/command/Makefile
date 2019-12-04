@@ -89,7 +89,7 @@ REDHAT.ROOT     = $(CURDIR)/../../
 
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
-	
+
 build:
 
 install::
