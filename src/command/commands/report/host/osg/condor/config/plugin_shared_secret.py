@@ -104,7 +104,7 @@ class Plugin(rocks.commands.Plugin):
 		#    is a python dictionary 
 		host, kvstore = argv 
 
-		authbypass=self.owner.db.getHostAttr(host,"OSG_Condor_PasswordAuth")
+		authbypass=self.db.getHostAttr(host,"OSG_Condor_Password")
 		if  authbypass is None or not (authbypass.lower() == "yes" or authbypass.lower() == "true"):
 			return
 
