@@ -201,7 +201,7 @@ class Command(rocks.commands.sync.host.command):
 				cmd += 'attrs="%s" | ' % attrs
 				cmd += 'ssh %s bash > /dev/null 2>&1 ' % host
 
-			pwauth = self.str2bool(attrs['OSG_Condor_Password'])
+			pwauth = self.str2bool(attrs.get('OSG_Condor_Password'))
 			if istest:
 				cmd += '; echo \; echo pwauth=%s syncpw=%s istest=%s ' % (pwauth,syncpw,istest)
 			if syncpw and pwauth:
