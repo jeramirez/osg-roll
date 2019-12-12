@@ -142,7 +142,7 @@ class Command(rocks.commands.sync.host.command):
 	Reconfigure OSG Condor daemon on the named hosts.
 
 	<param type="bool" name="syncpassword">
-	If set and the attribute OSG_Condor_PasswordAuth is True, this will
+	If set and the attribute OSG_Condor_Password is True, this will
 	will copy the condor pool password the the host. 
 	Default is no.
 	</param>
@@ -159,8 +159,14 @@ class Command(rocks.commands.sync.host.command):
 
 	<example cmd='sync host osg condor compute-0-0 syncpassword=yes'>
 	Rewrite /etc/condor/config.d/01_rocks_condor_config.local, copy the OSG Condor
-	pool password file if OSG_Condor_PasswordAuth host atrribute is set,
+	pool password file if OSG_Condor_Password host atrribute is set,
 	and finally call condor_reconfigure on host compute-0-0
+	</example>
+
+	<example cmd='sync host osg condor compute-0-0 syncpassword=yes test=yes'>
+	Check rewrite /etc/condor/config.d/01_rocks_condor_config.local, show copy cmd for the OSG Condor
+	pool password file if OSG_Condor_Password host atrribute is set,
+	and finally show condor_reconfigure on host compute-0-0
 	</example>
 	"""
 
@@ -195,13 +201,15 @@ class Command(rocks.commands.sync.host.command):
 				cmd += 'attrs="%s" | ' % attrs
 				cmd += 'ssh %s bash > /dev/null 2>&1 ' % host
 
-			pwauth = self.str2bool(attrs['OSG_Condor_PasswordAuth'])
+			pwauth = self.str2bool(attrs['OSG_Condor_Password'])
+			if istest:
+				cmd += '; echo \; echo pwauth=%s syncpw=%s istest=%s ' % (pwauth,syncpw,istest)
 			if syncpw and pwauth:
 				if istest:
 					cmd += '; echo \; '
 				else:
 					cmd += '; '
-				cmd += 'scp /var/lib/condor/pool_password %s:/var/lib/condor' % host
+				cmd += 'scp -p /var/lib/condor/pool_password %s:/var/lib/condor' % host
 				if not istest:
 					cmd += '> /dev/null 2>&1 '
 #			cmd += '; ssh %s /usr/sbin/condor_reconfig > /dev/null 2>&1 ' % host
