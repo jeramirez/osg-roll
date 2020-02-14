@@ -9,8 +9,8 @@
 
 	<copyright>
 	Copyright (c) 2012 - 2019 J. E. Ramirez
-	Copyright (c) 2000 - 2012 The Regents of the University of California.
-	All rights reserved. Rocks(r) v5.5/v6.0 www.rocksclusters.org
+	Copyright (c) 2000 - 2017 The Regents of the University of California.
+	All rights reserved. Rocks(r) v6.2/v7.0 www.rocksclusters.org
 	
 	</copyright>
 
@@ -103,7 +103,7 @@
 	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
 	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-rsv" arch="i386,x86_64" cond="OSG_RSV"/>
-	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" /> <!-- cond = OSG_SQUID or OSG_CE gt 0 -->
+	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="(OSG_SQUID or (OSG_CE is not None))" /> <!-- cond = OSG_SQUID or OSG_CE gt 0 -->
 	<edge from="client" to="osg-cvmfs" arch="i386,x86_64" cond="OSG_CVMFS"/>
 	<edge from="client" to="osg-ktune-conf" arch="i386,x86_64"/>
 	<edge from="server" to="osg-ktune-conf" arch="i386,x86_64"/>
