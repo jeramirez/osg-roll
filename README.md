@@ -8,8 +8,8 @@ Download and Compile Roll
 git clone https://github.com/jeramirez/osg-roll.git
 cd osg-roll
 cd src/osg
-./downloadOSG.py http://repo.opensciencegrid.org/osg/3.4/el7/release/x86_64
-./downloadOSG.py http://repo.opensciencegrid.org/osg/3.4/el7/contrib/x86_64
+./downloadOSG.py http://repo.opensciencegrid.org/osg/3.5/el7/release/x86_64
+./downloadOSG.py http://repo.opensciencegrid.org/osg/3.5/el7/contrib/x86_64
 cd ../..
 make roll
 ```
@@ -90,5 +90,6 @@ lcgdm-libs
 lfc-libs
 libmacaroons
 log4cpp
+mosh
 ```
 

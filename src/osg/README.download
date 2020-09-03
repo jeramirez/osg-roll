@@ -1,8 +1,8 @@
 #Steps to locally download osg rpms from a repository.
 #in this case we have a local repository server to speed up.
 #
-./downloadOSG.py 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/release/x86_64'
-./downloadOSG.py 'http://cms-hn/install/repo.grid.iu.edu/osg/3.4/el6/contrib/x86_64'
+./downloadOSG.py 'http://cms-hn/install/repo.opensciencegrid.org/osg/3.5/el7/release/x86_64'
+./downloadOSG.py 'http://cms-hn/install/repo.opensciencegrid.org/osg/3.5/el7/contrib/x86_64'
 #wget http://ftp1.scientificlinux.org/linux/scientific/6/x86_64/os/Packages/python-argparse-1.2.1-2.1.el6.noarch.rpm
 #mv python-argparse-1.2.1-2.1.el6.noarch.rpm 6/noarch/.
 wget -nc -P 6/noarch 'http://cms-hn/install/cms-hn.hep.uprm.edu/install/scientific/6.5/x86_64/updates/security/python-argparse-1.2.1-2.1.el6.noarch.rpm'
