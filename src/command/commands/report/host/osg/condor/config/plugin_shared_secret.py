@@ -127,6 +127,6 @@ class Plugin(rocks.commands.Plugin):
 			if allowHosts.find('+') == 0:
 				allowHosts = allowHosts.lstrip('+')
 				for host in allowHosts.split(','):
-					kvstore['ALLOW_ADVERTISE_STARTD'] += "," + \
-					"condor_pool@$(UID_DOMAIN)/%s" % host
+					kvstore['ALLOW_ADVERTISE_STARTD'] += ", " + \
+					"condor_pool@$(UID_DOMAIN)/%s" % host.lstrip()
 
