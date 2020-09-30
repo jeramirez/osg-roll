@@ -113,17 +113,63 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.addOutput(self.host, '#end config %s' % (configFile))
 		self.addOutput(self.host, '')
 
-	def run(self, params, args):
-		test, ConfigFile, ConfigXrootd, ConfigLcmaps = self.fillParams([
-				('test','n'),
-				('ConfigFile','/root/XrootdConfigurator'),
-				('ConfigXrootd','/etc/xrootd/xrootd-clustered.cfg'),
-				('ConfigLcmaps','/etc/xrootd/lcmaps.cfg')
-			])
+	def writeConfigFetchcrl(self, argv):
+		# 1. Get the hostname and the config file to store
+		host, addOutput, configs = argv 
+		Fetchcrl           = configs['FetchCrl']
+		certdir            = configs['Cacert']
+		squid              = self.db.getHostAttr(host,'OSG_SquidServer')
+		proxy              = self.db.getHostAttr(host,'OSG_CVMFS_HTTP_PROXY')
 
-		istest = self.str2bool(test)
+		addOutput(host, '#begin config %s' % (Fetchcrl))
+		addOutput(host, '/bin/rm -f %s' % (Fetchcrl))
+		addOutput(host, '/bin/touch -f %s' % (Fetchcrl))
+		addOutput(host, 'echo "infodir = %s" &gt;&gt; %s' % (certdir,Fetchcrl))
+		if squid>0:
+			if ":" in squid:
+				addOutput(host, 'echo "http_proxy = http://%s" &gt;&gt; %s' % (squid,Fetchcrl))
+			else:
+				addOutput(host, 'echo "http_proxy = http://%s:3128" &gt;&gt; %s' % (squid,Fetchcrl))
+		elif proxy>0:
+			addOutput(host, 'echo "http_proxy = %s" &gt;&gt; %s' % (proxy,Fetchcrl))
+
+		addOutput(host, '#end config %s' % (Fetchcrl))
+		addOutput(host, '')
+
+	def run(self, params, args):
+		Configs    = {}
+		#input parameters keys and default values
+		ParmKeys   = [
+			('test','n'),
+			('ConfigFile','/root/XrootdConfigurator'),
+			('ConfigXrootd','/etc/xrootd/xrootd-clustered.cfg'),
+			('ConfigCacert','/etc/grid-security/certificates'),
+			('ConfigFetchCrl','/etc/fetch-crl.d/osg_roll_xrd.conf'),
+			('ConfigLcmaps','/etc/xrootd/lcmaps.cfg')
+		]
+
+		#get running values (in case updated at cmd)
+		ParmValues = self.fillParams(ParmKeys)
+
+		#fill up Configs variables (will be passed to plugins)
+		nparm=0
+		for ParmKey in ParmKeys:
+			name = ParmKey[0]
+			parmvalue = ParmValues[nparm]
+			if name == 'test' or name == 'ConfigFile':
+				Configs[name]=parmvalue
+			else :
+				Configs[name[6:]]=parmvalue
+			nparm+=1
+
+		#in case of testing add '_test' to config files output
+		istest = self.str2bool(Configs['test'])
 		if istest:
-			ConfigXrootd      = ConfigXrootd + '_test'
+			for config in Configs.items():
+				key=config[0]
+				if key != 'test' and key != 'ConfigFile':
+					Configs[key]=Configs[key]+'_test'
+
 		self.beginOutput()
 
                 for host in self.getHostnames(args):
@@ -131,11 +177,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.IsXrootd = self.db.getHostAttr(self.host,'OSG_XRD')
 
 			if self.IsXrootd:
-				self.addOutput(self.host, '<file name="%s" perms="755" >' % (ConfigFile))
+				self.addOutput(self.host, '<file name="%s" perms="755" >' % (Configs['ConfigFile']))
 				self.addOutput(self.host, '#!/bin/bash')
 				self.addOutput(self.host, '')
-				self.writeConfigXrootd(ConfigXrootd)
-				self.writeConfigLcmaps(ConfigLcmaps)
+				self.writeConfigXrootd(Configs['Xrootd'])
+				self.writeConfigLcmaps(Configs['Lcmaps'])
+				self.writeConfigFetchcrl((host,self.addOutput,Configs))
 				self.addOutput(self.host, '</file>')
 
 		self.endOutput(padChar='')
