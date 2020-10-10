@@ -112,6 +112,7 @@ class Plugin(rocks.commands.Plugin):
 		value = self.db.getHostAttr(host, 'OSG_Condor_Cgroup_memory_limit_policy')
 
                 #default hard (posible values none, soft, hard)
+		kvstore['BASE_CGROUP'] = '/system.slice/condor.service' 
 		kvstore['CGROUP_MEMORY_LIMIT_POLICY'] = 'hard' 
 		if (value is not None) and (len(value) > 1):
 			kvstore['CGROUP_MEMORY_LIMIT_POLICY'] = '%s' % (value) 
