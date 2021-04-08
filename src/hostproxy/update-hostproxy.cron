@@ -1,3 +1,0 @@
-# Update hostproxy certs every 8 hours
-3 0-23/8 * * * root /opt/hostproxy/host_dist >/dev/null 2>&1
-

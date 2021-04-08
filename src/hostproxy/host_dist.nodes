@@ -1,9 +1,0 @@
-# 
-# This file should contain the list of
-# nodes you want the host proxies to be distributed
-#
-#rocks report host attr attr=OSG_Client | grep true | sed s/:\ true/.local/g
-#Examples:
-#compute-0-0.local
-#compute-0-1.local
-
