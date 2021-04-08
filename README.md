@@ -91,5 +91,7 @@ lfc-libs
 libmacaroons
 log4cpp
 mosh
+davix
+davix-libs
 ```
 
