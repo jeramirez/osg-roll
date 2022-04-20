@@ -58,7 +58,7 @@
 
 PKGROOT         = /var/www/html/roll-documentation/osg/$(VERSION)
 REDHAT.ROOT     = $(PWD)/../../
-CONDORMANUAL    = condor-$(MANUALRELEASE)-Manual.tar.gz
+CONDORMANUAL    = htcondor-readthedocs-io-en-$(MANUALRELEASE).zip
 -include $(ROCKSROOT)/etc/Rules.mk
 include Rules.mk
 
@@ -75,10 +75,10 @@ build: html pdf
 install:: build
 	mkdir -p $(ROOT)/$(PKGROOT)/images
 	mkdir -p $(ROOT)/$(PKGROOT)/stylesheet-images
-	$(TAR) xzf $(CONDORMANUAL) -C $(ROOT)/$(PKGROOT)
-	(cd $(ROOT)/$(PKGROOT); mv condor-$(MANUALRELEASE)-Manual condor-Manual)
-	chmod -R go+r $(ROOT)/$(PKGROOT)/condor-Manual
-	chmod o+x $(ROOT)/$(PKGROOT)/condor-Manual
+	unzip $(CONDORMANUAL) -d $(ROOT)/$(PKGROOT)
+	(cd $(ROOT)/$(PKGROOT); mv htcondor-$(MANUALRELEASE) htcondor-Manual)
+	chmod -R go+r $(ROOT)/$(PKGROOT)/htcondor-Manual
+	chmod o+x $(ROOT)/$(PKGROOT)/htcondor-Manual
 	install -ma+r index.pdf 	$(ROOT)/$(PKGROOT)/$(NAME).pdf
 	install -ma+r *.html    	$(ROOT)/$(PKGROOT)/
 	install -ma+r images/*.png	$(ROOT)/$(PKGROOT)/images/
