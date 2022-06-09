@@ -8,7 +8,7 @@
 	</description>
 
 	<copyright>
-	Copyright (c) 2012 - 2019 J. E. Ramirez
+	Copyright (c) 2012 - 2022 J. E. Ramirez
 	Copyright (c) 2000 - 2017 The Regents of the University of California.
 	All rights reserved. Rocks(r) v6.2/v7.0 www.rocksclusters.org
 	
@@ -16,6 +16,8 @@
 
 	<changelog>
 	$Log  osg.xml,v $
+        Revision 1.2  2022/06/07 05:48:53  eduardo
+        Removing hadoop,rsv,gridftp
         Revision 1.1  2016/11/16 05:48:53  eduardo
         adding CE Bosco
         Revision 0.0  2012/10/05 05:48:53  eduardo
@@ -23,7 +25,6 @@
 	</changelog>
 
 	<order head="screen-partitioning">
-		<tail>osg-screen-hadoop</tail>
 		<tail>osg-screen-grid-servers</tail>
         </order>
 
@@ -48,21 +49,10 @@
 		<tail>osg-client</tail>
 	</order>
 
-	<!--
-		make sure osg-hadoop-datanode is after osg-hadoop-pre due to
-		osg-hadoop-pre setting up the default home directory for
-		useradd and setting up the uid/gid for osg hadoop users accounts
-	-->
-	<order head="osg-hadoop-pre">
-		<tail>osg-hadoop</tail>
-		<tail>osg-xrootd-server</tail>
-	</order>
-
 	<!-- make sure yum conf is set -->
 	<order head="yum">
 		<tail>osg-condor</tail>
 		<tail>osg-wnclient-glexec</tail>
-		<tail>osg-hadoop-pre</tail>
 		<tail>osg-xrootd-server</tail>
 		<tail>osg-frontier-squid</tail>
 		<tail>osg-cvmfs</tail>
@@ -75,10 +65,6 @@
 
 	<order head="client">
 		<tail>osg-xrootd-server</tail>
-	</order>
-
-	<order head="osg-hadoop">
-		<tail>osg-hadoop-gridftp</tail>
 	</order>
 
 	<!-- make sure frontier squid is installed before osg-ce  -->
@@ -95,21 +81,15 @@
 	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-client" arch="i386,x86_64" cond="OSG_Client"/>
-	<edge from="client" to="osg-hadoop-pre" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="client" to="osg-xrootd-server" arch="i386,x86_64" cond="(OSG_XRD or OSG_SE)"/>
-	<edge from="osg-hadoop-pre" to="osg-hadoop" arch="i386,x86_64" cond="(OSG_Client or OSG_SE or OSG_GFTP_HDFS or OSG_HADOOP or OSG_CE=='condor' or OSG_CE=='sge')"/>
 	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
-	<edge from="osg-hadoop" to="osg-hadoop-gridftp" arch="i386,x86_64" cond="OSG_GFTP_HDFS"/>
-	<edge from="client" to="osg-gridftp" arch="i386,x86_64" cond="OSG_GRIDFTP"/>
 	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge' or OSG_CE=='bosco')"/>
-	<edge from="client" to="osg-rsv" arch="i386,x86_64" cond="OSG_RSV"/>
 	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="(OSG_SQUID or (OSG_CE is not None))" /> <!-- cond = OSG_SQUID or OSG_CE gt 0 -->
 	<edge from="client" to="osg-cvmfs" arch="i386,x86_64" cond="OSG_CVMFS"/>
 	<edge from="client" to="osg-ktune-conf" arch="i386,x86_64"/>
 	<edge from="server" to="osg-ktune-conf" arch="i386,x86_64"/>
 	<edge from="server" to="osg-server" arch="i386,x86_64"/>
 	<edge from="server" to="osg-condor" arch="i386,x86_64"/>
-	<edge from="server" to="osg-screen-hadoop" arch="i386,x86_64"/>
 	<edge from="server" to="osg-screen-grid-servers" arch="i386,x86_64"/>
 
 </graph>
