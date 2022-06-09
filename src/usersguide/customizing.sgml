@@ -20,9 +20,6 @@ For more information see <xref linkend="customizing-triggers-osg">.
 <!-- *****************************    triggers packages install  ****************************** -->
 &customizing_install;
 
-<!-- *****************************  hadoop attributes  **************************************** -->
-&customizing_hadoop;
-
 <!-- *****************************  condor attributes  **************************************** -->
 &customizing_condor;
 
@@ -38,9 +35,6 @@ For more information see <xref linkend="customizing-triggers-osg">.
 <!-- *****************************  wn/in attributes      **************************************** -->
 &customizing_wn;
 
-<!-- *****************************  gums attributes      ************************************** -->
-&customizing_gums;
-
 <!-- *****************************  cvmfs attributes      ************************************* -->
 &customizing_cvmfs;
 
@@ -49,8 +43,5 @@ For more information see <xref linkend="customizing-triggers-osg">.
 
 <!-- *****************************  xrootd attributes      ************************************ -->
 &customizing_xrootd;
-
-<!-- *****************************  rsv attributes      ************************************ -->
-&customizing_rsv;
 
 </chapter>
