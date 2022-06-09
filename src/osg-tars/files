@@ -4,8 +4,9 @@ TARVER=`cat version.mk | grep VERSION | cut -d\  -f 3`
 TARMAJ=`cat version.mk | grep VERSION | cut -d\  -f 3 | cut -d. -f 1`
 TARMIN=`cat version.mk | grep VERSION | cut -d\  -f 3 | cut -d. -f 2`
 MAJVER=`lsb_release -rs | cut -d . -f 1`
-FILE1=osg-client-$TARVER-1.el$MAJVER.x86_64.tar.gz
-FILE2=osg-wn-client-$TARVER-1.el$MAJVER.x86_64.tar.gz
+RELEAS=`cat version.mk | grep RELEASE | cut -d\  -f 3`
+FILE1=osg-client-$TARVER-$RELEAS.el$MAJVER.x86_64.tar.gz
+FILE2=osg-wn-client-$TARVER-$RELEAS.el$MAJVER.x86_64.tar.gz
 
 #rsync -av rsync://repo.opensciencegrid.org/osg/tarball-install/$TARVER/osg-client-$TARVER-1.el5.x86_64.tar.gz .
 #rsync -av rsync://repo.opensciencegrid.org/osg/tarball-install/$TARVER/osg-client-$TARVER-1.el6.x86_64.tar.gz .

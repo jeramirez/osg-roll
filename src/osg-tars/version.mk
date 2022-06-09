@@ -1,4 +1,4 @@
 PKGROOT		= /opt/osg-tars
 NAME    	= osg-tars
-VERSION 	= 3.5.61
-RELEASE 	= 1
+VERSION 	= 3.6.220511
+RELEASE 	= 2
