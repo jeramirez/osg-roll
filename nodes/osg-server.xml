@@ -32,7 +32,6 @@
 ###  Set Default Public Names
 OSGCE="rocks-ce.&Kickstart_PublicDNSDomain;"
 OSGSE="rocks-se.&Kickstart_PublicDNSDomain;"
-OSGGFTP="rocks-ce.&Kickstart_PublicDNSDomain;"
 OSGXRDLOCALREDIRECTOR="cms-xrd-transit.cern.ch+"
 ### Set Default Private names
 OSGCEPrivate="login-0-0"
@@ -44,16 +43,12 @@ OSGSEPrivate="login-0-1"
 if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSGSEPrivate`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSGSEPrivate value=$OSGSEPrivate
 fi
-OSGGridftpPrivate="login-0-0"
-OSGGridftpHdfsPrivate="login-0-1"
 
 ###  Set Default Bestman Configuration
 #rocks firewall requires "20000:25000" instead of "20000,25000"
 OSGglobusPortRange="20000:25000"
 OSGglobusTcpPortRange="20000,25000"
 OSGglobusTcpSourceRange="20000,25000"
-OSGSRMlocalPathListAllowed="/mnt/hadoop;/data/se"
-OSGSRMsupportedProtocolList="gsiftp://$OSGGFTP:2811"
 ###  Set Default Storage Dir for Grid Certs
 OSGStoredCertsDir="/root/certs"
 
@@ -71,15 +66,12 @@ else
 OSGSE="&OSG_SEServer;"
 fi
 #other default servers
-/opt/rocks/bin/rocks add attr OSG_GFTPServer value=$OSGGFTP
 /opt/rocks/bin/rocks add attr OSG_XRDServer value=$OSGSE
 /opt/rocks/bin/rocks add attr OSG_XROOTD_LOCAL_REDIRECTOR value=$OSGXRDLOCALREDIRECTOR
 
 /opt/rocks/bin/rocks add attr OSG_GlobusPortRange value=$OSGglobusPortRange
 /opt/rocks/bin/rocks add attr OSG_GlobusTcpPortRange value=$OSGglobusTcpPortRange
 /opt/rocks/bin/rocks add attr OSG_GlobusTcpSourceRange value=$OSGglobusTcpSourceRange
-/opt/rocks/bin/rocks add attr OSG_SRMlocalPathListAllowed value=$OSGSRMlocalPathListAllowed
-/opt/rocks/bin/rocks add attr OSG_SRMsupportedProtocolList value=$OSGSRMsupportedProtocolList
 /opt/rocks/bin/rocks add attr OSG_StoredCertsDir value=$OSGStoredCertsDir
 
 
@@ -93,8 +85,6 @@ fi
 #/opt/rocks/bin/rocks add host attr &OSGCEPrivate; OSG_CE value="condor"
 # set OSG bestman server
 #/opt/rocks/bin/rocks add host attr &OSGSEPrivate; OSG_SE value=true
-# set OSG gridftp server
-#/opt/rocks/bin/rocks add host attr $OSGGridftpPrivate OSG_GRIDFTP value=true
 
 ###  Put the OSG_CondorMaster into the database
 CMaster=&Kickstart_PublicHostname;
