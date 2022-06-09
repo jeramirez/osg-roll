@@ -30,7 +30,6 @@
 
 ###  Put the OSG Servers into the database
 ###  Set Default Public Names
-OSGgums="rocks-gums.&Kickstart_PublicDNSDomain;"
 OSGCE="rocks-ce.&Kickstart_PublicDNSDomain;"
 OSGSE="rocks-se.&Kickstart_PublicDNSDomain;"
 OSGGFTP="rocks-ce.&Kickstart_PublicDNSDomain;"
@@ -45,10 +44,6 @@ OSGSEPrivate="login-0-1"
 if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSGSEPrivate`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSGSEPrivate value=$OSGSEPrivate
 fi
-OSGGUMSPrivate="login-0-2"
-if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSGGumsPrivate`" == "x" ]; then
-/opt/rocks/bin/rocks add attr OSGGumsPrivate value=$OSGGUMSPrivate
-fi
 OSGGridftpPrivate="login-0-0"
 OSGGridftpHdfsPrivate="login-0-1"
 
@@ -61,15 +56,8 @@ OSGSRMlocalPathListAllowed="/mnt/hadoop;/data/se"
 OSGSRMsupportedProtocolList="gsiftp://$OSGGFTP:2811"
 ###  Set Default Storage Dir for Grid Certs
 OSGStoredCertsDir="/root/certs"
-###  Set Default GUMS Backup Dir and DNADMIN
-OSGGUMSBackupDir="/path/to/gums/backup"
-OSGGUMSDNADMIN="/DC=org/DC=doegrids/OU=People/CN=Name M LastName 123456"
 
 ###Servers
-#if roll was installed at kickstart OSG_GumsServer should exist 
-if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSG_GumsServer`" == "x" ]; then
-/opt/rocks/bin/rocks add attr OSG_GumsServer value=$OSGgums
-fi
 #if roll was installed at kickstart OSG_CEServer should exist 
 if [ "x`/opt/rocks/bin/rocks report host attr localhost attr=OSG_CEServer`" == "x" ]; then
 /opt/rocks/bin/rocks add attr OSG_CEServer value=$OSGCE
@@ -93,8 +81,6 @@ fi
 /opt/rocks/bin/rocks add attr OSG_SRMlocalPathListAllowed value=$OSGSRMlocalPathListAllowed
 /opt/rocks/bin/rocks add attr OSG_SRMsupportedProtocolList value=$OSGSRMsupportedProtocolList
 /opt/rocks/bin/rocks add attr OSG_StoredCertsDir value=$OSGStoredCertsDir
-/opt/rocks/bin/rocks add attr OSG_GUMSBackupDir value=$OSGGUMSBackupDir
-/opt/rocks/bin/rocks add attr OSG_GUMSDNADMIN value="$OSGGUMSDNADMIN"
 
 
 # turn on OSG Client for compute nodes
@@ -141,9 +127,6 @@ CMaster=&Kickstart_PublicHostname;
 /opt/rocks/bin/rocks add attr OSG_tomcatgid value=91
 /opt/rocks/bin/rocks add attr OSG_gratiauid value=464
 /opt/rocks/bin/rocks add attr OSG_gratiagid value=464
-# parameters related with Bestman install
-/opt/rocks/bin/rocks add attr OSG_bestmanuid value=459
-/opt/rocks/bin/rocks add attr OSG_bestmangid value=410
 # parameters related with xrootd install
 /opt/rocks/bin/rocks add attr OSG_xrootduid value=460
 /opt/rocks/bin/rocks add attr OSG_xrootdgid value=412
@@ -264,30 +247,6 @@ cp /etc/rc.d/rocksconfig.d/post-90-osg-server-gridce /root/post-90-osg-server-gr
 rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-gridce
 </file>
 
-
-<!-- Bestman config related post install -->
-<file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-bestman" perms="0755">
-#!/bin/sh
-
-### Create the Bestman User
-#bestman:x:459:410:Bestman SRM user:/opt/bestman2:/bin/bash
-
-OSG_bestmangid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_bestmangid`
-OSG_bestmanuid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_bestmanuid`
-
-#groups are completely exported! even in 5.5 (not filtered)
-/usr/sbin/groupadd -g ${OSG_bestmangid} bestman
-
-### This users are for backward compatibility (&lt; rocks5.5)
-if [ "&rocks_version;" != "5.5" ]&amp;&amp;[ "&rocks_version;" != "5.6" ]&amp;&amp;[ "&rocks_version_major;" != "6" ];  then
-/usr/sbin/useradd -u ${OSG_bestmanuid} -g ${OSG_bestmangid} -c "Bestman SRM user" -s /sbin/nologin -d /etc/bestman2 bestman
-
-#end backward compatibility ( &lt;rocks 5.5)
-fi
-
-cp /etc/rc.d/rocksconfig.d/post-90-osg-server-bestman /root/post-90-osg-server-bestman.script_runned
-rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-bestman
-</file>
 
 <!-- xrootd config related post install -->
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-xrootd" perms="0755">

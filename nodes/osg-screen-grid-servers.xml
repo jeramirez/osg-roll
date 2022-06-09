@@ -15,10 +15,12 @@
         $Log: osg-screen-grid-servers.xml,v $
         Revision 0.0  2012/10/05 05:48:53  eduardo
         Initial Revision
+        Revision 1.0  2022/06/09 05:48:53  eduardo
+        Removing gums
 </changelog>
 
 <screen>
-	<title>OSG CE/SE/GUMS Default Configuration</title>
+	<title>OSG CE/SE Default Configuration</title>
 
 	<variable>
 		<label>OSG Public CE Server Name</label>
@@ -56,26 +58,7 @@
 		<value>&OSGSEPrivate;</value>
 		<help>This is the default private name of xrootd server</help>
 	</variable>
-	<variable>
-		<label>OSG Public GUMS Server Name</label>
-		<name>OSG_GumsServer</name>
-		<type>string</type>
-		<size>40</size>
-		<default>rocks-gums.public.domain</default>
-		<value>&OSG_GumsServer;</value>
-		<help>This is the default public name of GUMS server</help>
-	</variable>
-	<variable>
-		<label>OSG Private GUMS Server Name</label>
-		<name>OSGGumsPrivate</name>
-		<type>string</type>
-		<size>20</size>
-		<default>login-0-2</default>
-		<value>&OSGGumsPrivate;</value>
-		<help>This is the default private name of GUMS server</help>
-	</variable>
 
 </screen>
 
 </kickstart >
-
