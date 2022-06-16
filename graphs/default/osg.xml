@@ -42,25 +42,20 @@
 		<tail>osg-server</tail>
 	</order>
 
-	<!-- make sure condor install before osg-client  -->
+	<!-- make sure condor install before osg-wnclient  -->
 	<order head="osg-condor">
 		<tail>osg-condor-client</tail>
 		<tail>osg-server</tail>
-		<tail>osg-client</tail>
+		<tail>osg-wnclient</tail>
 	</order>
 
 	<!-- make sure yum conf is set -->
 	<order head="yum">
 		<tail>osg-condor</tail>
-		<tail>osg-wnclient-glexec</tail>
 		<tail>osg-xrootd-server</tail>
 		<tail>osg-frontier-squid</tail>
 		<tail>osg-cvmfs</tail>
 		<tail>osg-ktune-conf</tail>
-	</order>
-
-	<order head="osg-client">
-		<tail>osg-wnclient-glexec</tail>
 	</order>
 
 	<order head="client">
@@ -80,9 +75,8 @@
 	<!-- add edges here -->
 	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
-	<edge from="client" to="osg-client" arch="i386,x86_64" cond="OSG_Client"/>
+	<edge from="client" to="osg-wnclient" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="client" to="osg-xrootd-server" arch="i386,x86_64" cond="(OSG_XRD or OSG_SE)"/>
-	<edge from="osg-client" to="osg-wnclient-glexec" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-frontier-squid" arch="i386,x86_64" cond="(OSG_SQUID or (OSG_CE is not None))" /> <!-- cond = OSG_SQUID or OSG_CE gt 0 -->
 	<edge from="client" to="osg-cvmfs" arch="i386,x86_64" cond="OSG_CVMFS"/>
