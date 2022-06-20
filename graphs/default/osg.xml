@@ -73,8 +73,8 @@
 	</order>
 
 	<!-- add edges here -->
-	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-condor" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
+	<edge from="client" to="osg-condor-client" arch="i386,x86_64" cond="(OSG_Condor_Client or OSG_CE=='condor' or OSG_CE=='bosco')"/>
 	<edge from="client" to="osg-wnclient" arch="i386,x86_64" cond="OSG_Client"/>
 	<edge from="client" to="osg-xrootd-server" arch="i386,x86_64" cond="(OSG_XRD or OSG_SE)"/>
 	<edge from="client" to="osg-ce-server" arch="i386,x86_64" cond="(OSG_CE=='condor' or OSG_CE=='sge' or OSG_CE=='bosco')"/>
@@ -87,4 +87,3 @@
 	<edge from="server" to="osg-screen-grid-servers" arch="i386,x86_64"/>
 
 </graph>
-
