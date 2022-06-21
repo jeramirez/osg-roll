@@ -362,8 +362,8 @@ To view the contents of the 01_rocks_condor_config.local before making changes, 
 <para>
 To find information about administrating  and using Condor Pools
 please see the original Condor manual at <ulink
-url="http://www.cs.wisc.edu/condor/manual">Condor
-manuals</ulink> or <ulink url="condor-Manual"> locally </ulink>.
+url="http://www.cs.wisc.edu/htcondor/manual">Condor
+manuals</ulink> or <ulink url="htcondor-Manual"> locally </ulink>.
 </para>
 
 </section>

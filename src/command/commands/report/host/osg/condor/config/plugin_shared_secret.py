@@ -114,7 +114,7 @@ class Plugin(rocks.commands.Plugin):
 		# Example 1. Read an attribute from the database and set 
 		# the values
 		value = self.db.getHostAttr(host, 'OSG_Condor_Master')
-		kvstore['SEC_PASSWORD_FILE'] = '/var/lib/condor/pool_password'
+		kvstore['SEC_PASSWORD_FILE'] = '/etc/condor/passwords.d/POOL'
 		kvstore['SEC_ADVERTISE_STARTD_AUTHENTICATION'] = 'REQUIRED'
 		kvstore['SEC_ADVERTISE_STARTD_INTEGRITY'] = 'REQUIRED'
 		kvstore['SEC_ADVERTISE_STARTD_AUTHENTICATION_METHODS'] = "PASSWORD"

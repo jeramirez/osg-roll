@@ -87,7 +87,7 @@ class Command(command):
 
 	<param type='string' name='keyfile'>
 	The filename that will be used to store the password.
-	Default: /var/lib/condor/pool_password
+	Default: /etc/condor/passwords.d/POOL
 	</param>
 
 	<param type='bool' name='add'>
@@ -98,7 +98,7 @@ class Command(command):
 
 	def run(self, params, args):
 		(keyfile,add)  = self.fillParams([
-			('keyfile','/var/lib/condor/pool_password'),
+			('keyfile','/etc/condor/passwords.d/POOL'),
 			('add','yes')])
 
 		if self.str2bool(add):

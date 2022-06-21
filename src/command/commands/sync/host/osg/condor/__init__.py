@@ -209,7 +209,7 @@ class Command(rocks.commands.sync.host.command):
 					cmd += '; echo \; '
 				else:
 					cmd += '; '
-				cmd += 'scp -p /var/lib/condor/pool_password %s:/var/lib/condor' % host
+				cmd += 'scp -p /etc/condor/passwords.d/POOL %s:/etc/condor/passwords.d/POOL' % host
 				if not istest:
 					cmd += '> /dev/null 2>&1 '
 #			cmd += '; ssh %s /usr/sbin/condor_reconfig > /dev/null 2>&1 ' % host
