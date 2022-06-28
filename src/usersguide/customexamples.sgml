@@ -26,7 +26,7 @@ and examples in this chapter.
 <section id="config-examples-condor" xreflabel="Condor Configuration Examples">
 <title>Examples of Condor Configuration</title>
 <para>
-The following are short examples of how to customize Condor using 
+The following are short examples of how to customize Condor using
 Rocks commands.
 
 <itemizedlist>
@@ -56,13 +56,13 @@ Define a New Condor Master:
 <listitem>
 <para>
 Enable MPI/Dedicated Scheduler:
-<computeroutput>rocks set attr OSG_Condor_EnableMPI true</computeroutput>. 
+<computeroutput>rocks set attr OSG_Condor_EnableMPI true</computeroutput>.
 </para>
 <para>
 Actively-running Condor
-daemons must be reconfigured for this attribute to take affect. 
+daemons must be reconfigured for this attribute to take affect.
 This can be achieved dynamically on compute and frontend appliances using
-<computeroutput>rocks sync host osg condor frontend compute</computeroutput>. 
+<computeroutput>rocks sync host osg condor frontend compute</computeroutput>.
 </para>
 <para> Reinstalled nodes
 will build the correct configuration.
@@ -323,13 +323,13 @@ OSG twiki page</ulink>.
 <section id="reconfiguring-condor" xreflabel="Reconfiguring Condor">
 <title>Reconfiguring Condor</title>
 <para>
-The configuration of Condor is done during the kickstart install, the resulting 
+The configuration of Condor is done during the kickstart install, the resulting
 configuration files are located in /etc/condor/config.d/.
 </para>
 <note>
 <para>
-In case condor was not installed at kickstart, it is possible to install it 
-in a node or appliance after kickstart by setting OSG_Condor_Client 
+In case condor was not installed at kickstart, it is possible to install it
+in a node or appliance after kickstart by setting OSG_Condor_Client
 (or OSG_CE='condor') on a host or appliance followed by syncing as shown below:
 <screen>
 # rocks set host attr &lt;hostname&gt; OSG_Condor_Client value=true
@@ -462,20 +462,20 @@ To view the contents of the files
 <title>Programatically changing the Contents of 01_rocks_condor_config.local</title>
 <para>
 Condor configuration is localized into /etc/condor/config.d/01_rocks_condor_config.local.
-This file is generated programatically from the output of 
+This file is generated programatically from the output of
 <computeroutput>rocks report host osg condor config &lt;hostname&gt;
 </computeroutput>.
 </para>
 <para>
 The command <computeroutput>rocks report host osg condor config</computeroutput>
-is defined by the OSG roll and is written in Python. This report command is 
-extensible through Rocks command plugins. 
+is defined by the OSG roll and is written in Python. This report command is
+extensible through Rocks command plugins.
 </para>
 <para>
-To see a sample Condor plugin, 
+To see a sample Condor plugin,
 view the file in location
 <computeroutput>
-/opt/rocks/lib/python2.4/site-packages/rocks/commands/report/host/osg/condor/config/plugin_sample.py
+/opt/rocks/lib/python2.7/site-packages/rocks/commands/report/host/osg/condor/config/plugin_sample.py
 </computeroutput>, which is reproduced here.
 <screen>
 # $Id$
@@ -488,24 +488,24 @@ class Plugin(rocks.commands.Plugin):
 
 	def run(self, argv):
 		# Argv contains the hostname and the in memory key-value store
-	        # that is eventually written to 
+	        # that is eventually written to
 		# /etc/condor/config.d/01_rocks_condor_config.local
 		# plugins can add/change/remove keys from the store
 
 		# 1. Get the hostname and the key-value store, which
-		#    is a python dictionary 
-		host, kvstore = argv 
+		#    is a python dictionary
+		host, kvstore = argv
 
 		# The following would add CONDOR_SAMPLE=Sample Plugin
 		# the key = value dictionary (kvstore)  that is written out
 		#
-		# Example 1. Read an attribute from the database and set 
+		# Example 1. Read an attribute from the database and set
 		# the values
 		value = self.db.getHostAttr(host, 'Condor_HostAllow')
-		kvstore['CONDOR_SAMPLE'] = value 
-		
-		# Example 2. Set the key CONDOR_SAMPLE to the hostname 
-		kvstore['CONDOR_SAMPLE'] = host 
+		kvstore['CONDOR_SAMPLE'] = value
+
+		# Example 2. Set the key CONDOR_SAMPLE to the hostname
+		kvstore['CONDOR_SAMPLE'] = host
 
 		# Example 3. Remove a key from the dictionary
 		if 'CONDOR_SAMPLE' in kvstore:

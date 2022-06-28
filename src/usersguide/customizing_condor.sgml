@@ -3,7 +3,7 @@
 <title>Customizing Condor</title>
 
 <para>
-By default Condor is installed on Rocks <emphasis role=strong>compute</emphasis> appliances and frontend. 
+By default Condor is installed on Rocks <emphasis role=strong>compute</emphasis> appliances and frontend.
 Attributes are inspired on the original Condor roll.
 </para>
 
@@ -30,7 +30,7 @@ Redefine the Condor Master that nodes use. Default: public frontend name
 
 <row>
 <entry>
-OSG_Condor_Network 
+OSG_Condor_Network
 </entry>
 <entry>
 Define which network interface is used for Condor traffic. Default: frontends are set to public, clients are set to private.
@@ -42,9 +42,9 @@ Define which network interface is used for Condor traffic. Default: frontends ar
 OSG_Condor_Daemons
 </entry>
 <entry>
-Define which Condor execution daemons are installed. Default: 
-[MASTER (global)], 
-[MASTER, SCHEDD, COLLECTOR, NEGOTIATOR (frontends)],  
+Define which Condor execution daemons are installed. Default:
+[MASTER (global)],
+[MASTER, SCHEDD, COLLECTOR, NEGOTIATOR (frontends)],
 [MASTER, SCHEDD (login appliance)],
 [MASTER, STARTD (compute appliance)]
 </entry>
@@ -52,20 +52,20 @@ Define which Condor execution daemons are installed. Default:
 
 <row>
 <entry>
-OSG_Condor_PortLow 
+OSG_Condor_PortLow
 </entry>
 <entry>
-Lower Port range that Condor will use to communicate among 
+Lower Port range that Condor will use to communicate among
 daemons. Removal of this Attribute will result in removal of the LOWPORT entry in 01_rocks_condor_config.local after syncing the configuration. Default: 40000
 </entry>
 </row>
 
 <row>
 <entry>
-OSG_Condor_PortHigh 
+OSG_Condor_PortHigh
 </entry>
 <entry>
-Upper Port range that Condor will use to communicate among 
+Upper Port range that Condor will use to communicate among
 daemons. Removal of this Attribute will result in removal of the HIGHPORT entry in 01_rocks_condor_config.local after syncing the configuration. Default: 50000
 </entry>
 </row>
@@ -75,7 +75,7 @@ daemons. Removal of this Attribute will result in removal of the HIGHPORT entry 
 OSG_Condor_HostAllow
 </entry>
 <entry>
-Comma separates list of allowed readers/writers for Condor. Translates to 
+Comma separates list of allowed readers/writers for Condor. Translates to
 HOSTALLOW directive in Condor Configuration file. Default: + rocks-ce
 </entry>
 </row>
@@ -83,14 +83,14 @@ HOSTALLOW directive in Condor Configuration file. Default: + rocks-ce
 <row>
 <entry>OSG_Condor_PasswordAuth </entry>
 <entry>
- Use a shared pool password, instead of host-based 
-authentication. Default: no. 
+ Use a shared pool password, instead of host-based
+authentication. Default: no.
 </entry>
 </row>
 
 <row>
 <entry>
-OSG_Condor_EnableMPI 
+OSG_Condor_EnableMPI
 </entry>
 <entry>
 Configure a local scheduler for MPI Universe Support. Default: no
@@ -99,7 +99,7 @@ Configure a local scheduler for MPI Universe Support. Default: no
 
 <row>
 <entry>
-OSG_Condor_EnableAMAZON_EC2 
+OSG_Condor_EnableAMAZON_EC2
 </entry>
 <entry>
 Configure a local scheduler for AMAZON_EC2 Support. Default: no
@@ -130,7 +130,7 @@ Default: yes
 OSG_Condor_Multicore
 </entry>
 <entry>
-Configure condor slots as partitionable slots, suitable for multicore jobs. 
+Configure condor slots as partitionable slots, suitable for multicore jobs.
 It requires restart condor daemon (See /opt/rocks/lib/python2.6/site-packages/rocks/commands/report/host/osg/condor/config/plugin_dynamic_provisioning.py)
 Default: no (accept yes/true to enable it).
 </entry>
@@ -141,7 +141,7 @@ Default: no (accept yes/true to enable it).
 OSG_Condor_RANK
 </entry>
 <entry>
-Configure condor rank on nodes (set RANK in condor_config), suitable for heterogeneous cluster. 
+Configure condor rank on nodes (set RANK in condor_config), suitable for heterogeneous cluster.
  (See /opt/rocks/lib/python2.6/site-packages/rocks/commands/report/host/osg/condor/config/plugin_rank.py)
 Default: no (uses 0 for executables if not defined.)
 </entry>
@@ -152,7 +152,7 @@ Default: no (uses 0 for executables if not defined.)
 OSG_NEGOTIATOR_INTERVAL
 </entry>
 <entry>
-Reconfigure negotiator interval. (See /opt/rocks/lib/python2.6/site-packages/rocks/commands/report/host/osg/condor/config/plugin_osg_negotiator_interval.py)
+Reconfigure negotiator interval. (See /opt/rocks/lib/python2.7/site-packages/rocks/commands/report/host/osg/condor/config/plugin_osg_negotiator_interval.py)
 Default: no default, but use 60 (seconds) if not defined.
 </entry>
 </row>
