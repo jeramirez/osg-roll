@@ -29,11 +29,11 @@
 
 <post cond="OSG_Condor_Password">
 <file name="/tmp/poolpassword">
-<eval>if [ -f /var/lib/condor/pool_password ]; then /usr/bin/sudo /bin/cat /var/lib/condor/pool_password | /usr/bin/uuencode --base64 /var/lib/condor/pool_password; fi</eval>
+<eval>if [ -f /etc/condor/passwords.d/POOL ]; then /usr/bin/sudo /bin/cat /etc/condor/passwords.d/POOL | /usr/bin/uuencode --base64 /etc/condor/passwords.d/POOL; fi</eval>
 </file>
 
 /usr/bin/uudecode  /tmp/poolpassword
-/bin/chmod  600 /var/lib/condor/pool_password
+/bin/chmod  600 /etc/condor/passwords.d/POOL
 /bin/rm /tmp/poolpassword
 </post>
 
