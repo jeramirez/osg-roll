@@ -109,9 +109,6 @@ CMaster=&Kickstart_PublicHostname;
 # bind the network to the public interface on frontends.` 
 /opt/rocks/bin/rocks add appliance attr frontend OSG_Condor_Network value=public
 
-# parameters related with condor install
-/opt/rocks/bin/rocks add attr OSG_condoruid value=407
-/opt/rocks/bin/rocks add attr OSG_condorgid value=407
 # parameters related with CE install
 /opt/rocks/bin/rocks add attr OSG_tomcatuid value=91
 /opt/rocks/bin/rocks add attr OSG_tomcatgid value=91
@@ -283,20 +280,12 @@ rm -f /etc/rc.d/rocksconfig.d/post-90-osg-server-autofs
 <!--  Condor related post install -->
 <post>
 <!-- Give apache rights to cat pool password -->
-<file name="/etc/sudoers" mode="append" perms="0440">
-apache ALL=(ALL) NOPASSWD: /bin/cat /var/lib/condor/pool_password
+<file name="/etc/sudoers.d/01_osg_condor" perms="0440">
+apache ALL=(ALL) NOPASSWD: /bin/cat /etc/condor/passwords.d/POOL
 </file>
 
 <file name="/etc/rc.d/rocksconfig.d/post-90-osg-server-condor" perms="0755">
 #!/bin/sh
-
-OSG_condorgid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_condorgid`
-OSG_condoruid=`/opt/rocks/bin/rocks report host attr localhost attr=OSG_condoruid`
-/usr/sbin/groupmod -g ${OSG_condorgid} condor
-/usr/sbin/usermod -u ${OSG_condoruid} -g ${OSG_condorgid}  condor
-chown -R condor:condor /var/log/condor
-chown -R condor:condor /var/run/condor
-chown -R condor:condor /var/lib/condor
 
 if [ -f /etc/profile.d/java.sh ]; then
    . /etc/profile.d/java.sh
