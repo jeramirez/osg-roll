@@ -224,8 +224,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 			cmduid  = 'ssh %s getent passwd condor | cut -d: -f3' % self.host
 			cmdgid  = 'ssh %s getent group condor | cut -d: -f3' % self.host
 			with open(os.devnull, 'w') as devnull:
-				uidtest  = subprocess.check_output(cmduid,shell=True)
-				gidtest  = subprocess.check_output(cmdgid,shell=True)
+				uidtest  = subprocess.check_output(cmduid,stderr=devnull, shell=True)
+				gidtest  = subprocess.check_output(cmdgid,stderr=devnull, shell=True)
 		except KeyError:
 			print 'User %s does not exist\n' % self.user
 			sys.exit(-1)
