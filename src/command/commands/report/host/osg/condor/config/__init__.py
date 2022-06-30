@@ -90,6 +90,7 @@
 
 import sys
 import os
+import subprocess
 import pwd
 import string
 import types
@@ -198,7 +199,14 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 	def fillFromDerived(self):
 		## Get the Condor User ID, Group ID
-		self.getUID()
+		condoruid = self.db.getHostAttr(self.host,'OSG_condoruid')
+		if condoruid > 0 and condoruid != self.uid:
+			self.uid = condoruid
+
+		condorgid = self.db.getHostAttr(self.host,'OSG_condorgid')
+		if condorgid > 0 and condorgid != self.gid:
+			self.gid = condorgid
+
 		self.dict['CONDOR_IDS'] = '%s.%s' % (self.uid, self.gid)
 
 		self.dict['CONDOR_ADMIN']                = 'condor@%s' % self.cm_fqdn
@@ -212,19 +220,20 @@ class Command(rocks.commands.HostArgumentProcessor,
 	def getUID(self):
 		""" finds condor's uid and gid """
 		try:
-			info = pwd.getpwnam(self.user)
+			info = pwd.getpwnam(self.user)  #takes from head node no from node itself
+			cmduid  = 'ssh %s getent passwd condor | cut -d: -f3' % self.host
+			cmdgid  = 'ssh %s getent group condor | cut -d: -f3' % self.host
+			with open(os.devnull, 'w') as devnull:
+				uidtest  = subprocess.check_output(cmduid,shell=True)
+				gidtest  = subprocess.check_output(cmdgid,shell=True)
 		except KeyError:
 			print 'User %s does not exist\n' % self.user
 			sys.exit(-1)
 
 		self.uid = info[2]
 		self.gid = info[3]
-		condoruid = self.db.getHostAttr(self.host,'OSG_condoruid')
-		condorgid = self.db.getHostAttr(self.host,'OSG_condorgid')
-		if condoruid > 0 and condoruid != info[2]:
-			self.uid = condoruid
-		if condorgid > 0 and condorgid != info[3]:
-			self.gid = condorgid
+		self.uid = uidtest[:-1]
+		self.gid = gidtest[:-1]
 
 	def setDefaults(self):
 		""" set condor location and config files """
@@ -334,9 +343,9 @@ class Command(rocks.commands.HostArgumentProcessor,
 
                 for host in self.getHostnames(args):
 			self.host = host
+			self.Config()
 			self.fillFromDerived()
 			self.fillFromRocksAttributes()
-			self.Config()
 			self.runPlugins((host,self.dict))
 			self.OverdriveType()
 			self.writeConfigFile(self.dict, self.ConfigFile)
