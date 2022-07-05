@@ -55,6 +55,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 			osg_client = self.db.getHostAttr(host,'OSG_Client')
 			shareddir  = self.db.getHostAttr(host,'OSG_CE_Mount_ShareDir')
 			rocks_ver  = self.db.getHostAttr(host,'rocks_version_major')
+			condoruid  = self.db.getHostAttr(host,'OSG_condoruid')
+			condorgid  = self.db.getHostAttr(host,'OSG_condorgid')
 
 			if osg_client > 0 and osg_client == 'true':
 				self.addOutput(self.host, '')
@@ -66,10 +68,14 @@ class Command(rocks.commands.HostArgumentProcessor,
 				self.FixUid('&OSG_gratiauid;','gratia')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, '#make sure condor user exist already to avoid different uid/gid for condor')
-				self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_condorgid; condor')
-				self.FixGid('&OSG_condorgid;','condor')
-				self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_condoruid; -g &OSG_condorgid; -c "Condor Daemon Account" -s /bin/nologin -d /var/lib/condor condor')
-				self.FixUid('&OSG_condoruid;','condor')
+				self.addOutput(self.host, '#rocks attr OSG_condorgid=&OSG_condorgid;')
+				if condorgid > 0 :
+					self.addOutput(self.host, '/usr/sbin/groupadd -g &OSG_condorgid; condor')
+					self.FixGid('&OSG_condorgid;','condor')
+				self.addOutput(self.host, '#rocks attr OSG_condoruid=&OSG_condoruid;')
+				if condoruid > 0 :
+					self.addOutput(self.host, '/usr/sbin/useradd -r -u &OSG_condoruid; -g &OSG_condorgid; -c "Condor Daemon Account" -s /bin/nologin -d /var/lib/condor condor')
+					self.FixUid('&OSG_condoruid;','condor')
 				self.addOutput(self.host, '')
 				self.addOutput(self.host, 'touch %s' % loginstall )
 				if rocks_ver == "6":
