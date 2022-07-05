@@ -192,6 +192,11 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.dict['HIGHPORT'] = \
 				self.db.getHostAttr(self.host,'OSG_Condor_PortHigh')
 
+		if self.db.getHostAttr(self.host,'OSG_condoruid') > 0 and self.db.getHostAttr(self.host,'OSG_condorgid') > 0:
+			condoruid = self.db.getHostAttr(self.host,'OSG_condoruid')
+			condorgid = self.db.getHostAttr(self.host,'OSG_condorgid')
+			self.dict['CONDOR_IDS'] = '%s.%s' % (condoruid,condorgid)
+
 		if self.dict['UID_DOMAIN'] is None:
 			self.dict['UID_DOMAIN'] =  \
 				self.db.getHostAttr('localhost', \
@@ -199,19 +204,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 	def fillFromDerived(self):
 		## Get the Condor User ID, Group ID
-		condoruid = self.db.getHostAttr(self.host,'OSG_condoruid')
-		if condoruid > 0 and condoruid != self.uid:
-			self.uid = condoruid
-
-		condorgid = self.db.getHostAttr(self.host,'OSG_condorgid')
-		if condorgid > 0 and condorgid != self.gid:
-			self.gid = condorgid
-
-		self.dict['CONDOR_IDS'] = '%s.%s' % (self.uid, self.gid)
+		if self.uid > 0 and self.gid > 0:
+			self.dict['CONDOR_IDS'] = '%s.%s' % (self.uid, self.gid)
 
 		self.dict['CONDOR_ADMIN']                = 'condor@%s' % self.cm_fqdn
 		self.dict['CONDOR_HOST']                 = self.cm_fqdn
-	
+
 	def defineInternalStateVars(self):
 		self.user = "condor"
 		self.cm_fqdn = self.db.getHostAttr('localhost', 'OSG_Condor_Master')
@@ -220,7 +218,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 	def getUID(self):
 		""" finds condor's uid and gid """
 		try:
-			info = pwd.getpwnam(self.user)  #takes from head node no from node itself
+			info = pwd.getpwnam(self.user)  #takes from head node, not from node itself
 			cmduid  = 'ssh %s getent passwd condor | cut -d: -f3' % self.host
 			cmdgid  = 'ssh %s getent group condor | cut -d: -f3' % self.host
 			with open(os.devnull, 'w') as devnull:
