@@ -202,11 +202,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 			condorgid = self.db.getHostAttr(self.host,'OSG_condorgid')
 			self.dict['CONDOR_IDS'] = '%s.%s' % (condoruid,condorgid)
 
-		if self.dict['UID_DOMAIN'] is None:
-			self.dict['UID_DOMAIN'] =  \
-				self.db.getHostAttr('localhost', \
-                                'Kickstart_PrivateDNSDomain')
-
 	def fillFromDerived(self):
 		## Get the Condor User ID, Group ID
 		if self.uid is not None and self.gid is not None:
@@ -220,6 +215,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.cm_fqdn = self.db.getHostAttr('localhost', 'OSG_Condor_Master')
 		self.cm_domainName = self.cm_fqdn[string.find(self.cm_fqdn, '.')+1:]
 		self.localDomain = self.db.getHostAttr('localhost','Kickstart_PrivateDNSDomain')
+		if self.UIDdomain is not None:
+			self.dict['UID_DOMAIN'] = self.UIDdomain
+
+
 	def getUID(self):
 		""" finds condor's uid and gid """
 		try:
@@ -247,8 +246,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.user = 'condor'
 		self.releaseDir = '/usr'
 		self.configMain = '/etc/condor/condor_config'
-		if self.UIDdomain is not None:
-			self.dict['UID_DOMAIN'] = self.UIDdomain
 		self.getUID()
 
 	def find_executable(self, executable, path=None):
@@ -311,6 +308,11 @@ class Command(rocks.commands.HostArgumentProcessor,
  
 		self.dict['CONDOR_ADMIN']                = 'condor@%s' % self.cm_fqdn
 		self.dict['CONDOR_HOST']                 = self.cm_fqdn
+		if self.dict['UID_DOMAIN'] is None:
+			self.dict['UID_DOMAIN'] =  \
+				self.db.getHostAttr('localhost', \
+                                'Kickstart_PrivateDNSDomain')
+
 		self.dict['HOSTALLOW_WRITE'] = '%s, *.%s, *.%s' % (self.cm_fqdn,self.localDomain,self.dict['UID_DOMAIN'])
 		allowHosts=self.db.getHostAttr(self.host, 'OSG_Condor_HostAllow')
 		allowHosts.lstrip()
