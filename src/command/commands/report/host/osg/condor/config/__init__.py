@@ -148,7 +148,6 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dict['CONDOR_DEVELOPERS']   = 'NONE'
 		self.dict['CONDOR_DEVELOPERS_COLLECTOR'] = 'NONE'
 		self.dict['CONDOR_HOST']         = None
-		self.dict['CONDOR_IDS']          = None
 		self.dict['CONDOR_SSHD']         = '/usr/sbin/sshd'
 		self.dict['CONDOR_SSH_KEYGEN']   = '/usr/bin/ssh-keygen'
 		self.dict['CONTINUE']            = 'True'
@@ -166,6 +165,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 		self.dict['PREEMPT']             = 'False'
 		self.dict['RANK']                = None
 		self.dict['RELEASE_DIR']         = '/usr'
+		self.dict['SEC_DEFAULT_AUTHENTICATION'] = 'REQUIRED'
+		self.dict['SEC_DEFAULT_AUTHENTICATION_METHODS'] = 'FS, PASSWORD, SSL, IDTOKENS'
 		self.dict['START']               = 'True'
 		self.dict['STARTD_EXPRS']        = '$(STARTD_EXPRS)'
 		self.dict['SUSPEND']             = 'False'
@@ -192,6 +193,10 @@ class Command(rocks.commands.HostArgumentProcessor,
 			self.dict['HIGHPORT'] = \
 				self.db.getHostAttr(self.host,'OSG_Condor_PortHigh')
 
+		if self.db.getHostAttr(self.host,'OSG_Condor_Default_Auth_Methods') > 0:
+			self.dict['SEC_DEFAULT_AUTHENTICATION_METHODS'] = \
+				self.db.getHostAttr(self.host,'OSG_Condor_Default_Auth_Methods')
+
 		if self.db.getHostAttr(self.host,'OSG_condoruid') > 0 and self.db.getHostAttr(self.host,'OSG_condorgid') > 0:
 			condoruid = self.db.getHostAttr(self.host,'OSG_condoruid')
 			condorgid = self.db.getHostAttr(self.host,'OSG_condorgid')
@@ -204,7 +209,7 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 	def fillFromDerived(self):
 		## Get the Condor User ID, Group ID
-		if self.uid > 0 and self.gid > 0:
+		if self.uid is not None and self.gid is not None:
 			self.dict['CONDOR_IDS'] = '%s.%s' % (self.uid, self.gid)
 
 		self.dict['CONDOR_ADMIN']                = 'condor@%s' % self.cm_fqdn
@@ -219,8 +224,8 @@ class Command(rocks.commands.HostArgumentProcessor,
 		""" finds condor's uid and gid """
 		try:
 			info = pwd.getpwnam(self.user)  #takes from head node, not from node itself
-			cmduid  = 'ssh %s getent passwd condor | cut -d: -f3' % self.host
-			cmdgid  = 'ssh %s getent group condor | cut -d: -f3' % self.host
+			cmduid  = 'ssh root@%s getent passwd condor | cut -d: -f3' % self.host
+			cmdgid  = 'ssh root@%s getent group condor | cut -d: -f3' % self.host
 			with open(os.devnull, 'w') as devnull:
 				uidtest  = subprocess.check_output(cmduid,stderr=devnull, shell=True)
 				gidtest  = subprocess.check_output(cmdgid,stderr=devnull, shell=True)
@@ -230,8 +235,12 @@ class Command(rocks.commands.HostArgumentProcessor,
 
 		self.uid = info[2]
 		self.gid = info[3]
-		self.uid = uidtest[:-1]
-		self.gid = gidtest[:-1]
+		self.uid = None
+		self.gid = None
+		if uidtest != '':
+			self.uid = uidtest[:-1]
+		if gidtest != '':
+			self.gid = gidtest[:-1]
 
 	def setDefaults(self):
 		""" set condor location and config files """
