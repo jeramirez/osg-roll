@@ -40,10 +40,6 @@ gsoap
    CGSI-gSOAP-devel
    condor
    condor-cream-gahp
-   glite-ce-cream-cli
-   glite-ce-cream-client-api-c
-   glite-ce-cream-client-devel
-   glite-data-delegation-api-c
    voms-server
    xacml
 perl-XML-DOM
@@ -93,5 +89,19 @@ log4cpp
 mosh
 davix
 davix-libs
+python36-chardet
+python36-idna
+python36-pysocks
+python36-requests
+python36-six
+python36-urllib3
+scitokens-cpp
+apptainer
+  fakeroot
+  fakeroot-libs
+  fuse2fs
+  libzstd
+  squashfuse
+  squashfuse-libs
 ```
 
